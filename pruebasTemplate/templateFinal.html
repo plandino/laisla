@@ -65,6 +65,7 @@
   var cameraMatrix 		= mat4.create();
   var perspectiveMatrix = mat4.create();
   var cubito = null;
+  var cuboDos = null;
 
   // Variable global para el contexto GL
   var gl;
@@ -326,6 +327,13 @@
     mat4.rotate(matrix_cubo, matrix_cubo, degToRad(t), [1.0, 0.0, 0.0] );
     t = t + 1;
     cubito.draw(matrix_cubo);
+
+    var matrix_cuboDos = mat4.create();
+    mat4.identity(matrix_cuboDos);
+    mat4.translate(matrix_cuboDos, matrix_cuboDos, [-3.0, 1.0, 1.0]);
+    mat4.rotate(matrix_cuboDos, matrix_cuboDos, degToRad(t), [0.0, 1.0, 0.0] );
+    t = t + 1;
+    cuboDos.draw(matrix_cuboDos);
   }
 
   // INIT
@@ -352,6 +360,9 @@
 
     cubito = new cubo(3.0,3.0,3.0);
     cubito.initBuffers();
+
+    cuboDos = new cubo(1.0,2.0,1.0);
+    cuboDos.initBuffers();
     //drawScene();
     setInterval(drawScene, 10);
   }
