@@ -9,6 +9,7 @@
   </style>
 
   <script type="text/javascript" src="gl-matrix.js"></script>
+  <script type="text/javascript" src="webgl-utils.js"></script>
 
   <!--
   Vertex shader
@@ -157,6 +158,8 @@
       // Intentamos primero con el contexto estandar. Si falla, probamos con el
       // experimental.
       gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+      gl.viewportWidth = canvas.width;
+      gl.viewportHeight = canvas.height;
     } catch(e) {}
     
     // Si no tenemos un contexto, abortamos.
@@ -283,30 +286,7 @@
             gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexColorBuffer);
             gl.vertexAttribPointer(gl.shaderProgram.vertexColorAttribute, this.cubeVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-// /////////////////////////////////VIEJO////////////////////////////////////////////
 
-//             gl.uniformMatrix4fv(shaderProgram.ModelMatrixUniform, false, modelMatrix);
-//             var normalMatrix = mat3.create();
-//             mat4.toInverseMat3(modelMatrix, normalMatrix);
-//             mat3.transpose(normalMatrix);
-//             gl.uniformMatrix3fv(shaderProgram.nMatrixUniform, false, normalMatrix);
-
-// //////////////////////////////////////VIEJO///////////////////////////////////////////////////7
-
-// ///////////////////////////////////////////NUEVO//////////////////////////////////
-
-//             // Preparamos una matriz de perspectiva.
-//             mat4.perspective(pMatrix, 45, 640.0/480.0, 0.1, 100.0);
-//             gl.uniformMatrix4fv(gl.shaderProgram.pUniform, false, pMatrix);
-//             // Preparamos una matriz de modelo+vista.
-//             mat4.identity(mvMatrix);
-//             mat4.translate(mvMatrix, mvMatrix, [0.0, 0.0, -5.0]);
-//             mat4.rotate(mvMatrix, mvMatrix, t, [1.0, 0.0, 1.0]);
-//             mat4.rotate(mvMatrix, mvMatrix, t/5.0, [0.0, 1.0, 0.0]);
-
-//             gl.uniformMatrix4fv(gl.shaderProgram.mvUniform, false, mvMatrix);
-
-// ////////////////////////////////////////NUEVO///////////////////////////////////////
             
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
             //gl.drawElements(gl.LINE_LOOP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
@@ -318,57 +298,20 @@
   }
 
 
-///////////////////////////// DRAW  VIEJO /////////////////////////////////////////////
-  var t = 0.0;
-  function drawScene() {
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  
-    // Preparamos una matriz de perspectiva.
-    mat4.perspective(pMatrix, 45, 640.0/480.0, 0.1, 100.0);
+////////////////////////////// MI DRAWWWW /////////////////////////////////////////////
+
+function drawScene(){
+
+	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+	// Preparamos una matriz de perspectiva.
+    mat4.perspective(pMatrix, 45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0);
     gl.uniformMatrix4fv(gl.shaderProgram.pUniform, false, pMatrix);
-    
-    // Preparamos una matriz de modelo+vista.
-    mat4.identity(mvMatrix);
-    mat4.translate(mvMatrix, mvMatrix, [0.0, 0.0, -5.0]);
-    mat4.rotate(mvMatrix, mvMatrix, t, [1.0, 0.0, 1.0]);
-    mat4.rotate(mvMatrix, mvMatrix, t/5.0, [0.0, 1.0, 0.0]);
+}
 
-    gl.uniformMatrix4fv(gl.shaderProgram.mvUniform, false, mvMatrix);
-    
-    // Asociamos un atributo del shader con cada uno de los buffers que creamos.
-    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexBuffer);
-    gl.vertexAttribPointer(gl.shaderProgram.vertexPositionAttribute, 3, gl.FLOAT, 
-                           false, 0, 0);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexColorBuffer);
-    gl.vertexAttribPointer(gl.shaderProgram.vertexColorAttribute, 4, gl.FLOAT, 
-                           false, 0, 0);
+////////////////////////////// MI DRAW ////////////////////////////////////////////////////
 
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
-
-    // Dibujamos.
-    gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
-    t = t + 0.01;
-  }
-///////////////////////////////DRAW VIEJO ///////////////////////////////////////
-
-////////////////////////////////DRAW NUEVO /////////////////////////////////////
-function drawScene() {
-  
-    // Se configura el vierport dentro de área ¨canvas¨. en este caso se utiliza toda 
-    // el área disponible
-        gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-    
-    // Se habilita el color de borrado para la pantalla (Color Buffer) y otros buffers
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-    // Se configura la matriz de proyección
-        mat4.perspective(30, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
-    
-        setViewProjectionMatrix();
-       
-    }
-/////////////////////////////////DRAW NUEVO /////////////////////////////////////  
 
   // INIT
   function start() {
