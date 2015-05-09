@@ -13,12 +13,6 @@
   <script type="text/javascript" src="helpers.js"></script>
   <script type="text/javascript" src="cubo.js"></script>
 
-  // <script type="text/javascript">
-  //     function degToRad(degrees) {
-  //       return degrees * Math.PI / 180;
-  //   }
-  // </script>
-
   <!--
   Vertex shader
   El vertex shader define la posición y forma de cada vertice de cada polígono.
@@ -72,6 +66,8 @@
   var perspectiveMatrix = mat4.create();
   var cubito = null;
   var cuboDos = null;
+  var piso = null;
+  var pataGrua = null;
 
   // Variable global para el contexto GL
   var gl;
@@ -182,166 +178,66 @@
     return gl;
   }
 
-    // function degToRad(degrees) {
-    //     return degrees * Math.PI / 180;
-    // }
-
-
-  // function cubo(ancho, alto, profundo){
-  //   // Estos son los arrays donde defino los valores        
-  //   this.vertices           = null;
-  //   this.indices            = null;
-  //   this.generatedColors    = null;
-
-  //   // Estos son los buffers que voy a bindear para mandar a los shaders
-  //   this.cubeVertexBuffer       = null;
-  //   this.cubeVertexIndexBuffer  = null;
-  //   this.cubeVertexColorBuffer  = null;
-
-  //   // Inicio los valores, para los vertices(posicion, color) e indices
-  //   // Luego los bindeo con los buffers
-  //   this.initBuffers = function(){
-
-  //       // Esto auxiliares los uso para construir los vertices del cubo
-  //       var width   = ancho/2.0;
-  //       var height  = alto/2.0;
-  //       var z       = profundo/2.0;
-
-  //       // Construyo los vertices
-  //       this.vertices = [
-  //         -width, -height,  z,
-  //         -width, -height, -z,
-  //         -width,  height,  z,
-  //         -width,  height, -z,
-
-  //          width, -height,  z,
-  //          width, -height, -z,
-  //          width,  height,  z,
-  //          width,  height, -z
-  //       ];
-
-
-  //       // Creamos un buffer de vertices para WebGL.
-  //       this.cubeVertexBuffer = gl.createBuffer();
-  //       // Le decimos a WebGL que las siguientes funciones se relacionan con ese buffer.
-  //       gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexBuffer);
-  //       // Cargamos datos de posiciones en el buffer.
-  //       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices), gl.STATIC_DRAW);
-  //       this.cubeVertexBuffer.itemSize = 3;
-  //       this.cubeVertexBuffer.numItems = this.vertices.length;
-
-  //       this.indices = [
-  //           // Cara de adelante
-  //           0, 4, 6,
-  //           0, 6, 2,
-
-  //           // Cara izquierda
-  //           1, 0, 2,
-  //           1, 2, 3,
-
-  //           // Cara arriba
-  //           6, 7, 3,
-  //           6, 3, 2,
-
-  //           // Cara derecha
-  //           4, 5, 7,
-  //           4, 7, 6,
-
-  //           // Cara abajo
-  //           4, 1, 0,
-  //           4, 5, 1,
-
-  //           // Cara atras
-  //           1, 5, 7,
-  //           1, 7, 3
-  //       ];
-
-  //       // Definimos y cargamos los datos en el buffer WebGL correspondiente.
-  //       // Notar que esta vez se usa ELEMENT_ARRAY_BUFFER en lugar de ARRAY_BUFFER.
-  //       // Notar también que se usa un array de enteros en lugar de floats.
-  //       this.cubeVertexIndexBuffer = gl.createBuffer();
-  //       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
-  //       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), gl.STATIC_DRAW);
-  //       this.cubeVertexIndexBuffer.itemSize = 1;
-  //       this.cubeVertexIndexBuffer.numItems = this.indices.length;
-
-  //       // Definimos los colores de cada cara en un nuevo array Javascript.
-  //       var colors = [
-  //         [1.0,  1.0,  1.0,  1.0],    // Cara frontal: blanco
-  //         [1.0,  0.0,  0.0,  1.0],    // Cara de atrás: rojo
-  //         [0.0,  1.0,  0.0,  1.0],    // Cara de arriba: verde
-  //         [0.0,  0.0,  1.0,  1.0],    // Cara de abajo: azul
-  //       ];
-      
-  //       // Replicamos los colores de cada cara dos veces.
-  //       this.generatedColors = [];
-  //       for (var j=0; j<colors.length; j++) {
-  //         var c = colors[j];
-  //         for (var i=0; i<2; i++) {
-  //           this.generatedColors = this.generatedColors.concat(c);
-  //         }
-  //       }
-
-  //       // Cargamos los datos de los colores en un nuevo buffer igual que con las posiciones
-  //       this.cubeVertexColorBuffer = gl.createBuffer();
-  //       gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexColorBuffer);
-  //       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.generatedColors), gl.STATIC_DRAW);
-  //       this.cubeVertexColorBuffer.itemSize = 4;
-  //       this.cubeVertexColorBuffer.numItems = this.generatedColors.length;
-  //   }
-
-  //   this.draw = function(modelMatrix){
-
-  //       // Se configuran los buffers que alimentarán el pipeline
-  //       gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexBuffer);
-  //       gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.cubeVertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-  //       gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexColorBuffer);
-  //       gl.vertexAttribPointer(gl.shaderProgram.vertexColorAttribute, this.cubeVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-  //       gl.uniformMatrix4fv(shaderProgram.modelMatrixUniform, false, modelMatrix);
-        
-  //       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
-  //       //gl.drawElements(gl.LINE_LOOP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
-  //       gl.drawElements(gl.TRIANGLES, this.cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
-  //       /////////////////////////////////
-  //   }
-  // }
-
   // DRAW 
   var t = 0.0;
   function drawScene() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   
     // Preparamos una matriz de perspectiva.
-    mat4.perspective(perspectiveMatrix, 45, 640.0/480.0, 0.1, 100.0);
+    mat4.perspective(perspectiveMatrix, degToRad(45 + t), 640.0/480.0, 0.1, 200.0);
     // Mando la matriz de perspectiva
     gl.uniformMatrix4fv(gl.shaderProgram.perspectiveMatrixUniform, false, perspectiveMatrix);
     
     // Preparamos una matriz de camara(vista).
     mat4.identity(cameraMatrix);
-    mat4.translate(cameraMatrix, cameraMatrix, [0.0, 0.0, -30.0]);
-    // mat4.rotate(cameraMatrix, cameraMatrix, degToRad(145), [1.0, 0.0, 0.0]);
+    mat4.translate(cameraMatrix, cameraMatrix, [0.0, -10.0, -100.0]);
+    mat4.rotate(cameraMatrix, cameraMatrix, degToRad(45), [1.0, -1.0, 0.0]);
+    // mat4.rotate(cameraMatrix, cameraMatrix, degToRad(45), [0.0, 1.0, 0.0]);
+    
     // Mando la matriz de camara (vista)
     gl.uniformMatrix4fv(gl.shaderProgram.viewMatrixUniform, false, cameraMatrix);
-   
 
     // Ubico el primer cubo
     var matrix_cubo = mat4.create();
     mat4.identity(matrix_cubo);
-    mat4.translate(matrix_cubo, matrix_cubo, [0.0, 1.0, 1.0]);
-    mat4.rotate(matrix_cubo, matrix_cubo, degToRad(t), [1.0, 0.0, 0.0] );
+    mat4.translate(matrix_cubo, matrix_cubo, [0.0, 0.0, 1.0]);
+    // mat4.rotate(matrix_cubo, matrix_cubo, degToRad(t), [1.0, 0.0, 0.0] );
     
     cubito.draw(matrix_cubo,  gl, shaderProgram);
 
     // Ubico el segundo cubo
     var matrix_cuboDos = mat4.create();
     mat4.identity(matrix_cuboDos);
-    mat4.translate(matrix_cuboDos, matrix_cuboDos, [-15.0, 1.0, 1.0]);
-    mat4.rotate(matrix_cuboDos, matrix_cuboDos, degToRad(t), [0.0, 1.0, 0.0] );
+    mat4.translate(matrix_cuboDos, matrix_cuboDos, [-15.0, 0.0, 1.0]);
+    // mat4.rotate(matrix_cuboDos, matrix_cuboDos, degToRad(t), [0.0, 1.0, 0.0] );
     cuboDos.draw(matrix_cuboDos, gl, shaderProgram);
 
-    t = t + 1;
+    var matrix_piso = mat4.create();
+    mat4.identity(matrix_piso);
+    mat4.translate(matrix_piso, matrix_piso, [0.0, -5.0, 0.0]);
+    piso.draw(matrix_piso, gl, shaderProgram);
+
+    var matrix_pataGrua = mat4.create();
+    mat4.identity(matrix_pataGrua);
+    mat4.translate(matrix_pataGrua, matrix_pataGrua, [0.0, -5.0, 0.0]);
+    pataGrua.draw(matrix_pataGrua, gl, shaderProgram);
+
+    var matrix_pataDosGrua = mat4.create();
+    mat4.identity(matrix_pataDosGrua);
+    mat4.translate(matrix_pataDosGrua, matrix_pataDosGrua, [20.0, -5.0, 0.0]);
+    pataDosGrua.draw(matrix_pataDosGrua, gl, shaderProgram);
+
+    var matrix_barraCruzadaAbajoGrua = mat4.create();
+    mat4.identity(matrix_barraCruzadaAbajoGrua);
+    mat4.translate(matrix_barraCruzadaAbajoGrua, matrix_barraCruzadaAbajoGrua, [10.0, 15.0, 0.0]);
+    barraCruzadaAbajoGrua.draw(matrix_barraCruzadaAbajoGrua, gl, shaderProgram);
+
+    var matrix_barraCruzadaArribaGrua = mat4.create();
+    mat4.identity(matrix_barraCruzadaArribaGrua);
+    mat4.translate(matrix_barraCruzadaArribaGrua, matrix_barraCruzadaArribaGrua, [10.0, 28.0, 0.0]);
+    barraCruzadaArribaGrua.draw(matrix_barraCruzadaArribaGrua, gl, shaderProgram);
+
+    t = t + 0.01;
   }
 
   // INIT
@@ -371,6 +267,22 @@
 
     cuboDos = new cubo(10.0,10.0,10.0);
     cuboDos.initBuffers( gl, shaderProgram);
+
+    piso = new cubo(100.0, 0.2, 200.0);
+    piso.initBuffers(gl, shaderProgram);
+
+    pataGrua = new cubo(3.0, 70.0, 3.0);
+    pataGrua.initBuffers(gl, shaderProgram);
+
+    pataDosGrua = new cubo(3.0, 70.0, 3.0);
+    pataDosGrua.initBuffers(gl, shaderProgram);
+
+    barraCruzadaAbajoGrua = new cubo(20, 2.8, 2.8);
+    barraCruzadaAbajoGrua.initBuffers(gl, shaderProgram);
+
+    barraCruzadaArribaGrua = new cubo(20, 2.8, 2.8);
+    barraCruzadaArribaGrua.initBuffers(gl, shaderProgram);
+
     setInterval(drawScene, 10);
   }
   </script>
@@ -381,7 +293,7 @@
   <center>
       <h1>Sistemas Gr&aacute;ficos - 66.71</h1>
       <h2>WebGL - Vertex & Index buffers</h2>
-      <canvas id="glcanvas" width="640" height="480">
+      <canvas id="glcanvas" width="800" height="600">
         Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
       </canvas>
   </center>
