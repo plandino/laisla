@@ -59,6 +59,7 @@
         	];
         	return colors;
 		} else {
+			// Este es el color flashero con un vertice de cada color
 			var colors = [
 	          [1.0,  1.0,  1.0,  1.0],    // Cara frontal: blanco
 	          [1.0,  0.0,  0.0,  1.0],    // Cara de atrás: rojo
