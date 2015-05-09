@@ -11,7 +11,7 @@ function cubo(ancho, alto, profundo){
 
     // Inicio los valores, para los vertices(posicion, color) e indices
     // Luego los bindeo con los buffers
-    this.initBuffers = function(gl, shaderProgram){
+    this.initBuffers = function(gl, shaderProgram, color){
 
         // Esto auxiliares los uso para construir los vertices del cubo
         var width   = ancho/2.0;
@@ -77,12 +77,14 @@ function cubo(ancho, alto, profundo){
         this.cubeVertexIndexBuffer.numItems = this.indices.length;
 
         // Definimos los colores de cada cara en un nuevo array Javascript.
-        var colors = [
-          [1.0,  1.0,  1.0,  1.0],    // Cara frontal: blanco
-          [1.0,  0.0,  0.0,  1.0],    // Cara de atrás: rojo
-          [0.0,  1.0,  0.0,  1.0],    // Cara de arriba: verde
-          [0.0,  0.0,  1.0,  1.0],    // Cara de abajo: azul
-        ];
+        //var colors = [
+        //  [1.0,  1.0,  1.0,  1.0],    // Cara frontal: blanco
+        //  [1.0,  0.0,  0.0,  1.0],    // Cara de atrás: rojo
+        //  [0.0,  1.0,  0.0,  1.0],    // Cara de arriba: verde
+        //  [0.0,  0.0,  1.0,  1.0],    // Cara de abajo: azul
+        //];
+
+        var colors = getColor(color);
       
         // Replicamos los colores de cada cara dos veces.
         this.generatedColors = [];
@@ -118,3 +120,77 @@ function cubo(ancho, alto, profundo){
         /////////////////////////////////
     }
   }
+
+
+
+
+// function getColor(color){
+//     if(color == "red"){
+//         var colors = [
+//             [1.0,  0.0,  0.0,  1.0],    
+//             [1.0,  0.0,  0.0,  1.0],    
+//             [1.0,  0.0,  0.0,  1.0],    
+//             [1.0,  0.0,  0.0,  1.0],    
+//         ];
+//         return colors;
+//     }
+
+//     if(color == "green"){
+//         var colors = [
+//             [0.0,  1.0,  0.0,  1.0],    
+//             [0.0,  1.0,  0.0,  1.0],    
+//             [0.0,  1.0,  0.0,  1.0],    
+//             [0.0,  1.0,  0.0,  1.0],    
+//         ];
+//         return colors;
+//     }
+
+//     if(color == "blue"){
+//         var colors = [
+//             [0.0,  0.0,  1.0,  1.0],    
+//             [0.0,  0.0,  1.0,  1.0],    
+//             [0.0,  0.0,  1.0,  1.0],    
+//             [0.0,  0.0,  1.0,  1.0],    
+//         ];
+//         return colors;
+//     }
+
+//     if(color == "yellow"){
+//         var colors = [
+//             [1.0,  1.0,  0.0,  1.0],   
+//             [1.0,  1.0,  0.0,  1.0],   
+//             [1.0,  1.0,  0.0,  1.0],   
+//             [1.0,  1.0,  0.0,  1.0],    
+//         ];
+//         return colors;
+//     }
+
+//     if(color == "purple"){
+//         var colors = [
+//             [0.5,  0.0,  0.5,  1.0],    
+//             [0.5,  0.0,  0.5,  1.0],    
+//             [0.5,  0.0,  0.5,  1.0],    
+//             [0.5,  0.0,  0.5,  1.0],    
+//         ];
+//         return colors;
+//     }
+
+//     if(color == "orange"){
+//         var colors = [
+//             [1.0,  0.35,  0.0,  1.0],    
+//             [1.0,  0.35,  0.0,  1.0],    
+//             [1.0,  0.35,  0.0,  1.0],    
+//             [1.0,  0.35,  0.0,  1.0],    
+//         ];
+//         return colors;
+//     } else {
+//         // Este es el color flashero con vertices de colores diferentes
+//         var colors = [
+//           [1.0,  1.0,  1.0,  1.0],    // Cara frontal: blanco
+//           [1.0,  0.0,  0.0,  1.0],    // Cara de atrás: rojo
+//           [0.0,  1.0,  0.0,  1.0],    // Cara de arriba: verde
+//           [0.0,  0.0,  1.0,  1.0],    // Cara de abajo: azul
+//         ];
+//         return colors;
+//     }
+// }

@@ -12,6 +12,8 @@
   <script type="text/javascript" src="gl-matrix.js"></script>
   <script type="text/javascript" src="helpers.js"></script>
   <script type="text/javascript" src="cubo.js"></script>
+  <script type="text/javascript" src="pataGrua.js"></script>
+  <script type="text/javascript" src="colores.js"></script>
 
   <!--
   Vertex shader
@@ -67,7 +69,9 @@
   var cubito = null;
   var cuboDos = null;
   var piso = null;
-  var pataGrua = null;
+  // var pataGrua = null;
+  var barraDiagonalGrua = null;
+  var grua = null;
 
   // Variable global para el contexto GL
   var gl;
@@ -190,54 +194,64 @@
     
     // Preparamos una matriz de camara(vista).
     mat4.identity(cameraMatrix);
-    mat4.translate(cameraMatrix, cameraMatrix, [0.0, -10.0, -100.0]);
-    mat4.rotate(cameraMatrix, cameraMatrix, degToRad(45), [1.0, -1.0, 0.0]);
+    mat4.translate(cameraMatrix, cameraMatrix, [0.0, -10.0, -180.0]);
+    // mat4.rotate(cameraMatrix, cameraMatrix, degToRad(45), [1.0, -1.0, 0.0]);
     // mat4.rotate(cameraMatrix, cameraMatrix, degToRad(45), [0.0, 1.0, 0.0]);
     
     // Mando la matriz de camara (vista)
     gl.uniformMatrix4fv(gl.shaderProgram.viewMatrixUniform, false, cameraMatrix);
 
     // Ubico el primer cubo
-    var matrix_cubo = mat4.create();
-    mat4.identity(matrix_cubo);
-    mat4.translate(matrix_cubo, matrix_cubo, [0.0, 0.0, 1.0]);
-    // mat4.rotate(matrix_cubo, matrix_cubo, degToRad(t), [1.0, 0.0, 0.0] );
+    // var matrix_cubo = mat4.create();
+    // mat4.identity(matrix_cubo);
+    // mat4.translate(matrix_cubo, matrix_cubo, [0.0, 0.0, 1.0]);
+    // // mat4.rotate(matrix_cubo, matrix_cubo, degToRad(t), [1.0, 0.0, 0.0] );
     
-    cubito.draw(matrix_cubo,  gl, shaderProgram);
+    // cubito.draw(matrix_cubo,  gl, shaderProgram);
 
-    // Ubico el segundo cubo
-    var matrix_cuboDos = mat4.create();
-    mat4.identity(matrix_cuboDos);
-    mat4.translate(matrix_cuboDos, matrix_cuboDos, [-15.0, 0.0, 1.0]);
-    // mat4.rotate(matrix_cuboDos, matrix_cuboDos, degToRad(t), [0.0, 1.0, 0.0] );
-    cuboDos.draw(matrix_cuboDos, gl, shaderProgram);
+    // // Ubico el segundo cubo
+    // var matrix_cuboDos = mat4.create();
+    // mat4.identity(matrix_cuboDos);
+    // mat4.translate(matrix_cuboDos, matrix_cuboDos, [-15.0, 0.0, 1.0]);
+    // // mat4.rotate(matrix_cuboDos, matrix_cuboDos, degToRad(t), [0.0, 1.0, 0.0] );
+    // cuboDos.draw(matrix_cuboDos, gl, shaderProgram);
 
-    var matrix_piso = mat4.create();
-    mat4.identity(matrix_piso);
-    mat4.translate(matrix_piso, matrix_piso, [0.0, -5.0, 0.0]);
-    piso.draw(matrix_piso, gl, shaderProgram);
+    // var matrix_piso = mat4.create();
+    // mat4.identity(matrix_piso);
+    // mat4.translate(matrix_piso, matrix_piso, [0.0, -5.0, 0.0]);
+    // piso.draw(matrix_piso, gl, shaderProgram);
 
-    var matrix_pataGrua = mat4.create();
-    mat4.identity(matrix_pataGrua);
-    mat4.translate(matrix_pataGrua, matrix_pataGrua, [0.0, -5.0, 0.0]);
-    pataGrua.draw(matrix_pataGrua, gl, shaderProgram);
+    var matrix_grua = mat4.create();
+    mat4.identity(matrix_grua);
+    grua.draw(matrix_grua, gl, shaderProgram);
 
-    var matrix_pataDosGrua = mat4.create();
-    mat4.identity(matrix_pataDosGrua);
-    mat4.translate(matrix_pataDosGrua, matrix_pataDosGrua, [20.0, -5.0, 0.0]);
-    pataDosGrua.draw(matrix_pataDosGrua, gl, shaderProgram);
+    // var matrix_pataGrua = mat4.create();
+    // mat4.identity(matrix_pataGrua);
+    // mat4.translate(matrix_pataGrua, matrix_pataGrua, [-21.25, 30.0, 0.0]);
+    // pataGrua.draw(matrix_pataGrua, gl, shaderProgram);
 
-    var matrix_barraCruzadaAbajoGrua = mat4.create();
-    mat4.identity(matrix_barraCruzadaAbajoGrua);
-    mat4.translate(matrix_barraCruzadaAbajoGrua, matrix_barraCruzadaAbajoGrua, [10.0, 15.0, 0.0]);
-    barraCruzadaAbajoGrua.draw(matrix_barraCruzadaAbajoGrua, gl, shaderProgram);
+    // var matrix_pataDosGrua = mat4.create();
+    // mat4.identity(matrix_pataDosGrua);
+    // mat4.translate(matrix_pataDosGrua, matrix_pataDosGrua, [21.25, 30.0, 0.0]);
+    // pataDosGrua.draw(matrix_pataDosGrua, gl, shaderProgram);
 
-    var matrix_barraCruzadaArribaGrua = mat4.create();
-    mat4.identity(matrix_barraCruzadaArribaGrua);
-    mat4.translate(matrix_barraCruzadaArribaGrua, matrix_barraCruzadaArribaGrua, [10.0, 28.0, 0.0]);
-    barraCruzadaArribaGrua.draw(matrix_barraCruzadaArribaGrua, gl, shaderProgram);
+    // var matrix_barraCruzadaAbajoGrua = mat4.create();
+    // mat4.identity(matrix_barraCruzadaAbajoGrua);
+    // mat4.translate(matrix_barraCruzadaAbajoGrua, matrix_barraCruzadaAbajoGrua, [0.0, 22.5, 0.0]);
+    // barraCruzadaAbajoGrua.draw(matrix_barraCruzadaAbajoGrua, gl, shaderProgram);
 
-    t = t + 0.01;
+    // var matrix_barraCruzadaArribaGrua = mat4.create();
+    // mat4.identity(matrix_barraCruzadaArribaGrua);
+    // mat4.translate(matrix_barraCruzadaArribaGrua, matrix_barraCruzadaArribaGrua, [0.0, 58, 0.0]);
+    // barraCruzadaArribaGrua.draw(matrix_barraCruzadaArribaGrua, gl, shaderProgram);
+
+    // var matrix_barraDiagonalGrua = mat4.create();
+    // mat4.identity(matrix_barraDiagonalGrua);
+    // mat4.translate(matrix_barraDiagonalGrua, matrix_barraDiagonalGrua, [0.0, 40.0, 0.0]);
+    // mat4.rotate(matrix_barraDiagonalGrua, matrix_barraDiagonalGrua, degToRad(-39), [0.0, 0.0, 1.0]);
+    // barraDiagonalGrua.draw(matrix_barraDiagonalGrua, gl, shaderProgram);
+
+    t = t + 0.001;
   }
 
   // INIT
@@ -262,26 +276,32 @@
     gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
     gl.viewport(0, 0, canvas.width, canvas.height);
 
-    cubito = new cubo(10.0,10.0,10.0);
-    cubito.initBuffers( gl, shaderProgram);
+    // cubito = new cubo(10.0,10.0,10.0);
+    // cubito.initBuffers( gl, shaderProgram, "blue");
 
-    cuboDos = new cubo(10.0,10.0,10.0);
-    cuboDos.initBuffers( gl, shaderProgram);
+    // cuboDos = new cubo(10.0,10.0,10.0);
+    // cuboDos.initBuffers( gl, shaderProgram, "green");
 
-    piso = new cubo(100.0, 0.2, 200.0);
-    piso.initBuffers(gl, shaderProgram);
+    grua = new pataGrua(1.0,1.0,1.0);
+    grua.initBuffers(gl, shaderProgram);
 
-    pataGrua = new cubo(3.0, 70.0, 3.0);
-    pataGrua.initBuffers(gl, shaderProgram);
+    // piso = new cubo(100.0, 0.2, 200.0);
+    // piso.initBuffers(gl, shaderProgram, "red");
 
-    pataDosGrua = new cubo(3.0, 70.0, 3.0);
-    pataDosGrua.initBuffers(gl, shaderProgram);
+    // pataGrua = new cubo(4.0, 60.0, 4.0);
+    // pataGrua.initBuffers(gl, shaderProgram, "yellow");
 
-    barraCruzadaAbajoGrua = new cubo(20, 2.8, 2.8);
-    barraCruzadaAbajoGrua.initBuffers(gl, shaderProgram);
+    // pataDosGrua = new cubo(4.0, 60.0, 4.0);
+    // pataDosGrua.initBuffers(gl, shaderProgram, "yellow");
 
-    barraCruzadaArribaGrua = new cubo(20, 2.8, 2.8);
-    barraCruzadaArribaGrua.initBuffers(gl, shaderProgram);
+    // barraCruzadaAbajoGrua = new cubo(40, 4.0, 4.0);
+    // barraCruzadaAbajoGrua.initBuffers(gl, shaderProgram, "yellow");
+
+    // barraCruzadaArribaGrua = new cubo(40, 4.0, 4.0);
+    // barraCruzadaArribaGrua.initBuffers(gl, shaderProgram, "yellow");
+
+    // barraDiagonalGrua = new cubo(50.0, 4.0, 4.0);
+    // barraDiagonalGrua.initBuffers(gl, shaderProgram, "yellow");
 
     setInterval(drawScene, 10);
   }
