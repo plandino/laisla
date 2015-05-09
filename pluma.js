@@ -43,22 +43,19 @@ function pluma(scaleX, scaleY, scaleZ){
 
 		var matrix_contrapeso = mat4.create();
 	    mat4.identity(matrix_contrapeso);
-	    	    mat4.multiply(matrix_contrapeso, matrix_contrapeso, modelMatrix);
-
+	    mat4.multiply(matrix_contrapeso, matrix_contrapeso, modelMatrix);
 	    mat4.translate(matrix_contrapeso, matrix_contrapeso, [-35.0 * this.escalaX, 0.0 , 0.0]);
 	    this.contrapeso.draw(matrix_contrapeso, gl, shaderProgram);
 
 	    var matrix_barraDerecha = mat4.create();
 	    mat4.identity(matrix_barraDerecha);
-	    	    mat4.multiply(matrix_barraDerecha, matrix_barraDerecha, modelMatrix);
-
+	    mat4.multiply(matrix_barraDerecha, matrix_barraDerecha, modelMatrix);
 	    mat4.translate(matrix_barraDerecha, matrix_barraDerecha, [25.0 * this.escalaX, 0.0 , 7.0 * this.escalaY]);
 	    this.barraDerecha.draw(matrix_barraDerecha, gl, shaderProgram);
 
 	    var matrix_barraIzquierda = mat4.create();
 	    mat4.identity(matrix_barraIzquierda);
-	    	    mat4.multiply(matrix_barraIzquierda, matrix_barraIzquierda, modelMatrix);
-
+	    mat4.multiply(matrix_barraIzquierda, matrix_barraIzquierda, modelMatrix);
 	    mat4.translate(matrix_barraIzquierda, matrix_barraIzquierda, [25.0 * this.escalaX, 0.0 , -7.0 * this.escalaY]);
 	    this.barraIzquierda.draw(matrix_barraIzquierda, gl, shaderProgram);
 
