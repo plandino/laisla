@@ -19,6 +19,24 @@
         else if (teclaAscii == '39') {
            rotarCamaraY = rotarCamaraY -  5;
         }
+        // Numero 1, pone la camara global (aerea)
+        else if( (teclaAscii == '97') || (teclaAscii == '49') ) {
+           camaraGloba    = true;
+           camaraPersona  = false;
+           camaraCabina   = false;
+        }
+        // Numero 2, pone la camara en la persona en el muelle
+        else if( (teclaAscii == '98') || (teclaAscii == '50') ) {
+           camaraGloba    = false;
+           camaraPersona  = true;
+           camaraCabina   = false;
+        }
+        // Numero 3, pone la camara en la cabina
+        else if( (teclaAscii == '99') || (teclaAscii == '51') ) {
+           camaraGloba    = false;
+           camaraPersona  = false;
+           camaraCabina   = true;
+        }
         // Zoom '+'
         else if( (teclaAscii == '107') || (teclaAscii == '171') ) {
            aumento = aumento + 4;
@@ -37,4 +55,6 @@
         if((tecla == "e") || (tecla == "E")){
           rotarCamaraX = rotarCamaraX +  5;   // PROVISORIO
         }
+
+        console.log(teclaAscii);
     }

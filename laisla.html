@@ -77,6 +77,9 @@
   var cuboDos           = null;
   var piso              = null;
   var mouseDown         = false;
+  var camaraCabina      = false;
+  var camaraPersona     = false;
+  var camaraGlobal      = true;
   var mouseX            = 0.0;
   var mouseY            = 0.0;
   var rotarCamaraX      = 0.0;
@@ -207,8 +210,8 @@
     
     // Preparamos una matriz de camara(vista).
     mat4.identity(cameraMatrix);
-    mat4.translate(cameraMatrix, cameraMatrix, [0.0, -10.0, -150.0]);
-    mat4.rotate(cameraMatrix, cameraMatrix, degToRad(-90), [0.0, 1.0, 0.0]);
+    // mat4.translate(cameraMatrix, cameraMatrix, [0.0, -10.0, -150.0]);
+    // mat4.rotate(cameraMatrix, cameraMatrix, degToRad(-90), [0.0, 1.0, 0.0]);
     // mat4.rotate(cameraMatrix, cameraMatrix, degToRad(45), [0.0, 1.0, 0.0]);
     
     // Mando la matriz de camara (vista)
@@ -235,12 +238,42 @@
 
 
 
+    if(camaraGlobal){
+      mat4.lookAt(cameraMatrix, [0.0, -10.0, -150.0 + aumento], [0,0,0], [0,1,0]); // This is the key line
+      mat4.rotateX(cameraMatrix, cameraMatrix, degToRad(rotarCamaraX));
+      mat4.rotateY(cameraMatrix, cameraMatrix, degToRad(rotarCamaraY));
+      gl.uniformMatrix4fv(gl.shaderProgram.viewMatrixUniform, false, cameraMatrix );
+    }
 
-    mat4.lookAt(cameraMatrix, [0.0, -10.0, -150.0 + aumento], [0,0,0], [0,1,0]); // This is the key line
-    mat4.rotateX(cameraMatrix, cameraMatrix, degToRad(rotarCamaraX));
-    mat4.rotateY(cameraMatrix, cameraMatrix, degToRad(rotarCamaraY));
-    gl.uniformMatrix4fv(gl.shaderProgram.viewMatrixUniform, false, cameraMatrix );
+    // mat4.lookAt(cameraMatrix, [-20.0, 0.0, -50.0 + aumento], [0,0,0], [0,1,0]); // This is the key line
+    // mat4.rotateX(cameraMatrix, cameraMatrix, degToRad(rotarCamaraX));
+    // mat4.rotateY(cameraMatrix, cameraMatrix, degToRad(rotarCamaraY));
+    // gl.uniformMatrix4fv(gl.shaderProgram.viewMatrixUniform, false, cameraMatrix );
 
+    if(camaraPersona){
+      mat4.lookAt(cameraMatrix, [-200.0, 0.0, -50.0 + aumento], [0,0,0], [0,1,0]); // This is the key line
+      mat4.rotateX(cameraMatrix, cameraMatrix, degToRad(rotarCamaraX));
+      mat4.rotateY(cameraMatrix, cameraMatrix, degToRad(rotarCamaraY));
+      gl.uniformMatrix4fv(gl.shaderProgram.viewMatrixUniform, false, cameraMatrix );
+    } 
+
+    if(camaraCabina){
+      mat4.lookAt(cameraMatrix, [0.0, 50.0, 0.0 + aumento], [0,0,0], [1,0,0]); // This is the key line
+      mat4.rotateX(cameraMatrix, cameraMatrix, degToRad(rotarCamaraX));
+      mat4.rotateY(cameraMatrix, cameraMatrix, degToRad(rotarCamaraY));
+      gl.uniformMatrix4fv(gl.shaderProgram.viewMatrixUniform, false, cameraMatrix );
+    }
+    // else if(camaraCabina){
+    //   mat4.lookAt(cameraMatrix, [0.0, 50.0, 00.0 + aumento], [0,0,0], [1,0,0]); // This is the key line
+    //   // mat4.rotateX(cameraMatrix, cameraMatrix, degToRad(rotarCamaraX));
+    //   // mat4.rotateY(cameraMatrix, cameraMatrix, degToRad(rotarCamaraY));
+    //   gl.uniformMatrix4fv(gl.shaderProgram.viewMatrixUniform, false, cameraMatrix );
+    // } else {
+    //   mat4.lookAt(cameraMatrix, [0.0, -10.0, -150.0 + aumento], [0,0,0], [0,1,0]); // This is the key line
+    //   mat4.rotateX(cameraMatrix, cameraMatrix, degToRad(rotarCamaraX));
+    //   mat4.rotateY(cameraMatrix, cameraMatrix, degToRad(rotarCamaraY));
+    //   gl.uniformMatrix4fv(gl.shaderProgram.viewMatrixUniform, false, cameraMatrix );
+    // }
 
     var matrix_grua = mat4.create();
     mat4.identity(matrix_grua);
