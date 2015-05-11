@@ -29,10 +29,10 @@
         }
 
         if((tecla == "q") || (tecla == "Q")){
-          rotarCamaraX = rotarCamaraX +  5;   // PROVISORIO
+          traslacionYPluma = traslacionYPluma +  5;   // PROVISORIO
         }
         if((tecla == "a") || (tecla == "A")){
-          rotarCamaraX = rotarCamaraX +  5;   // PROVISORIO
+          traslacionYPluma = traslacionYPluma +  5;   // PROVISORIO
         }
         if((tecla == "e") || (tecla == "E")){
           rotarCamaraX = rotarCamaraX +  5;   // PROVISORIO
