@@ -88,6 +88,8 @@
   var traslacionGrua    = 0.0;
   var traslacionYPluma  = 0.0;
   var traslacionXCabina = 0.0;
+  var traslacionPersonaX = 0.0;
+  var traslacionPersonaZ = 0.0;
 
   // Variable global para el contexto GL
   var gl;
@@ -251,7 +253,7 @@
     // gl.uniformMatrix4fv(gl.shaderProgram.viewMatrixUniform, false, cameraMatrix );
 
     if(camaraPersona){
-      mat4.lookAt(cameraMatrix, [-200.0, 0.0, -50.0 + aumento], [0,0,0], [0,1,0]); // This is the key line
+      mat4.lookAt(cameraMatrix, [-200.0 + traslacionPersonaX, 0.0, -50.0 + traslacionPersonaZ], [0,0,0], [0,1,0]); // This is the key line
       mat4.rotateX(cameraMatrix, cameraMatrix, degToRad(rotarCamaraX));
       mat4.rotateY(cameraMatrix, cameraMatrix, degToRad(rotarCamaraY));
       gl.uniformMatrix4fv(gl.shaderProgram.viewMatrixUniform, false, cameraMatrix );

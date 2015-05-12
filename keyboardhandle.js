@@ -9,7 +9,7 @@
             rotarCamaraY = rotarCamaraY -  5;
           } 
           if(camaraPersona){
-
+            traslacionPersonaX = traslacionPersonaX + 1;
           }
           if(camaraCabina){
 
@@ -21,7 +21,7 @@
             rotarCamaraY = rotarCamaraY -  5;
           } 
           if(camaraPersona){
-
+            traslacionPersonaX = traslacionPersonaX - 1;
           }
           if(camaraCabina){
             
@@ -33,10 +33,10 @@
             rotarCamaraY = rotarCamaraY -  5;
           } 
           if(camaraPersona){
-
+            traslacionPersonaZ = traslacionPersonaZ + 1;
           }
           if(camaraCabina){
-            
+
           }
         }
         // Flecha derecha
@@ -45,7 +45,7 @@
             rotarCamaraY = rotarCamaraY -  5;
           } 
           if(camaraPersona){
-
+            traslacionPersonaZ = traslacionPersonaZ - 1;
           }
           if(camaraCabina){
             
