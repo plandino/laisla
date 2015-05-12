@@ -5,35 +5,67 @@
 
         // Flecha arriba
         if (teclaAscii == '38') {
-           rotarCamaraY = rotarCamaraY -  5;
+          if(camaraGlobal){
+            rotarCamaraY = rotarCamaraY -  5;
+          } 
+          if(camaraPersona){
+
+          }
+          if(camaraCabina){
+
+          }
         }
         // Flecha abajo
         else if (teclaAscii == '40') {
+          if(camaraGlobal){
             rotarCamaraY = rotarCamaraY -  5;
+          } 
+          if(camaraPersona){
+
+          }
+          if(camaraCabina){
+            
+          }
         }
         // Flecha izquierda
         else if (teclaAscii == '37') {
-           rotarCamaraY = rotarCamaraY -  5;
+          if(camaraGlobal){
+            rotarCamaraY = rotarCamaraY -  5;
+          } 
+          if(camaraPersona){
+
+          }
+          if(camaraCabina){
+            
+          }
         }
         // Flecha derecha
         else if (teclaAscii == '39') {
-           rotarCamaraY = rotarCamaraY -  5;
+          if(camaraGlobal){
+            rotarCamaraY = rotarCamaraY -  5;
+          } 
+          if(camaraPersona){
+
+          }
+          if(camaraCabina){
+            
+          }
         }
         // Numero 1, pone la camara global (aerea)
         else if( (teclaAscii == '97') || (teclaAscii == '49') ) {
-           camaraGloba    = true;
+           camaraGlobal    = true;
            camaraPersona  = false;
            camaraCabina   = false;
         }
         // Numero 2, pone la camara en la persona en el muelle
         else if( (teclaAscii == '98') || (teclaAscii == '50') ) {
-           camaraGloba    = false;
+           camaraGlobal    = false;
            camaraPersona  = true;
            camaraCabina   = false;
         }
         // Numero 3, pone la camara en la cabina
         else if( (teclaAscii == '99') || (teclaAscii == '51') ) {
-           camaraGloba    = false;
+           camaraGlobal    = false;
            camaraPersona  = false;
            camaraCabina   = true;
         }

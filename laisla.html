@@ -259,8 +259,6 @@
 
     if(camaraCabina){
       mat4.lookAt(cameraMatrix, [0.0, 50.0, 0.0 + aumento], [0,0,0], [1,0,0]); // This is the key line
-      mat4.rotateX(cameraMatrix, cameraMatrix, degToRad(rotarCamaraX));
-      mat4.rotateY(cameraMatrix, cameraMatrix, degToRad(rotarCamaraY));
       gl.uniformMatrix4fv(gl.shaderProgram.viewMatrixUniform, false, cameraMatrix );
     }
     // else if(camaraCabina){
