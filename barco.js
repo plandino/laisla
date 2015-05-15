@@ -39,6 +39,11 @@ function barco(scaleX, scaleY, scaleZ){
     		P[10+i][0] = a - P[10-i][0];
     	}
 
+    	for (var i in P){		// centrar el barco
+    		P[i][0] -= a/2;
+    		P[i][1] -= 3.6*b/2;
+    	}
+
     	var tramos = [];
     	tramos.push(new curvaBezier(P[0], P[1], P[2], P[3], 	2*n));
     	tramos.push(new curvaBezier(P[3], P[4], P[5], P[6], 	2*n));
@@ -63,14 +68,17 @@ function barco(scaleX, scaleY, scaleZ){
 
     this.camino = [];
     this.escala = [];
-    var pasos = 20;
-    var c = pasos*pasos;
-    for (var i = 0; i <= pasos; i++){
-    	this.camino.push([a/2, 1.8*a, pasos*i]);
-    	this.escala.push([(c-i*i)/c, (c-i*i)/c, 1.0])
+    var pasos = 3;
+    var profundidad = 30.0;
+    var c = 100.0;
+    for (var i = 0; i <= 1.000000001; i += 1.0/pasos){
+    	this.camino.push([0, 0, profundidad*i]);
+    	this.escala.push([1-i*i/c, 1-i*i/c, 1.0])
     }
 
     this.extrusion = new extrusion(this.forma, this.camino, this.escala);
+    this.extrusion.agregarTapa(1);
+    this.extrusion.agregarTapa(this.camino.length-1);
 
 	this.initBuffers = function(gl, shaderProgram, color){
         this.extrusion.initBuffers(gl, shaderProgram, color);
