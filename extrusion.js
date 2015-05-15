@@ -1,10 +1,9 @@
 function extrusion(forma, camino, escala) {
     this.cols = 0;
     this.rows = 0;
-    this.index_buffer = null;
-
+    
     this.position_buffer = null;
-    this.color_buffer = null;
+    this.index_buffer = null;
 
     this.webgl_position_buffer = null;
     this.webgl_color_buffer = null;
