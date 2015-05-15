@@ -21,6 +21,7 @@
   <script type="text/javascript" src="cabina.js"></script>
   <script type="text/javascript" src="extrusion.js"></script>
   <script type="text/javascript" src="curvaBezier.js"></script>
+  <script type="text/javascript" src="curvaBSpline.js"></script>
   <script type="text/javascript" src="barco.js"></script>
 
 
@@ -281,7 +282,7 @@
     var matrix_barco = mat4.create();
     mat4.identity(matrix_barco);
     // mat4.translate(matrix_barco, matrix_barco, [-20, -300, 0]);
-    barco.draw(matrix_barco, gl, shaderProgram);
+    bspline.draw(matrix_barco, gl, shaderProgram);
 
 
     t = t + 0.01;
@@ -323,6 +324,14 @@
 
     barco = new barco(1.0, 1.0, 1.0);
     barco.initBuffers(gl, shaderProgram, "asd");
+
+    var P0 = [10, 55, 0];
+    var P1 = [20, 10, 0];
+    var P2 = [80, 10, 0];
+    var P3 = [90, 55, 0];
+
+    bspline = new curvaBSpline(P0, P1, P2, P3, 10);
+    bspline.initBuffers(gl, shaderProgram, "red");
 
     setInterval(drawScene, 10);
   }

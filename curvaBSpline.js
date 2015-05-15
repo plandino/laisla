@@ -11,10 +11,10 @@ function curvaBSpline(P0, P1, P2, P3, cantPasos) {
     this.webgl_color_buffer = null;
     this.webgl_index_buffer = null;
 
-	var B0 = function(u) { return (1-u)*(1-u)*(1-u); }
-	var B1 = function(u) { return 3*(1-u)*(1-u)*u; }
-	var B2 = function(u) { return 3*(1-u)*u*u;}
-	var B3 = function(u) { return u*u*u; }
+	var B0 = function(u) { return (1-u)*(1-u)*(1-u)/6.0; }
+	var B1 = function(u) { return (4-6*u*u+3*u*u*u)/6.0; }
+	var B2 = function(u) { return (1+3*u+3*u*u-3*u*u*u)/6.0;}
+	var B3 = function(u) { return (u*u*u)/6.0; }
 
 	// var B0der = function(u) { return -3*u*u+6*u-3;} 
 	// var B1der = function(u) { return 9*u*u-12*u+3; } 
