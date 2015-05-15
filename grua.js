@@ -31,7 +31,7 @@ function grua(scaleX, scaleY, scaleZ){
 	    this.barraSupIzq = new cubo(6.0 * this.escalaX, 6.0 * this.escalaY, 50.0 * this.escalaZ);
 	    this.barraSupIzq.initBuffers(gl, shaderProgram, "yellow");
 
-	    this.cabina = new cabina(1.0, 1.0, 1.0);
+	    this.cabina = new cabina(this.escalaX, this.escalaY, this.escalaZ);
 	    this.cabina.initBuffers(gl, shaderProgram, "red");
 	}
 
@@ -80,6 +80,7 @@ function grua(scaleX, scaleY, scaleZ){
 	    var matrix_cabina = mat4.create();
 	    mat4.identity(matrix_cabina);
 	    mat4.multiply(matrix_cabina, matrix_cabina, modelMatrix);
+	    mat4.scale(matrix_cabina, matrix_cabina, [this.escalaX, this.escalaY, this.escalaZ]);
 	    mat4.translate(matrix_cabina, matrix_cabina, [35.0 + traslacionXCabina , 49.9, 0.0 ]);
 	    this.cabina.draw(matrix_cabina, gl, shaderProgram);
 

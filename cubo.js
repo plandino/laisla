@@ -9,6 +9,8 @@ function cubo(ancho, alto, profundo){
     this.cubeVertexIndexBuffer  = null;
     this.cubeVertexColorBuffer  = null;
 
+    this.modelMatrix            = null;
+
     // Inicio los valores, para los vertices(posicion, color) e indices
     // Luego los bindeo con los buffers
     this.initBuffers = function(gl, shaderProgram, color){
@@ -113,10 +115,17 @@ function cubo(ancho, alto, profundo){
         gl.vertexAttribPointer(gl.shaderProgram.vertexColorAttribute, this.cubeVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
         gl.uniformMatrix4fv(shaderProgram.modelMatrixUniform, false, modelMatrix);
+
+        this.modelMatrix = modelMatrix;
         
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
         //gl.drawElements(gl.LINE_LOOP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
         gl.drawElements(gl.TRIANGLES, this.cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         /////////////////////////////////
+    }
+
+    this.getPosition = function(){
+        // return this.modelMatrix;
+        return [this.modelMatrix[12], this.modelMatrix[13], this.modelMatrix[14] ];
     }
   }

@@ -1,4 +1,4 @@
-function cabina(ancho, alto, profundo){
+function cabina(scaleX, scaleY, scaleZ){
     // Estos son los arrays donde defino los valores        
     this.vertices           = null;
     this.indices            = null;
@@ -9,6 +9,10 @@ function cabina(ancho, alto, profundo){
 
     this.barraUnoX = null;
     this.barraDosX = null;    
+
+    this.escalaX = scaleX;
+    this.escalaY = scaleY;
+    this.escalaZ = scaleZ;
 
     // Estos son los buffers que voy a bindear para mandar a los shaders
     this.cubeVertexBuffer       = null;

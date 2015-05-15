@@ -58,7 +58,15 @@
           		[1.0,  0.35,  0.0,  1.0],    
         	];
         	return colors;
-		} else {
+		} if(color == "gris"){
+      var colors = [
+              [0.1,  0.1,  0.1,  1.0],    
+              [0.1,  0.1,  0.1,  1.0],    
+              [0.1,  0.1,  0.1,  1.0],    
+              [0.1,  0.1,  0.1,  1.0],    
+          ];
+          return colors;
+    } else {
 			// Este es el color flashero con un vertice de cada color
 			var colors = [
 	          [1.0,  1.0,  1.0,  1.0],    // Cara frontal: blanco

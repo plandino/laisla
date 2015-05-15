@@ -23,7 +23,7 @@
         // Flecha abajo
         else if (teclaAscii == '40') {
           traslacionXCabina = traslacionXCabina - 1;
-          if(traslacionXCabina < -15)  traslacionXCabina = -15;
+          if(traslacionXCabina < -45)  traslacionXCabina = -15;
           // if(camaraGlobal){
           //   rotarCamaraY = rotarCamaraY -  5;
           // } 
@@ -104,14 +104,39 @@
         }
         if((tecla == "a") || (tecla == "A")){
           escaladoPlumaY = escaladoPlumaY + 0.01;
-          if(escaladoPlumaY > 1.8){
-            escaladoPlumaY = 1.8;
+          if(escaladoPlumaY > 1.71){
+            escaladoPlumaY = 1.71;
           }
         }
         if((tecla == "e") || (tecla == "E")){
-          rotarCamaraX = rotarCamaraX +  5;   // PROVISORIO
+          var enganchar = true;
+          if(containerEnganchado >= 0){
+            containerEnganchado = -1;
+            enganchar = false;  // Esto es para que cuando quiera soltar el container pero todavia este cerca de piso se desenganche bien
+          }
+          for(var i = 0; i < cantidadContainers, enganchar; i++){
+            if( (arrayContainers[i].getPosition()[0] < 35.0 + traslacionXCabina + 4.0) && (arrayContainers[i].getPosition()[0] > 35.0 + traslacionXCabina - 4.0) ){
+              if( (arrayContainers[i].getPosition()[1] < 0.0 + 4.0 ) && (arrayContainers[i].getPosition()[1] >  0.0 - 4.0 ) && (escaladoPlumaY > 1.70)){
+                if( (arrayContainers[i].getPosition()[2] < traslacionZGrua + 1.0) && (arrayContainers[i].getPosition()[2] > traslacionZGrua - 1.0 ) ){
+                  containerEnganchado = i;
+                }
+              }
+              
+            }
+              
+          }
+          
+        }
+
+        // Muevo persona para adelante
+        if((tecla == "t") || (tecla == "T")){
+          traslacionPersonaZ = traslacionPersonaZ +  5;   // PROVISORIO
+        }
+        // Muevo persona para atras
+        if((tecla == "g") || (tecla == "G")){
+          traslacionPersonaZ = traslacionPersonaZ -  5;   // PROVISORIO
         }
 
 
-        console.log(teclaAscii);
+        // console.log(teclaAscii);
     }
