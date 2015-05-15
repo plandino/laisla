@@ -21,55 +21,38 @@ function barco(scaleX, scaleY, scaleZ){
     	this.forma = [];
     	this.index_buffer = [];
 
-		// var a = 100.0;
 		var P = [];
-	    var P0  = [a/2,		0.0, 	0.0];
-	    var P1  = [a/5,		0.0, 	0.0];
-	    var P2  = [0.0, 	b/5, 	0.0];
-	    var P3  = [0.0,		b/2, 	0.0];
-    	var P4  = [0.0,		b, 		0.0];
-    	var P5  = [0.0, 	2.8*b, 	0.0];
-    	var P6  = [0.1*a,	3*b, 	0.0];
-    	var P7  = [0.22*a, 	3.2*b, 	0.0];
-    	var P8  = [0.3*a, 	3.4*b, 	0.0];
-    	var P9  = [0.38*a, 	3.5*b, 	0.0];
-    	var P10 = [0.45*a,	3.6*b,	0.0];
-    	var P11 = P10.concat([]); P11[0] = a - P10[0];
-    	var P12 = P9.concat([]); P12[0] = a - P9[0];
-    	var P13 = P8.concat([]); P13[0] = a - P8[0];
-    	var P14 = P7.concat([]); P14[0] = a - P7[0];
-    	var P15 = P6.concat([]); P15[0] = a - P6[0];
-    	var P16 = P5.concat([]); P16[0] = a - P5[0];
-    	var P17 = P4.concat([]); P17[0] = a - P4[0];
-    	var P18 = P3.concat([]); P18[0] = a - P3[0];
-    	var P19 = P2.concat([]); P19[0] = a - P2[0];
-    	var P20 = P1.concat([]); P20[0] = a - P1[0];
+	    P.push([a/2,	0.0, 	0.0]);	// P0
+	    P.push([a/5,	0.0, 	0.0]);	// P1
+	    P.push([0.0, 	b/5, 	0.0]);	// P2
+	    P.push([0.0,	b/2, 	0.0]);	// P3
+    	P.push([0.0,	b, 		0.0]);	// P4
+    	P.push([0.0, 	2.8*b, 	0.0]);	// P5
+    	P.push([0.1*a,	3*b, 	0.0]);	// P6
+    	P.push([0.22*a, 3.2*b, 	0.0]);	// P7
+    	P.push([0.3*a, 	3.4*b, 	0.0]);	// P8
+    	P.push([0.38*a, 3.5*b, 	0.0]);	// P9
+    	P.push([0.45*a,	3.6*b,	0.0]);	// P10
 
-    	var tramo1 = new curvaBezier(P0, P1, P2, P3, 	2*n);
-    	var tramo2 = new curvaBezier(P3, P4, P5, P6, 	2*n);
-    	var tramo3 = new curvaBezier(P6, P7, P8, P9, 	n);
-    	var tramo4 = new curvaBezier(P9, P10, P11, P12, n);
-    	var tramo5 = new curvaBezier(P12, P13, P14, P15,n);
-    	var tramo6 = new curvaBezier(P15, P16, P17, P18,n);
-    	var tramo7 = new curvaBezier(P18, P19, P20, P0, n);
+    	for (var i = 1; i <= 10; i++){	// La otra mitad, simetrica
+    		P.push(P[10-i].concat([]));
+    		P[10+i][0] = a - P[10-i][0];
+    	}
 
-    	this.forma = this.forma.concat(tramo1.getPositionBuffer());
-    	this.forma = this.forma.concat(tramo2.getPositionBuffer());
-    	this.forma = this.forma.concat(tramo3.getPositionBuffer());
-    	this.forma = this.forma.concat(tramo4.getPositionBuffer());
-    	this.forma = this.forma.concat(tramo5.getPositionBuffer());
-    	this.forma = this.forma.concat(tramo6.getPositionBuffer());
-    	this.forma = this.forma.concat(tramo7.getPositionBuffer());
+    	var tramos = [];
+    	tramos.push(new curvaBezier(P[0], P[1], P[2], P[3], 	2*n));
+    	tramos.push(new curvaBezier(P[3], P[4], P[5], P[6], 	2*n));
+    	tramos.push(new curvaBezier(P[6], P[7], P[8], P[9], 	n));
+    	tramos.push(new curvaBezier(P[9], P[10], P[11], P[12], 	n));
+    	tramos.push(new curvaBezier(P[12], P[13], P[14], P[15],	n));
+    	tramos.push(new curvaBezier(P[15], P[16], P[17], P[18],	n));
+    	tramos.push(new curvaBezier(P[18], P[19], P[20], P[0], 	n));
 
-    	var n1 = tramo1.getCantidadVertices();
-    	var n2 = tramo2.getCantidadVertices();
-    	var n3 = tramo3.getCantidadVertices();
-    	var n4 = tramo4.getCantidadVertices();
-    	var n5 = tramo5.getCantidadVertices();
-    	var n6 = tramo6.getCantidadVertices();
-    	var n7 = tramo7.getCantidadVertices();
-
-    	var totalPuntos = n1 + n2 + n3 + n4 + n5 + n6 + n7;
+    	var totalPuntos = 0;
+    	for (var i in tramos){
+    		this.forma = this.forma.concat(tramos[i].getPositionBuffer());
+    		totalPuntos += tramos[i].getCantidadVertices();
+    	}
 
     	for (var i = 0; i < totalPuntos; i++){
     		this.index_buffer.push(i);
