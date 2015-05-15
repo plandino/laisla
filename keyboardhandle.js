@@ -6,6 +6,7 @@
         // Flecha arriba
         if (teclaAscii == '38') {
           traslacionXCabina = traslacionXCabina + 1;
+          if(traslacionXCabina > 15)  traslacionXCabina = 15;
           // if(camaraGlobal){
           //   rotarCamaraY = rotarCamaraY -  5;
           // } 
@@ -22,6 +23,7 @@
         // Flecha abajo
         else if (teclaAscii == '40') {
           traslacionXCabina = traslacionXCabina - 1;
+          if(traslacionXCabina < -15)  traslacionXCabina = -15;
           // if(camaraGlobal){
           //   rotarCamaraY = rotarCamaraY -  5;
           // } 
@@ -66,18 +68,24 @@
            camaraGlobal    = true;
            camaraPersona  = false;
            camaraCabina   = false;
+           rotarCamaraY = 0.0;
+           rotarCamaraX = 0.0;
         }
         // Numero 2, pone la camara en la persona en el muelle
         else if( (teclaAscii == '98') || (teclaAscii == '50') ) {
            camaraGlobal    = false;
            camaraPersona  = true;
            camaraCabina   = false;
+           rotarCamaraY = 0.0;
+           rotarCamaraX = 0.0;
         }
         // Numero 3, pone la camara en la cabina
         else if( (teclaAscii == '99') || (teclaAscii == '51') ) {
            camaraGlobal    = false;
            camaraPersona  = false;
            camaraCabina   = true;
+           rotarCamaraY = 0.0;
+           rotarCamaraX = 0.0;
         }
         // Zoom '+'
         else if( (teclaAscii == '107') || (teclaAscii == '171') ) {

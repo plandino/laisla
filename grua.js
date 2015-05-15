@@ -68,15 +68,18 @@ function grua(scaleX, scaleY, scaleZ){
 	    mat4.translate(matrix_barraSupIzq, matrix_barraSupIzq, [10.0 * this.escalaX, 57.0 * this.escalaY, 0.0 ]);
 	    this.barraSupIzq.draw(matrix_barraSupIzq, gl, shaderProgram);
 
-	    var matrix_cabina = mat4.create();
-	    mat4.identity(matrix_cabina);
-	    mat4.multiply(matrix_cabina, matrix_cabina, modelMatrix);
+
+	    // Con esto limito que la cabina no se salga de la pluma
 	    if(traslacionXCabina > 15.0 * this.escalaX){
 	    	traslacionXCabina = 15.0 * this.escalaX;
 	    }
 	    if(traslacionXCabina < -35.0 * this.escalaX){
 	    	traslacionXCabina = -35.0 * this.escalaX;
 	    }
+
+	    var matrix_cabina = mat4.create();
+	    mat4.identity(matrix_cabina);
+	    mat4.multiply(matrix_cabina, matrix_cabina, modelMatrix);
 	    mat4.translate(matrix_cabina, matrix_cabina, [35.0 + traslacionXCabina , 49.9, 0.0 ]);
 	    this.cabina.draw(matrix_cabina, gl, shaderProgram);
 

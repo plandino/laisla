@@ -136,7 +136,7 @@
             gl.getShaderInfoLog(shader));  
       return null;  
     }
-    
+
     return shader;
   }
 
@@ -206,7 +206,7 @@
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   
     // Preparamos una matriz de perspectiva.
-    mat4.perspective(perspectiveMatrix, degToRad(45), 640.0/480.0, 0.1, 1000.0);
+    mat4.perspective(perspectiveMatrix, degToRad(88), 640.0/480.0, 0.01, 1000.0);
     // Mando la matriz de perspectiva
     gl.uniformMatrix4fv(gl.shaderProgram.perspectiveMatrixUniform, false, perspectiveMatrix);
     
@@ -255,7 +255,14 @@
     } 
 
     if(camaraCabina){
-      mat4.lookAt(cameraMatrix, [0.0, 50.0, 0.0 + aumento], [0,0,0], [1,0,0]); // This is the key line
+      var camaraAux = mat4.create();
+      mat4.identity(camaraAux);
+
+      mat4.rotateX(camaraAux, camaraAux, degToRad(rotarCamaraX));
+      mat4.rotateY(camaraAux, camaraAux, degToRad(rotarCamaraY));
+      mat4.lookAt(cameraMatrix, [36.5 + traslacionXCabina, 51.4, traslacionZGrua], [1000, 51.4, traslacionZGrua], [0,1,0]); // This is the key line
+      mat4.multiply(cameraMatrix, camaraAux, cameraMatrix);
+
       gl.uniformMatrix4fv(gl.shaderProgram.viewMatrixUniform, false, cameraMatrix );
     }
 
@@ -292,12 +299,6 @@
 
     gruita = new grua(1.0, 1.0, 1.0);
     gruita.initBuffers(gl, shaderProgram);
-
-    // contrapeso = new cubo(30.0  , 20.0 , 30.0 );
-    // contrapeso.initBuffers(gl, shaderProgram, "yellow");
-
-    // barraDerecha = new cubo(90.0  , 6.0 , 6.0 );
-    // barraDerecha.initBuffers(gl, shaderProgram, "yellow");
 
     setInterval(drawScene, 10);
   }
