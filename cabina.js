@@ -178,14 +178,14 @@ function cabina(ancho, alto, profundo){
         var matrix_barraUnoY = mat4.create();
         mat4.identity(matrix_barraUnoY);
         mat4.multiply(matrix_barraUnoY, matrix_barraUnoY ,modelMatrix);
-        mat4.translate(matrix_barraUnoY, matrix_barraUnoY, [0.0, -14.5 + ((1 - escaladoPlumaY) * (25.0 / 2) ), 5.0 ]);
+        mat4.translate(matrix_barraUnoY, matrix_barraUnoY, [0.0, -14.51 + ((1 - escaladoPlumaY) * (25.0 / 2) ), 5.0 ]);
         mat4.scale(matrix_barraUnoY, matrix_barraUnoY, [1.0, escaladoPlumaY, 1.0]);
         this.barraUnoY.draw(matrix_barraUnoY, gl, shaderProgram);
 
         var matrix_barraDosY = mat4.create();
         mat4.identity(matrix_barraDosY);
         mat4.multiply(matrix_barraDosY, matrix_barraDosY ,modelMatrix);
-        mat4.translate(matrix_barraDosY, matrix_barraDosY, [0.0, -14.5 + ((1 - escaladoPlumaY) * (25.0 / 2) ), -5.0 ]);
+        mat4.translate(matrix_barraDosY, matrix_barraDosY, [0.0, -14.51 + ((1 - escaladoPlumaY) * (25.0 / 2) ), -5.0 ]);
         mat4.scale(matrix_barraDosY, matrix_barraDosY, [1.0, escaladoPlumaY, 1.0]);
         this.barraDosY.draw(matrix_barraDosY, gl, shaderProgram);
 
