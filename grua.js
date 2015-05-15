@@ -63,7 +63,7 @@ function grua(scaleX, scaleY, scaleZ){
 
 	    var matrix_cabina = mat4.create();
 	    mat4.identity(matrix_cabina);
-	    mat4.translate(matrix_cabina, matrix_cabina, [0.0, 0.0, 0.0 ]);
+	    mat4.translate(matrix_cabina, matrix_cabina, [20.0, 50.0, 0.0 ]);
 	    this.cabina.draw(matrix_cabina, gl, shaderProgram);
 
 	}

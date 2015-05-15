@@ -39,16 +39,42 @@ function cabina(ancho, alto, profundo){
 
         // Construyo los vertices
         this.vertices = [
-          -width, -height,  z,
-          -width, -height, -z,
-          -width,  height,  z,
-          -width,  height, -z,
 
-           width, -height,  z,
-           width, -height, -z,
-           width,  height,  z,
-           width,  height, -z
-        ];
+          // Un costado
+          -5.0, -2.0, 5.0,
+           5.0, -2.0, 5.0,
+           4.0, -1.7, 5.0,
+          -1.5, -1.7, 5.0,
+
+          -1.5, 1.7, 5.0,
+           2.0, 1.7, 5.0,
+           2.3, 2.0, 5.0,
+          -4.0, 2.0, 5.0,
+
+          // Otro costado
+          -5.0, -2.0, -5.0,
+           5.0, -2.0, -5.0,
+           4.0, -1.7, -5.0,
+          -1.5, -1.7, -5.0,
+
+          -1.5, 1.7, -5.0,
+           2.0, 1.7, -5.0,
+           2.3, 2.0, -5.0,
+          -4.0, 2.0, -5.0,
+
+          // La ventana de adelante
+          5.0, -1.7,  4.7,
+          2.3,  1.7,  4.7,
+          5.0, -1.7, -4.7,
+          2.3,  1.7, -4.7,
+
+          // El piso
+          -1.5, -2.0,  4.7,
+           4.0, -2.0,  4.7,
+          -1.5, -2.0, -4.7,
+           4.0, -2.0, -4.7
+
+          ];
 
 
         // Creamos un buffer de vertices para WebGL.
@@ -61,29 +87,67 @@ function cabina(ancho, alto, profundo){
         this.cubeVertexBuffer.numItems = this.vertices.length;
 
         this.indices = [
-            // Cara de adelante
-            0, 4, 6,
-            0, 6, 2,
+            // Un costado
+            0, 4, 7,
+            0, 3, 4,
 
-            // Cara izquierda
-            1, 0, 2,
-            1, 2, 3,
+            // 
+            0, 2, 3,
+            0, 1, 2,
 
-            // Cara arriba
-            6, 7, 3,
-            6, 3, 2,
+            // 
+            1, 5, 2,
+            1, 6, 5,
 
-            // Cara derecha
-            4, 5, 7,
-            4, 7, 6,
+            // 
+            5, 6, 7,
+            5, 7, 4,
 
-            // Cara abajo
-            4, 1, 0,
-            4, 5, 1,
+            // Otro costado
+            8, 12, 15,
+            8, 11, 12,
 
-            // Cara atras
-            1, 5, 7,
-            1, 7, 3
+            // 
+            8, 10, 11,
+            8, 9,  10,
+
+            // 
+            9, 13, 10,
+            9, 14, 13,
+
+            // 
+            13, 14, 15,
+            13, 15, 12,
+
+            // El plano de atras
+            0,  7, 15,
+            0, 15, 8,
+
+            // El techo
+            7,  6, 14,
+            7, 14, 15,
+
+            // La parte de adelante
+            1, 16, 17,
+            1, 17,  6,
+            1,  9, 18,
+            1, 18, 16,
+            9, 14, 19,
+            9, 19, 18,
+            14, 6, 19,
+            19, 6, 17,
+
+            // El piso
+            0, 22, 20,
+            0,  8, 22,
+            8, 23, 22,
+            8,  9, 23,
+            9,  1, 21,
+            9, 21, 23,
+            1, 20, 21,
+            1,  0, 20
+
+
         ];
 
         // Definimos y cargamos los datos en el buffer WebGL correspondiente.
@@ -95,21 +159,13 @@ function cabina(ancho, alto, profundo){
         this.cubeVertexIndexBuffer.itemSize = 1;
         this.cubeVertexIndexBuffer.numItems = this.indices.length;
 
-        // Definimos los colores de cada cara en un nuevo array Javascript.
-        //var colors = [
-        //  [1.0,  1.0,  1.0,  1.0],    // Cara frontal: blanco
-        //  [1.0,  0.0,  0.0,  1.0],    // Cara de atrás: rojo
-        //  [0.0,  1.0,  0.0,  1.0],    // Cara de arriba: verde
-        //  [0.0,  0.0,  1.0,  1.0],    // Cara de abajo: azul
-        //];
-
         var colors = getColor(color);
       
         // Replicamos los colores de cada cara dos veces.
         this.generatedColors = [];
         for (var j=0; j<colors.length; j++) {
           var c = colors[j];
-          for (var i=0; i<2; i++) {
+          for (var i=0; i<6; i++) {
             this.generatedColors = this.generatedColors.concat(c);
           }
         }
@@ -126,22 +182,22 @@ function cabina(ancho, alto, profundo){
 
         var matrix_barraUnoY = mat4.create();
         mat4.identity(matrix_barraUnoY);
-        mat4.translate(matrix_barraUnoY, matrix_barraUnoY, [0.0, 0.0, 5.0 ]);
+        mat4.translate(matrix_barraUnoY, matrix_barraUnoY, [0.0, -27.0, 5.0 ]);
         this.barraUnoY.draw(matrix_barraUnoY, gl, shaderProgram);
 
         var matrix_barraDosY = mat4.create();
         mat4.identity(matrix_barraDosY);
-        mat4.translate(matrix_barraDosY, matrix_barraDosY, [0.0, 0.0, -5.0 ]);
+        mat4.translate(matrix_barraDosY, matrix_barraDosY, [0.0, -27.0, -5.0 ]);
         this.barraDosY.draw(matrix_barraDosY, gl, shaderProgram);
 
         var matrix_barraUnoX = mat4.create();
         mat4.identity(matrix_barraUnoX);
-        mat4.translate(matrix_barraUnoX, matrix_barraUnoX, [0.0, -25.0, 5.0 ]);
+        mat4.translate(matrix_barraUnoX, matrix_barraUnoX, [0.0, -52.0, 5.0 ]);
         this.barraUnoX.draw(matrix_barraUnoX, gl, shaderProgram);
 
         var matrix_barraDosX = mat4.create();
         mat4.identity(matrix_barraDosX);
-        mat4.translate(matrix_barraDosX, matrix_barraDosX, [0.0, -25.0, -5.0 ]);
+        mat4.translate(matrix_barraDosX, matrix_barraDosX, [0.0, -52.0, -5.0 ]);
         this.barraDosX.draw(matrix_barraDosX, gl, shaderProgram);
 
         // Se configuran los buffers que alimentarán el pipeline
@@ -154,7 +210,7 @@ function cabina(ancho, alto, profundo){
         gl.uniformMatrix4fv(shaderProgram.modelMatrixUniform, false, modelMatrix);
         
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
-        //gl.drawElements(gl.LINE_LOOP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
+        // gl.drawElements(gl.LINE_LOOP, this.cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         gl.drawElements(gl.TRIANGLES, this.cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         /////////////////////////////////
     }
