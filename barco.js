@@ -15,7 +15,7 @@ function barco(scaleX, scaleY, scaleZ){
 
     var a = 100.0;
     var b = 100.0;
-    var n = 50;
+    var n = 100;
 
     this._cargarForma = function(){
     	this.forma = [];
@@ -34,19 +34,20 @@ function barco(scaleX, scaleY, scaleZ){
     	P.push([0.38*a, 3.5*b, 	0.0]);	// P9
     	P.push([0.45*a,	3.6*b,	0.0]);	// P10
 
-    	for (var i = 1; i <= 10; i++){	// La otra mitad, simetrica
-    		P.push(P[10-i].concat([]));
-    		P[10+i][0] = a - P[10-i][0];
-    	}
-
     	for (var i in P){		// centrar el barco
     		P[i][0] -= a/2;
     		P[i][1] -= 3.6*b/2;
     	}
 
+    	for (var i = 1; i <= 10; i++){	// La otra mitad, simetrica
+    		P.push(P[11-i].concat([]));
+    		P[10+i][0] = -P[11-i][0];
+    	}
+
+
     	var tramos = [];
-    	tramos.push(new curvaBezier(P[0], P[1], P[2], P[3], 	2*n));
-    	tramos.push(new curvaBezier(P[3], P[4], P[5], P[6], 	2*n));
+    	tramos.push(new curvaBezier(P[0], P[1], P[2], P[3], 	n));
+    	tramos.push(new curvaBezier(P[3], P[4], P[5], P[6], 	n));
     	tramos.push(new curvaBezier(P[6], P[7], P[8], P[9], 	n));
     	tramos.push(new curvaBezier(P[9], P[10], P[11], P[12], 	n));
     	tramos.push(new curvaBezier(P[12], P[13], P[14], P[15],	n));
@@ -59,7 +60,7 @@ function barco(scaleX, scaleY, scaleZ){
     		totalPuntos += tramos[i].getCantidadVertices();
     	}
 
-    	for (var i = 0; i < totalPuntos; i++){
+    	for (var i = 0; i <= totalPuntos; i++){
     		this.index_buffer.push(i);
     	}
     }
