@@ -98,7 +98,7 @@
 
   var arrayContainers = [];
   var posContainersAnterior = [];
-  var cantidadContainers = 10;
+  var cantidadContainers = 3;
   var containerEnganchado = -1;
 
   var inicio = true;
@@ -224,26 +224,6 @@
     
     // Preparamos una matriz de camara(vista).
     mat4.identity(cameraMatrix);
-    // mat4.translate(cameraMatrix, cameraMatrix, [0.0, -10.0, -150.0]);
-    // mat4.rotate(cameraMatrix, cameraMatrix, degToRad(-90), [0.0, 1.0, 0.0]);
-    // mat4.rotate(cameraMatrix, cameraMatrix, degToRad(45), [0.0, 1.0, 0.0]);
-    
-    // Mando la matriz de camara (vista)
-    // gl.uniformMatrix4fv(gl.shaderProgram.viewMatrixUniform, false, cameraMatrix);
-
-    // Ubico el primer cubo
-    // var matrix_cubo = mat4.create();
-    // mat4.identity(matrix_cubo);
-    // mat4.translate(matrix_cubo, matrix_cubo, [0.0, 0.0, 1.0]);
-    // mat4.rotate(matrix_cubo, matrix_cubo, degToRad(t), [1.0, 0.0, 0.0] );
-    // cubito.draw(matrix_cubo,  gl, shaderProgram);
-
-    // // Ubico el segundo cubo
-    // var matrix_cuboDos = mat4.create();
-    // mat4.identity(matrix_cuboDos);
-    // mat4.translate(matrix_cuboDos, matrix_cuboDos, [-15.0, 0.0, 1.0]);
-    // // mat4.rotate(matrix_cuboDos, matrix_cuboDos, degToRad(t), [0.0, 1.0, 0.0] );
-    // cuboDos.draw(matrix_cuboDos, gl, shaderProgram);
 
     var matrix_muelle = mat4.create();
     mat4.identity(matrix_muelle);
@@ -301,8 +281,15 @@
     var matrix_grua = mat4.create();
     mat4.identity(matrix_grua);
     mat4.translate(matrix_grua, matrix_grua, [0.0, 0.0, traslacionZGrua]);
-    // console.log(matrix_grua);
     gruita.draw(matrix_grua, gl, shaderProgram);
+
+    var matrix_estructPuente = mat4.create();
+    mat4.identity(matrix_estructPuente);
+    mat4.translate(matrix_estructPuente, matrix_estructPuente, [100.0, 15.0, -80.0]);
+    estructuraPuenteBarco.draw(matrix_estructPuente, gl, shaderProgram);
+
+    mat4.translate(matrix_estructPuente, matrix_estructPuente, [0.0, 20.0, 0.0]);
+    puenteBarco.draw(matrix_estructPuente, gl, shaderProgram);
 
     t = t + 0.01;
   }
@@ -335,6 +322,12 @@
 
     muelle = new cubo(250.0, 10.0, 500.0 );
     muelle.initBuffers(gl, shaderProgram, "gris");
+
+    estructuraPuenteBarco = new cubo(80.0, 40.0, 15.0);
+    estructuraPuenteBarco.initBuffers(gl, shaderProgram, "gris");
+
+    puenteBarco = new cubo(100.0, 10.0, 15.0);
+    puenteBarco.initBuffers(gl, shaderProgram, "gris");
 
     for(var i = 0; i < cantidadContainers; i++){
       var container = new cubo(10.0, 10.0, 40.0);
