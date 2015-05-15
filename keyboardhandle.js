@@ -129,12 +129,29 @@
         }
 
         // Muevo persona para adelante
-        if((tecla == "t") || (tecla == "T")){
+        if((tecla == "r") || (tecla == "R")){
           traslacionPersonaZ = traslacionPersonaZ +  5;   // PROVISORIO
         }
         // Muevo persona para atras
-        if((tecla == "g") || (tecla == "G")){
+        if((tecla == "f") || (tecla == "F")){
           traslacionPersonaZ = traslacionPersonaZ -  5;   // PROVISORIO
+        }
+
+        // Muevo la camara global para adelante
+        if((tecla == "u") || (tecla == "U")){
+          // traslacionCamaraGlobalZ = traslacionCamaraGlobalZ -  5;   // PROVISORIO
+        }
+        // Muevo la camara global para atras
+        if((tecla == "j") || (tecla == "J")){
+          // traslacionCamaraGlobalZ = traslacionCamaraGlobalZ +  5;   // PROVISORIO
+        }
+        // Muevo la camara global para la derecha
+        if((tecla == "h") || (tecla == "H")){
+          // traslacionCamaraGlobalX = traslacionPersonaZ +  5;   // PROVISORIO
+        }
+        // Muevo la camara global para la izquierda
+        if((tecla == "k") || (tecla == "K")){
+          // traslacionCamaraGlobalX = traslacionCamaraGlobalX -  5;   // PROVISORIO
         }
 
 
