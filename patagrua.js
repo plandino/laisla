@@ -5,6 +5,8 @@ function pataGrua(scaleX, scaleY, scaleZ){
 	this.barraDiagonalGrua = null;
 	this.barraCruzadaAbajoGrua = null;
 	this.barraCruzadaArribaGrua = null;
+	this.ruedaUno = null;
+	this.ruedaDos = null;
 
 	this.escalaX = scaleX;
 	this.escalaY = scaleY;
@@ -14,6 +16,7 @@ function pataGrua(scaleX, scaleY, scaleZ){
 
 	    this.pataUno = new cubo(4.0 * this.escalaX, 60.0 * this.escalaY, 4.0 * this.escalaZ);
 	    this.pataUno.initBuffers(gl, shaderProgram, "yellow");
+
 
 	    this.pataDos = new cubo(4.0 * this.escalaX, 60.0 * this.escalaY, 4.0 * this.escalaZ);
 	    this.pataDos.initBuffers(gl, shaderProgram, "yellow");
@@ -26,6 +29,36 @@ function pataGrua(scaleX, scaleY, scaleZ){
 
 	    this.barraDiagonalGrua = new cubo(49.0 * this.escalaX, 4.0 * this.escalaY, 4.0 * this.escalaZ);
 	    this.barraDiagonalGrua.initBuffers(gl, shaderProgram, "yellow");
+
+
+	    var forma = [];
+	    var radio = 3.0;
+	    for (var i = 0; i <= 2*Math.PI + 0.0001; i += 2*Math.PI/30.0){
+	        var x = radio*Math.cos(i);
+	        var y = radio*Math.sin(i);
+
+	        forma.push(x);
+	        forma.push(y);
+	        forma.push(0);
+	    }
+	    
+	    var camino = [];
+	    var escala = [];
+
+	    for (var i = 0; i < 8; i++){
+	        camino.push([0, 0, i]);
+	        escala.push([1.0, 1.0, 1.0]);
+	    }
+
+	    this.ruedaUno = new extrusion(forma, camino, escala);
+	    this.ruedaUno.agregarTapa(0);
+	    this.ruedaUno.agregarTapa(camino.length-1);
+	    this.ruedaUno.initBuffers(gl, shaderProgram, "green");
+
+	    this.ruedaDos = new extrusion(forma, camino, escala);
+	    this.ruedaUno.agregarTapa(0);
+	    this.ruedaUno.agregarTapa(camino.length-1);
+	    this.ruedaUno.initBuffers(gl, shaderProgram, "green");
 	}
 
 
@@ -62,5 +95,19 @@ function pataGrua(scaleX, scaleY, scaleZ){
 	    mat4.rotate(matrix_barraDiagonalGrua, matrix_barraDiagonalGrua, degToRad(-38 * (this.escalaY / this.escalaX)), [0.0, 0.0, 1.0]);
 	    this.barraDiagonalGrua.draw(matrix_barraDiagonalGrua, gl, shaderProgram);
 
+	    var matrix_ruedaUno = mat4.create();
+	    mat4.identity(matrix_ruedaUno);
+	    mat4.multiply(matrix_ruedaUno, matrix_ruedaUno, modelMatrix);
+	    mat4.translate(matrix_ruedaUno, matrix_ruedaUno, [24.75 * this.escalaX, 0.0, 0.0]);
+	    mat4.rotate(matrix_ruedaUno, matrix_ruedaUno, degToRad(-90.0), [0.0, 1.0, 0.0]);
+	    this.ruedaUno.draw(matrix_ruedaUno, gl, shaderProgram);
+
+
+	    var matrix_ruedaDos = mat4.create();
+	    mat4.identity(matrix_ruedaDos);
+	    mat4.multiply(matrix_ruedaDos, matrix_ruedaDos, modelMatrix);
+	    mat4.translate(matrix_ruedaDos, matrix_ruedaDos, [-17.75 * this.escalaX, 0.0, 0.0]);
+	    mat4.rotate(matrix_ruedaDos, matrix_ruedaDos, degToRad(-90.0), [0.0, 1.0, 0.0]);
+	    this.ruedaUno.draw(matrix_ruedaDos, gl, shaderProgram);
 	}
 }
