@@ -5,51 +5,61 @@
 
         // Flecha arriba
         if (teclaAscii == '38') {
-          if(camaraGlobal){
-            rotarCamaraY = rotarCamaraY -  5;
-          } 
-          if(camaraPersona){
-            traslacionPersonaX = traslacionPersonaX + 1;
-          }
-          if(camaraCabina){
+          traslacionXCabina = traslacionXCabina + 1;
+          // if(camaraGlobal){
+          //   rotarCamaraY = rotarCamaraY -  5;
+          // } 
+          // if(camaraPersona){
+          //   traslacionPersonaX = traslacionPersonaX + 1;
+          // }
+          // if(camaraCabina){
 
-          }
+          // }
+          if (evento.preventDefault)
+              evento.preventDefault();
+          evento.returnValue = false;
         }
         // Flecha abajo
         else if (teclaAscii == '40') {
-          if(camaraGlobal){
-            rotarCamaraY = rotarCamaraY -  5;
-          } 
-          if(camaraPersona){
-            traslacionPersonaX = traslacionPersonaX - 1;
-          }
-          if(camaraCabina){
+          traslacionXCabina = traslacionXCabina - 1;
+          // if(camaraGlobal){
+          //   rotarCamaraY = rotarCamaraY -  5;
+          // } 
+          // if(camaraPersona){
+          //   traslacionPersonaX = traslacionPersonaX - 1;
+          // }
+          // if(camaraCabina){
             
-          }
+          // }
+          if (evento.preventDefault)
+                evento.preventDefault();
+         evento.returnValue = false;
         }
         // Flecha izquierda
         else if (teclaAscii == '37') {
-          if(camaraGlobal){
-            rotarCamaraY = rotarCamaraY -  5;
-          } 
-          if(camaraPersona){
-            traslacionPersonaZ = traslacionPersonaZ + 1;
-          }
-          if(camaraCabina){
+          traslacionZGrua = traslacionZGrua - 2;
+          // if(camaraGlobal){
+          //   rotarCamaraY = rotarCamaraY -  5;
+          // } 
+          // if(camaraPersona){
+          //   traslacionPersonaZ = traslacionPersonaZ + 1;
+          // }
+          // if(camaraCabina){
 
-          }
+          // }
         }
         // Flecha derecha
         else if (teclaAscii == '39') {
-          if(camaraGlobal){
-            rotarCamaraY = rotarCamaraY -  5;
-          } 
-          if(camaraPersona){
-            traslacionPersonaZ = traslacionPersonaZ - 1;
-          }
-          if(camaraCabina){
+          traslacionZGrua = traslacionZGrua + 2;
+          // if(camaraGlobal){
+          //   rotarCamaraY = rotarCamaraY -  5;
+          // } 
+          // if(camaraPersona){
+          //   traslacionPersonaZ = traslacionPersonaZ - 1;
+          // }
+          // if(camaraCabina){
             
-          }
+          // }
         }
         // Numero 1, pone la camara global (aerea)
         else if( (teclaAscii == '97') || (teclaAscii == '49') ) {
@@ -79,14 +89,21 @@
         }
 
         if((tecla == "q") || (tecla == "Q")){
-          traslacionYPluma = traslacionYPluma +  5;   // PROVISORIO
+          escaladoPlumaY = escaladoPlumaY - 0.01;
+          if(escaladoPlumaY < 0.4){
+            escaladoPlumaY = 0.4;
+          }
         }
         if((tecla == "a") || (tecla == "A")){
-          traslacionYPluma = traslacionYPluma +  5;   // PROVISORIO
+          escaladoPlumaY = escaladoPlumaY + 0.01;
+          if(escaladoPlumaY > 1.8){
+            escaladoPlumaY = 1.8;
+          }
         }
         if((tecla == "e") || (tecla == "E")){
           rotarCamaraX = rotarCamaraX +  5;   // PROVISORIO
         }
+
 
         console.log(teclaAscii);
     }

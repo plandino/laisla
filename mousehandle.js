@@ -13,7 +13,7 @@
         // Con esto roto la camara si tengo el mouse apretado, divido por 5 para que gire mas despacio
         if(mouseDown){
           rotarCamaraY = rotarCamaraY + (x - mouseX) / 5;
-          rotarCamaraX = rotarCamaraX + (mouseY - y) / 5;  
+          rotarCamaraX = rotarCamaraX - (mouseY - y) / 5;  
         }
 
         // Esto limita la camara para que no se de vuelta
@@ -28,7 +28,7 @@
     } 
      
     onwheel = function(evento){
-        aumento = aumento - (evento.deltaY * 2 );
+        aumento = aumento + (evento.deltaY * 2 );
         // Esto es para evitar que scrollee la pagia cuando gira la rueda
         if (evento.preventDefault)
                 evento.preventDefault();
