@@ -103,6 +103,8 @@
 
   var inicio = true;
 
+  var canvas = null;
+
   // Variable global para el contexto GL
   var gl;
 
@@ -218,7 +220,7 @@
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   
     // Preparamos una matriz de perspectiva.
-    mat4.perspective(perspectiveMatrix, degToRad(88), 640.0/480.0, 0.01, 1000.0);
+    mat4.perspective(perspectiveMatrix, degToRad(88), 640.0/480.0, 0.01, 2000.0);
     // Mando la matriz de perspectiva
     gl.uniformMatrix4fv(gl.shaderProgram.perspectiveMatrixUniform, false, perspectiveMatrix);
     
@@ -234,7 +236,8 @@
         for(var j = 0; j < cantidadContainers; j++){
           var matrix_containers = mat4.create();
           mat4.identity(matrix_containers);
-          mat4.translate(matrix_containers, matrix_containers, [ 15.0 * j, 0.0, 0.0]);
+          // mat4.translate(matrix_containers, matrix_containers, [ 12.0 * (j % 2), 0.0, ( (j % 5) - 2) * 50.0]);
+          mat4.translate(matrix_containers, matrix_containers, [ 15.0 * j , 0.0,  50.0]);
           posContainersAnterior.push(matrix_containers);
         }
         inicio = false;
@@ -291,6 +294,11 @@
     mat4.translate(matrix_estructPuente, matrix_estructPuente, [0.0, 20.0, 0.0]);
     puenteBarco.draw(matrix_estructPuente, gl, shaderProgram);
 
+    var matrix_mar = mat4.create();
+    mat4.identity(matrix_mar);
+    mat4.translate(matrix_mar, matrix_mar, [0.0, -10.0, 0.0]);
+    mar.draw(matrix_mar, gl, shaderProgram);
+
     t = t + 0.01;
   }
 
@@ -328,6 +336,9 @@
 
     puenteBarco = new cubo(100.0, 10.0, 15.0);
     puenteBarco.initBuffers(gl, shaderProgram, "gris");
+
+    mar = new cubo(1500.0, 0.1, 1500.0);
+    mar.initBuffers(gl, shaderProgram, "blue");
 
     for(var i = 0; i < cantidadContainers; i++){
       var container = new cubo(10.0, 10.0, 40.0);

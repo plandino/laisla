@@ -23,7 +23,7 @@
         // Flecha abajo
         else if (teclaAscii == '40') {
           traslacionXCabina = traslacionXCabina - 1;
-          if(traslacionXCabina < -45)  traslacionXCabina = -15;
+          if(traslacionXCabina < -45)  traslacionXCabina = -45;
           // if(camaraGlobal){
           //   rotarCamaraY = rotarCamaraY -  5;
           // } 
