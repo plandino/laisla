@@ -20,10 +20,10 @@ function cabina(ancho, alto, profundo){
     this.initBuffers = function(gl, shaderProgram, color){
 
 
-        this.barraUnoY = new cubo(0.5, 50.0, 0.5);
+        this.barraUnoY = new cubo(0.5, 25.0, 0.5);
         this.barraUnoY.initBuffers(gl, shaderProgram, "orange");
         
-        this.barraDosY = new cubo(0.5, 50.0, 0.5);
+        this.barraDosY = new cubo(0.5, 25.0, 0.5);
         this.barraDosY.initBuffers(gl, shaderProgram, "orange");
 
         this.barraUnoX = new cubo(10.0, 1.0, 1.0);
@@ -31,11 +31,6 @@ function cabina(ancho, alto, profundo){
         
         this.barraDosX = new cubo(10.0, 1.0, 1.0);
         this.barraDosX.initBuffers(gl, shaderProgram, "orange");
-
-        // Esto auxiliares los uso para construir los vertices del cubo
-        var width   = ancho/2.0;
-        var height  = alto/2.0;
-        var z       = profundo/2.0;
 
         // Construyo los vertices
         this.vertices = [
@@ -182,22 +177,26 @@ function cabina(ancho, alto, profundo){
 
         var matrix_barraUnoY = mat4.create();
         mat4.identity(matrix_barraUnoY);
-        mat4.translate(matrix_barraUnoY, matrix_barraUnoY, [0.0, -27.0, 5.0 ]);
+        mat4.multiply(matrix_barraUnoY, matrix_barraUnoY ,modelMatrix);
+        mat4.translate(matrix_barraUnoY, matrix_barraUnoY, [0.0, -14.5, 5.0 ]);
         this.barraUnoY.draw(matrix_barraUnoY, gl, shaderProgram);
 
         var matrix_barraDosY = mat4.create();
         mat4.identity(matrix_barraDosY);
-        mat4.translate(matrix_barraDosY, matrix_barraDosY, [0.0, -27.0, -5.0 ]);
+        mat4.multiply(matrix_barraDosY, matrix_barraDosY ,modelMatrix);
+        mat4.translate(matrix_barraDosY, matrix_barraDosY, [0.0, -14.5, -5.0 ]);
         this.barraDosY.draw(matrix_barraDosY, gl, shaderProgram);
 
         var matrix_barraUnoX = mat4.create();
         mat4.identity(matrix_barraUnoX);
-        mat4.translate(matrix_barraUnoX, matrix_barraUnoX, [0.0, -52.0, 5.0 ]);
+        mat4.multiply(matrix_barraUnoX, matrix_barraUnoX ,modelMatrix);
+        mat4.translate(matrix_barraUnoX, matrix_barraUnoX, [0.0, -26.5, 5.0 ]);
         this.barraUnoX.draw(matrix_barraUnoX, gl, shaderProgram);
 
         var matrix_barraDosX = mat4.create();
         mat4.identity(matrix_barraDosX);
-        mat4.translate(matrix_barraDosX, matrix_barraDosX, [0.0, -52.0, -5.0 ]);
+        mat4.multiply(matrix_barraDosX, matrix_barraDosX ,modelMatrix);
+        mat4.translate(matrix_barraDosX, matrix_barraDosX, [0.0, -26.5, -5.0 ]);
         this.barraDosX.draw(matrix_barraDosX, gl, shaderProgram);
 
         // Se configuran los buffers que alimentarán el pipeline
