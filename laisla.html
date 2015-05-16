@@ -22,6 +22,8 @@
   <script type="text/javascript" src="extrusion.js"></script>
   <script type="text/javascript" src="curvaBezier.js"></script>
   <script type="text/javascript" src="barco.js"></script>
+  <script type="text/javascript" src="curvaBSpline.js"></script>
+  <script type="text/javascript" src="islote.js"></script>
 
 
 
@@ -231,7 +233,7 @@
 
     var matrix_muelle = mat4.create();
     mat4.identity(matrix_muelle);
-    mat4.translate(matrix_muelle, matrix_muelle, [-90.0, -8.0, 0.0]);
+    mat4.translate(matrix_muelle, matrix_muelle, [-90.0, -8.0, -20.0]);
     muelle.draw(matrix_muelle, gl, shaderProgram);
 
     if(inicio == true){
@@ -307,6 +309,13 @@
     mat4.rotateX(matrix_barco, matrix_barco, degToRad(90));
     barco.draw(matrix_barco, gl, shaderProgram);
 
+    var matrix_islote = mat4.create();
+    mat4.identity(matrix_islote);
+    mat4.translate(matrix_islote, matrix_islote, [20.0, 0.0, -400.0]);
+    mat4.rotateX(matrix_islote, matrix_islote, degToRad(90));
+    mat4.scale(matrix_islote, matrix_islote, [4.0, 3.0, 3.0]);
+    islote.draw(matrix_islote, gl, shaderProgram);
+
     t = t + 0.01;
   }
 
@@ -336,7 +345,7 @@
     gruita = new grua(1.0, 1.0, 1.0);
     gruita.initBuffers(gl, shaderProgram);
 
-    muelle = new cubo(250.0, 10.0, 500.0 );
+    muelle = new cubo(250.0, 10.0, 620.0 );
     muelle.initBuffers(gl, shaderProgram, "gris");
 
     estructuraPuenteBarco = new cubo(80.0, 40.0, 15.0);
@@ -356,6 +365,9 @@
 
     barco = new barco(1.0, 1.0, 1.0);
     barco.initBuffers(gl, shaderProgram, "sad");
+
+    islote = new islote();
+    islote.initBuffers(gl, shaderProgram, "asdg");
 
     setInterval(drawScene, 10);
   }
