@@ -21,7 +21,7 @@ function curvaBSpline(P0, P1, P2, P3, cantPasos) {
 	// var B2der = function(u) { return -9*u*u+6*u;}
 	// var B3der = function(u) { return 3*u*u; }
 
-	for(var u = 0.0; u <= 1.0000000001; u += 1.0/cantPasos){
+	for(var u = 0.0; u <= 1.0000001; u += 1.0/cantPasos){
 		var x = B0(u)*P0[0] + B1(u)*P1[0] + B2(u)*P2[0] + B3(u)*P3[0];
 		var y = B0(u)*P0[1] + B1(u)*P1[1] + B2(u)*P2[1] + B3(u)*P3[1];
 		var z = B0(u)*P0[2] + B1(u)*P1[2] + B2(u)*P2[2] + B3(u)*P3[2];
