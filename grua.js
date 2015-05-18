@@ -12,8 +12,6 @@ function grua(scaleX, scaleY, scaleZ){
 	this.escalaY = scaleY;
 	this.escalaZ = scaleZ;
 
-	// this.traslacionXCabina = 0.0;
-
 	this.initBuffers = function(gl, shaderProgram){
 
 	    this.pataUno = new pataGrua(this.escalaX, this.escalaY, this.escalaY);
@@ -32,7 +30,7 @@ function grua(scaleX, scaleY, scaleZ){
 	    this.barraSupIzq.initBuffers(gl, shaderProgram, "yellow");
 
 	    this.cabina = new cabina(this.escalaX, this.escalaY, this.escalaZ);
-	    this.cabina.initBuffers(gl, shaderProgram, "red");
+	    this.cabina.initBuffers(gl, shaderProgram, "rojoOpaco");
 	}
 
 
@@ -53,7 +51,7 @@ function grua(scaleX, scaleY, scaleZ){
 	    var matrix_pluma = mat4.create();
 	    mat4.identity(matrix_pluma);
 	    mat4.multiply(matrix_pluma, matrix_pluma, modelMatrix);
-	    mat4.translate(matrix_pluma, matrix_pluma, [-15.0 * this.escalaX, 55.0 * this.escalaY, 0.0 ]);
+	    mat4.translate(matrix_pluma, matrix_pluma, [0.0, 55.0 * this.escalaY, 0.0 ]);
 	    this.pluma.draw(matrix_pluma, gl, shaderProgram);
 
 	    var matrix_barraSupDer = mat4.create();
@@ -67,15 +65,6 @@ function grua(scaleX, scaleY, scaleZ){
 	    mat4.multiply(matrix_barraSupIzq, matrix_barraSupIzq, modelMatrix);
 	    mat4.translate(matrix_barraSupIzq, matrix_barraSupIzq, [10.0 * this.escalaX, 57.0 * this.escalaY, 0.0 ]);
 	    this.barraSupIzq.draw(matrix_barraSupIzq, gl, shaderProgram);
-
-
-	    // // Con esto limito que la cabina no se salga de la pluma
-	    // if(traslacionXCabina > 15.0 * this.escalaX){
-	    // 	traslacionXCabina = 15.0 * this.escalaX;
-	    // }
-	    // if(traslacionXCabina < -35.0 * this.escalaX){
-	    // 	traslacionXCabina = -35.0 * this.escalaX;
-	    // }
 
 	    var matrix_cabina = mat4.create();
 	    mat4.identity(matrix_cabina);

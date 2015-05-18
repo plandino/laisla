@@ -14,11 +14,11 @@ function pataGrua(scaleX, scaleY, scaleZ){
 
 	this.initBuffers = function(gl, shaderProgram){
 
-	    this.pataUno = new cubo(4.0 * this.escalaX, 60.0 * this.escalaY, 4.0 * this.escalaZ);
+	    this.pataUno = new cubo(4.0 * this.escalaX, gruaY * this.escalaY, 4.0 * this.escalaZ);
 	    this.pataUno.initBuffers(gl, shaderProgram, "yellow");
 
 
-	    this.pataDos = new cubo(4.0 * this.escalaX, 60.0 * this.escalaY, 4.0 * this.escalaZ);
+	    this.pataDos = new cubo(4.0 * this.escalaX, gruaY * this.escalaY, 4.0 * this.escalaZ);
 	    this.pataDos.initBuffers(gl, shaderProgram, "yellow");
 
 	    this.barraCruzadaAbajoGrua = new cubo(40 * this.escalaX, 4.0 * this.escalaY, 4.0 * this.escalaZ);
@@ -67,13 +67,13 @@ function pataGrua(scaleX, scaleY, scaleZ){
 		var matrix_pataUno = mat4.create();
 	    mat4.identity(matrix_pataUno);
 	    mat4.multiply(matrix_pataUno, matrix_pataUno, modelMatrix);
-	    mat4.translate(matrix_pataUno, matrix_pataUno, [-21.25 * this.escalaX, 30.0 * this.escalaY, 0.0]);
+	    mat4.translate(matrix_pataUno, matrix_pataUno, [-21.25 * this.escalaX, (gruaY / 2) * this.escalaY, 0.0]);
 	    this.pataUno.draw(matrix_pataUno, gl, shaderProgram);
 
 	    var matrix_pataDos = mat4.create();
 	    mat4.identity(matrix_pataDos);
 	    mat4.multiply(matrix_pataDos, matrix_pataDos, modelMatrix);
-	    mat4.translate(matrix_pataDos, matrix_pataDos, [21.25 * this.escalaX, 30.0 * this.escalaY, 0.0]);
+	    mat4.translate(matrix_pataDos, matrix_pataDos, [21.25 * this.escalaX, (gruaY / 2) * this.escalaY, 0.0]);
 	    this.pataDos.draw(matrix_pataDos, gl, shaderProgram);
 
 	    var matrix_barraCruzadaAbajoGrua = mat4.create();

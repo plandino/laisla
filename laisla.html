@@ -24,6 +24,7 @@
   <script type="text/javascript" src="barco.js"></script>
   <script type="text/javascript" src="curvaBSpline.js"></script>
   <script type="text/javascript" src="islote.js"></script>
+  <script type="text/javascript" src="constantes.js"></script>
 
 
 
@@ -74,6 +75,7 @@
   </script>
 
   <script type="text/javascript">
+
   var canvas;
 
   var cameraMatrix      = mat4.create();
@@ -91,7 +93,6 @@
   var rotarCamaraX      = 0.0;
   var rotarCamaraY      = 0.0;
   var aumento           = 0.0;
-  var traslacionZGrua   = 0.0;
   var escaladoPlumaY    = 1.0;
   var traslacionXCabina = 0.0;
   var traslacionPersonaX = 0.0;
@@ -250,8 +251,10 @@
           matrix_containers = posContainersAnterior[j];
           if(j == containerEnganchado){
             mat4.identity(matrix_containers);
-            mat4.translate(matrix_containers, matrix_containers, [35.0 + traslacionXCabina,  ((1.71 - escaladoPlumaY) * (25.0 / 1) ), traslacionZGrua]);
+            mat4.translate(matrix_containers, matrix_containers, [35.0 + traslacionXCabina,  ((1.71 - escaladoPlumaY) * (25.0 / 1) ), trasGruaZ]);
+            posContainersAnterior[j] = matrix_containers;
           }
+          posContainersAnterior[j] = matrix_containers;
           arrayContainers[j].draw(matrix_containers, gl, shaderProgram);
           posContainersAnterior[j] = matrix_containers;
         }
@@ -268,16 +271,17 @@
     }
 
     if(camaraPersona){
-      mat4.lookAt(cameraMatrix, [-100.0 + traslacionPersonaX, 10.0, 50.0 + traslacionPersonaZ], [0,10.0,0], [0,1,0]); // This is the key line
+      mat4.lookAt(cameraMatrix, [ traslacionPersonaX, 10.0, 10.0 + traslacionPersonaZ], [traslacionPersonaX,10.0, traslacionPersonaZ - 1.0], [0,1,0]);
       mat4.rotateX(camaraAux, camaraAux, degToRad(rotarCamaraX));
       mat4.rotateY(camaraAux, camaraAux, degToRad(rotarCamaraY));
       mat4.multiply(cameraMatrix, camaraAux, cameraMatrix);
+      // console.log(cameraMatrix);
       gl.uniformMatrix4fv(gl.shaderProgram.viewMatrixUniform, false, cameraMatrix );
     } 
 
     if(camaraCabina){
 
-      mat4.lookAt(cameraMatrix, [36.5 + traslacionXCabina, 51.4, traslacionZGrua], [1000, 51.4, traslacionZGrua], [0,1,0]); // This is the key line
+      mat4.lookAt(cameraMatrix, [36.5 + traslacionXCabina, 51.4, trasGruaZ], [1000, 51.4, trasGruaZ], [0,1,0]);
       mat4.rotateX(camaraAux, camaraAux, degToRad(rotarCamaraX));
       mat4.rotateY(camaraAux, camaraAux, degToRad(rotarCamaraY));
       mat4.multiply(cameraMatrix, camaraAux, cameraMatrix);
@@ -287,15 +291,16 @@
 
     var matrix_grua = mat4.create();
     mat4.identity(matrix_grua);
-    mat4.translate(matrix_grua, matrix_grua, [0.0, 0.0, traslacionZGrua]);
+    mat4.translate(matrix_grua, matrix_grua, [0.0, 0.0, trasGruaZ]);
     gruita.draw(matrix_grua, gl, shaderProgram);
 
     var matrix_estructPuente = mat4.create();
     mat4.identity(matrix_estructPuente);
-    mat4.translate(matrix_estructPuente, matrix_estructPuente, [100.0, 15.0, -80.0]);
+    mat4.translate(matrix_estructPuente, matrix_estructPuente, [trasEstructuraPuenteX, trasEstructuraPuenteY, trasEstructuraPuenteZ]);
     estructuraPuenteBarco.draw(matrix_estructPuente, gl, shaderProgram);
 
-    mat4.translate(matrix_estructPuente, matrix_estructPuente, [0.0, 20.0, 0.0]);
+    // Usando la misma matriz subo la cabina de mando del puente del barco
+    mat4.translate(matrix_estructPuente, matrix_estructPuente, [0.0, trasCabinaDeMandoBarcoY, 0.0]);
     puenteBarco.draw(matrix_estructPuente, gl, shaderProgram);
 
     var matrix_mar = mat4.create();
@@ -305,8 +310,9 @@
 
     var matrix_barco = mat4.create();
     mat4.identity(matrix_barco);
-    mat4.translate(matrix_barco, matrix_barco, [100.0, 20.0, 0.0]);
+    mat4.translate(matrix_barco, matrix_barco, [trasBarcoX, trasBarcoY, trasBarcoZ]);
     mat4.rotateX(matrix_barco, matrix_barco, degToRad(90));
+    mat4.scale(matrix_barco, matrix_barco, [escBarcoX, escBarcoY, escBarcoZ]);
     barco.draw(matrix_barco, gl, shaderProgram);
 
     var matrix_islote = mat4.create();
@@ -345,29 +351,29 @@
     gruita = new grua(1.0, 1.0, 1.0);
     gruita.initBuffers(gl, shaderProgram);
 
-    muelle = new cubo(250.0, 10.0, 620.0 );
+    muelle = new cubo(muelleX, muelleY, muelleZ );
     muelle.initBuffers(gl, shaderProgram, "gris");
 
-    estructuraPuenteBarco = new cubo(80.0, 40.0, 15.0);
+    estructuraPuenteBarco = new cubo(estructuraPuenteX, estructuraPuenteY, estructuraPuenteZ);
     estructuraPuenteBarco.initBuffers(gl, shaderProgram, "gris");
 
-    puenteBarco = new cubo(100.0, 10.0, 15.0);
+    puenteBarco = new cubo(cabinaDeMandoX, cabinaDeMandoY, cabinaDeMandoZ);
     puenteBarco.initBuffers(gl, shaderProgram, "gris");
 
-    mar = new cubo(1500.0, 0.1, 1500.0);
+    mar = new cubo(marX, marY, marZ);
     mar.initBuffers(gl, shaderProgram, "blue");
 
     for(var i = 0; i < cantidadContainers; i++){
-      var container = new cubo(10.0, 10.0, 40.0);
+      var container = new cubo(containersX, containersY, containersZ);
       container.initBuffers(gl, shaderProgram, "purple");
       arrayContainers.push(container);
     }
 
     barco = new barco(1.0, 1.0, 1.0);
-    barco.initBuffers(gl, shaderProgram, "sad");
+    barco.initBuffers(gl, shaderProgram, "red");
 
     islote = new islote();
-    islote.initBuffers(gl, shaderProgram, "asdg");
+    islote.initBuffers(gl, shaderProgram, "brown");
 
     setInterval(drawScene, 10);
   }

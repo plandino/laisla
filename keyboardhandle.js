@@ -5,63 +5,27 @@
 
         // Flecha arriba
         if (teclaAscii == '38') {
-          traslacionXCabina = traslacionXCabina + 1;
-          if(traslacionXCabina > 15)  traslacionXCabina = 15;
-          // if(camaraGlobal){
-          //   rotarCamaraY = rotarCamaraY -  5;
-          // } 
-          // if(camaraPersona){
-          //   traslacionPersonaX = traslacionPersonaX + 1;
-          // }
-          // if(camaraCabina){
+          if(traslacionXCabina < (largoPlumaX / 2) - (contrapesoX / 2) )  traslacionXCabina = traslacionXCabina + 1;
 
-          // }
           if (evento.preventDefault)
               evento.preventDefault();
           evento.returnValue = false;
         }
         // Flecha abajo
-        else if (teclaAscii == '40') {
-          traslacionXCabina = traslacionXCabina - 1;
-          if(traslacionXCabina < -45)  traslacionXCabina = -45;
-          // if(camaraGlobal){
-          //   rotarCamaraY = rotarCamaraY -  5;
-          // } 
-          // if(camaraPersona){
-          //   traslacionPersonaX = traslacionPersonaX - 1;
-          // }
-          // if(camaraCabina){
-            
-          // }
+        else if (teclaAscii == '40'){
+          if (traslacionXCabina > - ( contrapesoX * 1.5 ) )   traslacionXCabina = traslacionXCabina - 1;
+
           if (evento.preventDefault)
                 evento.preventDefault();
-         evento.returnValue = false;
+          evento.returnValue = false;
         }
         // Flecha izquierda
-        else if (teclaAscii == '37') {
-          traslacionZGrua = traslacionZGrua - 2;
-          // if(camaraGlobal){
-          //   rotarCamaraY = rotarCamaraY -  5;
-          // } 
-          // if(camaraPersona){
-          //   traslacionPersonaZ = traslacionPersonaZ + 1;
-          // }
-          // if(camaraCabina){
-
-          // }
+        else if( (teclaAscii == '37')  && (trasGruaZ > - (muelleZ / 2) + 150.0 ) ){
+          trasGruaZ = trasGruaZ - 1;
         }
         // Flecha derecha
-        else if (teclaAscii == '39') {
-          traslacionZGrua = traslacionZGrua + 2;
-          // if(camaraGlobal){
-          //   rotarCamaraY = rotarCamaraY -  5;
-          // } 
-          // if(camaraPersona){
-          //   traslacionPersonaZ = traslacionPersonaZ - 1;
-          // }
-          // if(camaraCabina){
-            
-          // }
+        else if ( (teclaAscii == '39') && (trasGruaZ < (muelleZ / 2) - gruaZ ) ) {
+          trasGruaZ = trasGruaZ + 1;
         }
         // Numero 1, pone la camara global (aerea)
         else if( (teclaAscii == '97') || (teclaAscii == '49') ) {
@@ -108,6 +72,7 @@
             escaladoPlumaY = 1.71;
           }
         }
+
         if((tecla == "e") || (tecla == "E")){
           var enganchar = true;
           if(containerEnganchado >= 0){
@@ -117,7 +82,7 @@
           for(var i = 0; i < cantidadContainers, enganchar; i++){
             if( (arrayContainers[i].getPosition()[0] < 35.0 + traslacionXCabina + 4.0) && (arrayContainers[i].getPosition()[0] > 35.0 + traslacionXCabina - 4.0) ){
               if( (arrayContainers[i].getPosition()[1] < 0.0 + 4.0 ) && (arrayContainers[i].getPosition()[1] >  0.0 - 4.0 ) && (escaladoPlumaY > 1.70)){
-                if( (arrayContainers[i].getPosition()[2] < traslacionZGrua + 1.0) && (arrayContainers[i].getPosition()[2] > traslacionZGrua - 1.0 ) ){
+                if( (arrayContainers[i].getPosition()[2] < trasGruaZ + 1.0) && (arrayContainers[i].getPosition()[2] > trasGruaZ - 1.0 ) ){
                   containerEnganchado = i;
                 }
               }
@@ -129,31 +94,26 @@
         }
 
         // Muevo persona para adelante
-        if((tecla == "r") || (tecla == "R")){
-          traslacionPersonaZ = traslacionPersonaZ +  5;   // PROVISORIO
+        if((tecla == "y") || (tecla == "Y")){
+          traslacionPersonaZ = traslacionPersonaZ - Math.cos(-degToRad(rotarCamaraY));   // PROVISORIO
+          traslacionPersonaX = traslacionPersonaX - Math.sin(-degToRad(rotarCamaraY));
         }
         // Muevo persona para atras
-        if((tecla == "f") || (tecla == "F")){
-          traslacionPersonaZ = traslacionPersonaZ -  5;   // PROVISORIO
-        }
-
-        // Muevo la camara global para adelante
-        if((tecla == "u") || (tecla == "U")){
-          // traslacionCamaraGlobalZ = traslacionCamaraGlobalZ -  5;   // PROVISORIO
-        }
-        // Muevo la camara global para atras
-        if((tecla == "j") || (tecla == "J")){
-          // traslacionCamaraGlobalZ = traslacionCamaraGlobalZ +  5;   // PROVISORIO
-        }
-        // Muevo la camara global para la derecha
         if((tecla == "h") || (tecla == "H")){
-          // traslacionCamaraGlobalX = traslacionPersonaZ +  5;   // PROVISORIO
-        }
-        // Muevo la camara global para la izquierda
-        if((tecla == "k") || (tecla == "K")){
-          // traslacionCamaraGlobalX = traslacionCamaraGlobalX -  5;   // PROVISORIO
+          traslacionPersonaZ = traslacionPersonaZ + Math.cos(-degToRad(rotarCamaraY));   // PROVISORIO
+          traslacionPersonaX = traslacionPersonaX + Math.sin(-degToRad(rotarCamaraY));
         }
 
+        // Muevo persona en el muelle para el costado derecho
+        if((tecla == "j") || (tecla == "J")){
+          traslacionPersonaZ = traslacionPersonaZ + Math.sin(degToRad(rotarCamaraY));   // PROVISORIO
+          traslacionPersonaX = traslacionPersonaX + Math.cos(degToRad(rotarCamaraY));
+        }
+        // Muevo persona en el muelle para el costado izquierda
+        if((tecla == "g") || (tecla == "G")){
+          traslacionPersonaZ = traslacionPersonaZ - Math.sin(degToRad(rotarCamaraY));   // PROVISORIO
+          traslacionPersonaX = traslacionPersonaX - Math.cos(degToRad(rotarCamaraY));
+        }
 
         // console.log(teclaAscii);
     }
