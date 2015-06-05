@@ -62,14 +62,12 @@
 
         if((tecla == "q") || (tecla == "Q")){
           escaladoPlumaY = escaladoPlumaY - 0.01;
-          if(escaladoPlumaY < 0.4){
-            escaladoPlumaY = 0.4;
-          }
         }
         if((tecla == "a") || (tecla == "A")){
-          escaladoPlumaY = escaladoPlumaY + 0.01;
-          if(escaladoPlumaY > 1.71){
-            escaladoPlumaY = 1.71;
+          escaladoPlumaY = escaladoPlumaY + 0.01; 
+
+          if(escaladoPlumaY > 1.65){
+            escaladoPlumaY = 1.65;
           }
         }
 
@@ -81,37 +79,34 @@
           }
           for(var i = 0; i < cantidadContainers, enganchar; i++){
             if( (arrayContainers[i].getPosition()[0] < 35.0 + traslacionXCabina + 4.0) && (arrayContainers[i].getPosition()[0] > 35.0 + traslacionXCabina - 4.0) ){
-              if( (arrayContainers[i].getPosition()[1] < 0.0 + 4.0 ) && (arrayContainers[i].getPosition()[1] >  0.0 - 4.0 ) && (escaladoPlumaY > 1.70)){
-                if( (arrayContainers[i].getPosition()[2] < trasGruaZ + 1.0) && (arrayContainers[i].getPosition()[2] > trasGruaZ - 1.0 ) ){
-                  containerEnganchado = i;
+                if( (arrayContainers[i].getPosition()[1] < gruita.cabina.barraUnoX.getPosition()[1] + 6.0 ) && (arrayContainers[i].getPosition()[1] >  gruita.cabina.barraUnoX.getPosition()[1] - 6.0 ) ) {
+                    if( (arrayContainers[i].getPosition()[2] < trasGruaZ + 1.0) && (arrayContainers[i].getPosition()[2] > trasGruaZ - 1.0 ) ){
+                      containerEnganchado = i;
+                    }
                 }
-              }
-              
             }
-              
-          }
-          
+          }          
         }
 
         // Muevo persona para adelante
         if((tecla == "y") || (tecla == "Y")){
-          traslacionPersonaZ = traslacionPersonaZ - Math.cos(-degToRad(rotarCamaraY));   // PROVISORIO
+          traslacionPersonaZ = traslacionPersonaZ - Math.cos(-degToRad(rotarCamaraY));   
           traslacionPersonaX = traslacionPersonaX - Math.sin(-degToRad(rotarCamaraY));
         }
         // Muevo persona para atras
         if((tecla == "h") || (tecla == "H")){
-          traslacionPersonaZ = traslacionPersonaZ + Math.cos(-degToRad(rotarCamaraY));   // PROVISORIO
+          traslacionPersonaZ = traslacionPersonaZ + Math.cos(-degToRad(rotarCamaraY));   
           traslacionPersonaX = traslacionPersonaX + Math.sin(-degToRad(rotarCamaraY));
         }
 
         // Muevo persona en el muelle para el costado derecho
         if((tecla == "j") || (tecla == "J")){
-          traslacionPersonaZ = traslacionPersonaZ + Math.sin(degToRad(rotarCamaraY));   // PROVISORIO
+          traslacionPersonaZ = traslacionPersonaZ + Math.sin(degToRad(rotarCamaraY));   
           traslacionPersonaX = traslacionPersonaX + Math.cos(degToRad(rotarCamaraY));
         }
         // Muevo persona en el muelle para el costado izquierda
         if((tecla == "g") || (tecla == "G")){
-          traslacionPersonaZ = traslacionPersonaZ - Math.sin(degToRad(rotarCamaraY));   // PROVISORIO
+          traslacionPersonaZ = traslacionPersonaZ - Math.sin(degToRad(rotarCamaraY)); 
           traslacionPersonaX = traslacionPersonaX - Math.cos(degToRad(rotarCamaraY));
         }
 
