@@ -64,6 +64,9 @@
   <script id="shadertexturas-vs" type="x-shader/x-vertex">
     attribute vec3 aVertexPosition;
     attribute vec2 aTextureCoord;
+    // attribute vec3 aVertexNormal;
+
+        // uniform mat3 uNormalMatrix;
 
     uniform mat4 uModelMatrix;
     uniform mat4 uViewMatrix;
@@ -73,6 +76,8 @@
     varying vec3 vTextureCoord;
 
     void main(void) {
+
+      // vec3 temporal = aVertexNormal;
       // Transformamos al vértice al espacio de la cámara
       vec4 pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
       

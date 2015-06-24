@@ -120,6 +120,9 @@ function initShadersConTexturas() {
     shaderProgramTexturas.textureCoordAttribute = gl.getAttribLocation(shaderProgramTexturas, "aTextureCoord");
     gl.enableVertexAttribArray(shaderProgramTexturas.textureCoordAttribute);
 
+    // shaderProgramTexturas.vertexNormalAttribute = gl.getAttribLocation(shaderProgramTexturas, "aVertexNormal");
+    // gl.enableVertexAttribArray(shaderProgramTexturas.vertexNormalAttribute);
+
     // Con esto accedo a las matrices uniformes del shader
     shaderProgramTexturas.perspectiveMatrixUniform  = gl.getUniformLocation(shaderProgramTexturas, "uPerspectiveMatrix");
     shaderProgramTexturas.viewMatrixUniform         = gl.getUniformLocation(shaderProgramTexturas, "uViewMatrix");
