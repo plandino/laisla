@@ -30,6 +30,16 @@
         	return colors;
 		}
 
+    if(color == "white"){
+      var colors = [
+              [1.0,  1.0,  1.0,  1.0],
+              [1.0,  1.0,  1.0,  1.0],,
+              [1.0,  1.0,  1.0,  1.0],
+              [1.0,  1.0,  1.0,  1.0],
+          ];
+          return colors;
+    } 
+
 		if(color == "yellow"){
 			var colors = [
           		[1.0,  1.0,  0.0,  1.0],   

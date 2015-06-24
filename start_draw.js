@@ -76,6 +76,10 @@ function drawScene() {
   mat4.scale(matrix_islote, matrix_islote, [4.0, 3.0, 3.0]);
   islote.draw(matrix_islote, gl, shaderProgramSimple);
 
+  var matrix_postes = mat4.create();
+  mat4.identity(matrix_postes);
+  posta.draw(matrix_postes, gl, shaderProgramSimple);
+
 
   /***** CONTEXTO TEXTURAS *****/
   gl.useProgram(shaderProgramTexturas);
@@ -176,6 +180,10 @@ function drawScene() {
 
     islote = new islote();
     islote.initBuffers(gl, shaderProgramSimple, "brown");
+
+    posta = new postes();
+    posta.initBuffers(gl, shaderProgramSimple);
+
 
     setInterval(drawScene, 10);
   }

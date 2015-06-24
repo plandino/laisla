@@ -31,6 +31,9 @@ function grua(scaleX, scaleY, scaleZ){
 
 	    this.cabina = new cabina(this.escalaX, this.escalaY, this.escalaZ);
 	    this.cabina.initBuffers(gl, shaderProgram, "rojoOpaco");
+
+	    lamparaCabezaGrua = new lampara(10,10);
+    	lamparaCabezaGrua.initBuffers(gl, "white");
 	}
 
 
@@ -72,6 +75,12 @@ function grua(scaleX, scaleY, scaleZ){
 	    mat4.scale(matrix_cabina, matrix_cabina, [this.escalaX, this.escalaY, this.escalaZ]);
 	    mat4.translate(matrix_cabina, matrix_cabina, [35.0 + traslacionXCabina , 49.9, 0.0 ]);
 	    this.cabina.draw(matrix_cabina, gl, shaderProgram);
+
+	    var matrix_lamparaCabeza = mat4.create();
+		mat4.identity(matrix_lamparaCabeza);
+		mat4.multiply(matrix_lamparaCabeza, matrix_lamparaCabeza, modelMatrix);
+		mat4.translate(matrix_lamparaCabeza, matrix_lamparaCabeza, [87.0, 52.0, 0.0]);
+		lamparaCabezaGrua.draw(matrix_lamparaCabeza, gl, shaderProgram);
 
 	}
 
