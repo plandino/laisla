@@ -55,7 +55,7 @@
     }
   </script>
 
-    <script id="shadertexturas-vs" type="x-shader/x-vertex">
+  <script id="shadertexturas-vs" type="x-shader/x-vertex">
     attribute vec3 aVertexPosition;
     attribute vec2 aTextureCoord;
 
@@ -67,15 +67,14 @@
     varying vec3 vTextureCoord;
 
     void main(void) {
-  
-    // Transformamos al vértice al espacio de la cámara
-    vec4 pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
-    
-    // Transformamos al vértice al espacio de la proyección
-        gl_Position = uPerspectiveMatrix * pos_camera_view;
-    
-    // Coordenada de textura sin modifiaciones
-        vTextureCoord = uTextureMatrix * vec3(aTextureCoord, 1.0);
+      // Transformamos al vértice al espacio de la cámara
+      vec4 pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
+      
+      // Transformamos al vértice al espacio de la proyección
+      gl_Position = uPerspectiveMatrix * pos_camera_view;
+      
+      // Coordenada de textura sin modifiaciones
+      vTextureCoord = uTextureMatrix * vec3(aTextureCoord, 1.0);
     }
   </script>
 
@@ -119,7 +118,7 @@
   var camaraAux         = mat4.create();
   var cubito            = null;
   var cuboDos           = null;
-  var muelle              = null;
+  var muelle            = null;
   var mouseDown         = false;
   var camaraCabina      = false;
   var camaraPersona     = false;
@@ -237,45 +236,50 @@
     return shaderProgramSimple;
   }
 
-    function initShadersConTexturas() {
+
+  function initShadersConTexturas() {
     // Obtenemos los shaders ya compilados
-    var fragmentShader = getShader(gl, "shadertexturas-fs");
-    var vertexShader = getShader(gl, "shadertexturas-vs");
+    var fragmentShaderText = getShader(gl, "shadertexturas-fs");
+    var vertexShaderText = getShader(gl, "shadertexturas-vs");
     
     // Creamos un programa de shaders de WebGL.
-    shaderProgram = gl.createProgram();
+    shaderProgramTexturas = gl.createProgram();
 
     // Asociamos cada shader compilado al programa.
-    gl.attachShader(shaderProgram, vertexShader);
-    gl.attachShader(shaderProgram, fragmentShader);
+    gl.attachShader(shaderProgramTexturas, vertexShaderText);
+    gl.attachShader(shaderProgramTexturas, fragmentShaderText);
 
     // Linkeamos los shaders para generar el programa ejecutable.
-    gl.linkProgram(shaderProgram);
+    gl.linkProgram(shaderProgramTexturas);
     
     // Chequeamos y reportamos si hubo algún error.
-    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+    if (!gl.getProgramParameter(shaderProgramTexturas, gl.LINK_STATUS)) {
       alert("Unable to initialize the shader program: " + 
-            gl.getProgramInfoLog(shaderProgram));
+            gl.getProgramInfoLog(shaderProgramTexturas));
       return null;
     }
   
     // Le decimos a WebGL que de aquí en adelante use el programa generado.
-    gl.useProgram(shaderProgram);
+    gl.useProgram(shaderProgramTexturas);
     
     // Tomamos referencias Javascript para acceder a las variables propias 
     // del shader.
-    shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-    gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+    shaderProgramTexturas.vertexPositionAttribute = gl.getAttribLocation(shaderProgramTexturas, "aVertexPosition");
+    gl.enableVertexAttribArray(shaderProgramTexturas.vertexPositionAttribute);
 
-    shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
-    gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+    shaderProgramTexturas.textureCoordAttribute = gl.getAttribLocation(shaderProgramTexturas, "aTextureCoord");
+    gl.enableVertexAttribArray(shaderProgramTexturas.textureCoordAttribute);
+
 
     // Con esto accedo a las matrices uniformes del shader
-    shaderProgram.perspectiveMatrixUniform  = gl.getUniformLocation(shaderProgram, "uPerspectiveMatrix");
-    shaderProgram.viewMatrixUniform         = gl.getUniformLocation(shaderProgram, "uViewMatrix");
-    shaderProgram.modelMatrixUniform        = gl.getUniformLocation(shaderProgram, "uModelMatrix");
+    shaderProgramTexturas.perspectiveMatrixUniform  = gl.getUniformLocation(shaderProgramTexturas, "uPerspectiveMatrix");
+    shaderProgramTexturas.viewMatrixUniform         = gl.getUniformLocation(shaderProgramTexturas, "uViewMatrix");
+    shaderProgramTexturas.modelMatrixUniform        = gl.getUniformLocation(shaderProgramTexturas, "uModelMatrix");
+    shaderProgramTexturas.texMatrixUniform          = gl.getUniformLocation(shaderProgramTexturas, "uTextureMatrix");
 
-    return shaderProgram;
+    shaderProgramTexturas.samplerUniform            = gl.getUniformLocation(shaderProgramTexturas, "uSampler");
+
+    return shaderProgramTexturas;
   }
 
 
@@ -300,62 +304,17 @@
   // DRAW 
   var t = 0.0;
   function drawScene() {
+
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  
-    // Preparamos una matriz de perspectiva.
-    mat4.perspective(perspectiveMatrix, degToRad(88), 640.0/480.0, 0.01, 2000.0);
-    // Mando la matriz de perspectiva
-    gl.uniformMatrix4fv(gl.shaderProgramSimple.perspectiveMatrixUniform, false, perspectiveMatrix);
-    
+
     // Preparamos una matriz de camara(vista).
     mat4.identity(cameraMatrix);
-
-    var matrix_muelle = mat4.create();
-    mat4.identity(matrix_muelle);
-    mat4.translate(matrix_muelle, matrix_muelle, [-90.0, -8.0, -20.0]);
-    muelle.draw(matrix_muelle, gl, shaderProgramSimple);
-
-    if(inicio == true){
-        for(var j = 0; j < cantidadContainers * 5 / 6; j++){
-          var matrix_containers = mat4.create();
-          mat4.identity(matrix_containers);
-          mat4.translate(matrix_containers, matrix_containers, [ - 10.0 + 18.0 * (j % 2), 2.0, ( (j % 5) - 2) * 50.0]);
-          // mat4.translate(matrix_containers, matrix_containers, [ 15.0 * j , 0.0,  50.0]);
-          posContainersAnterior.push(matrix_containers);
-        }
-
-        for(var j = cantidadContainers * 5 / 6; j < cantidadContainers; j++){
-          var matrix_containers = mat4.create();
-          mat4.identity(matrix_containers);
-          mat4.translate(matrix_containers, matrix_containers, [ 65.0 + 18.0 * (j % 2), 8.1, ( (j % 5) - 2) * 45.0 - 10.0 ] );
-          // mat4.translate(matrix_containers, matrix_containers, [ 15.0 * j , 0.0,  50.0]);
-          posContainersAnterior.push(matrix_containers);
-        }
-
-
-        inicio = false;
-    } else {
-          for(var j = 0; j < cantidadContainers; j++){
-          matrix_containers = posContainersAnterior[j];
-          if(j == containerEnganchado){
-            mat4.identity(matrix_containers);
-            mat4.translate(matrix_containers, matrix_containers, [35.0 + traslacionXCabina,  ((1.71 - escaladoPlumaY) * (25.0 / 1) ), trasGruaZ]);
-            posContainersAnterior[j] = matrix_containers;
-          }
-          posContainersAnterior[j] = matrix_containers;
-          arrayContainers[j].draw(matrix_containers, gl, shaderProgramSimple);
-          posContainersAnterior[j] = matrix_containers;
-        }
-
-    }
-
     mat4.identity(camaraAux);
 
     if(camaraGlobal){
       mat4.lookAt(cameraMatrix, [0.0, 20.0, 150.0 + aumento], [0,0,0], [0,1,0]); // This is the key line
       mat4.rotateX(cameraMatrix, cameraMatrix, degToRad(rotarCamaraX));
       mat4.rotateY(cameraMatrix, cameraMatrix, degToRad(rotarCamaraY));
-      gl.uniformMatrix4fv(gl.shaderProgramSimple.viewMatrixUniform, false, cameraMatrix );
     }
 
     if(camaraPersona){
@@ -363,8 +322,6 @@
       mat4.rotateX(camaraAux, camaraAux, degToRad(rotarCamaraX));
       mat4.rotateY(camaraAux, camaraAux, degToRad(rotarCamaraY));
       mat4.multiply(cameraMatrix, camaraAux, cameraMatrix);
-      // console.log(cameraMatrix);
-      gl.uniformMatrix4fv(gl.shaderProgramSimple.viewMatrixUniform, false, cameraMatrix );
     } 
 
     if(camaraCabina){
@@ -373,9 +330,21 @@
       mat4.rotateX(camaraAux, camaraAux, degToRad(rotarCamaraX));
       mat4.rotateY(camaraAux, camaraAux, degToRad(rotarCamaraY));
       mat4.multiply(cameraMatrix, camaraAux, cameraMatrix);
-
-      gl.uniformMatrix4fv(gl.shaderProgramSimple.viewMatrixUniform, false, cameraMatrix );
     }
+
+
+    // Preparamos una matriz de perspectiva.
+    mat4.perspective(perspectiveMatrix, degToRad(88), 640.0/480.0, 0.01, 2000.0);
+    
+    /***** CONTEXTO SIMPLE *****/
+    gl.useProgram(shaderProgramSimple);
+    gl.uniformMatrix4fv(gl.shaderProgramSimple.perspectiveMatrixUniform, false, perspectiveMatrix);
+    gl.uniformMatrix4fv(gl.shaderProgramSimple.viewMatrixUniform, false, cameraMatrix );
+    
+    var matrix_muelle = mat4.create();
+    mat4.identity(matrix_muelle);
+    mat4.translate(matrix_muelle, matrix_muelle, [-90.0, -8.0, -20.0]);
+    muelle.draw(matrix_muelle, gl, shaderProgramSimple);
 
     var matrix_grua = mat4.create();
     mat4.identity(matrix_grua);
@@ -410,6 +379,46 @@
     mat4.scale(matrix_islote, matrix_islote, [4.0, 3.0, 3.0]);
     islote.draw(matrix_islote, gl, shaderProgramSimple);
 
+
+    /***** CONTEXTO TEXTURAS *****/
+    gl.useProgram(shaderProgramTexturas);
+    gl.uniformMatrix4fv(gl.shaderProgramTexturas.perspectiveMatrixUniform, false, perspectiveMatrix);
+    gl.uniformMatrix4fv(gl.shaderProgramTexturas.viewMatrixUniform, false, cameraMatrix );
+
+    if (inicio){
+        for(var j = 0; j < cantidadContainers * 5 / 6; j++){
+          var matrix_containers = mat4.create();
+          mat4.identity(matrix_containers);
+          mat4.translate(matrix_containers, matrix_containers, [ - 10.0 + 18.0 * (j % 2), 2.0, ( (j % 5) - 2) * 50.0]);
+          // mat4.translate(matrix_containers, matrix_containers, [ 15.0 * j , 0.0,  50.0]);
+          posContainersAnterior.push(matrix_containers);
+        }
+
+        for(var j = cantidadContainers * 5 / 6; j < cantidadContainers; j++){
+          var matrix_containers = mat4.create();
+          mat4.identity(matrix_containers);
+          mat4.translate(matrix_containers, matrix_containers, [ 65.0 + 18.0 * (j % 2), 8.1, ( (j % 5) - 2) * 45.0 - 10.0 ] );
+          // mat4.translate(matrix_containers, matrix_containers, [ 15.0 * j , 0.0,  50.0]);
+          posContainersAnterior.push(matrix_containers);
+        }
+
+        inicio = false;
+    } else {
+          for(var j = 0; j < cantidadContainers; j++){
+          matrix_containers = posContainersAnterior[j];
+          if(j == containerEnganchado){
+            mat4.identity(matrix_containers);
+            mat4.translate(matrix_containers, matrix_containers, [35.0 + traslacionXCabina,  ((1.71 - escaladoPlumaY) * (25.0 / 1) ), trasGruaZ]);
+            posContainersAnterior[j] = matrix_containers;
+          }
+          posContainersAnterior[j] = matrix_containers;
+          arrayContainers[j].draw(matrix_containers, gl, shaderProgramTexturas);
+          posContainersAnterior[j] = matrix_containers;
+        }
+
+    }
+
+    /* Avanza el tiempo */
     t = t + 0.01;
   }
 
@@ -420,6 +429,11 @@
     // Inicializamos el contexto GL
     gl = initWebGL(canvas);      
     if (!gl)
+      return;
+
+     // Compilamos y linkeamos los shaders
+    gl.shaderProgramTexturas = initShadersConTexturas();
+    if (!gl.shaderProgramTexturas)
       return;
 
     // Compilamos y linkeamos los shaders
@@ -439,8 +453,10 @@
     gruita = new grua(1.0, 1.0, 1.0);
     gruita.initBuffers(gl, shaderProgramSimple);
 
-    muelle = new cubo(muelleX, muelleY, muelleZ );
-    muelle.initBuffers(gl, shaderProgramSimple, "gris");
+    muelle = new cubo(muelleX, muelleY, muelleZ, false);
+    muelle.initBuffers(gl, null, "gris");
+    loadTexture(muelle, muelle.textureImage, "uvgrid.jpg");
+
 
     estructuraPuenteBarco = new cubo(estructuraPuenteX, estructuraPuenteY, estructuraPuenteZ);
     estructuraPuenteBarco.initBuffers(gl, shaderProgramSimple, "gris");
@@ -452,8 +468,9 @@
     mar.initBuffers(gl, shaderProgramSimple, "blue");
 
     for(var i = 0; i < cantidadContainers; i++){
-      var container = new cubo(containersX, containersY, containersZ);
+      var container = new cubo(containersX, containersY, containersZ, false, true);
       container.initBuffers(gl, shaderProgramSimple, "purple");
+      loadTexture(container, container.textureImage, "uvgrid.jpg");
       arrayContainers.push(container);
     }
 

@@ -1,20 +1,21 @@
-function cubo(ancho, alto, profundo, escalarTextura){
+function cubo(ancho, alto, profundo, escalarTextura, conTextura){
     // Estos son los arrays donde defino los valores        
     this.vertices           = null;
     this.indices            = null;
     this.generatedColors    = null;
     this.coordenadasUV      = null;
 
+    this.conTextura = conTextura;
+
     // Estos son los buffers que voy a bindear para mandar a los shaders
     this.cubeVertexBuffer       = null;
     this.cubeVertexIndexBuffer  = null;
     this.cubeVertexColorBuffer  = null;
-    this.cubeuvTextureBuffer        = null;
+    this.cubeuvTextureBuffer    = null;
 
     this.modelMatrix            = null;
 
-    this.texture = null;
-
+    this.texture      = null;
     this.textureImage = null;
 
     // Inicio los valores, para los vertices(posicion, color) e indices
@@ -79,48 +80,42 @@ function cubo(ancho, alto, profundo, escalarTextura){
         this.coordenadasUV = [
 
         // Cara adelante
-          1, 0,
-          1, 1,
-          0, 1,
-          0, 0,
+          1.0, 0.0,
+          1.0, 1.0,
+          0.0, 1.0,
+          0.0, 0.0,
 
         // Cara atras
-          1, 0,
-          1, 1,
-          0, 1,
-          0, 0,
+          1.0, 0.0,
+          1.0, 1.0,
+          0.0, 1.0,
+          0.0, 0.0,
 
         // Cara izquierda
-          1, 0,
-          1, 1,
-          0, 1,
-          0, 0,
+          1.0, 0.0,
+          1.0, 1.0,
+          0.0, 1.0,
+          0.0, 0.0,
 
         // Cara derecha
-          1, 0,
-          1, 1,
-          0, 1,
-          0, 0,
+          1.0, 0.0,
+          1.0, 1.0,
+          0.0, 1.0,
+          0.0, 0.0,
 
         // Cara arriba
-          1, 0,
-          1, 1,
-          0, 1,
-          0, 0,
+          1.0, 0.0,
+          1.0, 1.0,
+          0.0, 1.0,
+          0.0, 0.0,
 
         // Cara abajo
-          1, 0,
-          1, 1,
-          0, 1,
-          0, 0
+          1.0, 0.0,
+          1.0, 1.0,
+          0.0, 1.0,
+          0.0, 0.0,
         ];
 
-        // Cargamos los datos de las texturas
-        this.cubeuvTextureBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeuvTextureBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.coordenadasUV), gl.STATIC_DRAW);
-        this.cubeuvTextureBuffer.itemSize = 2;
-        this.cubeuvTextureBuffer.numItems = this.coordenadasUV.length / 2;
 
         this.indices = [
 
@@ -170,14 +165,20 @@ function cubo(ancho, alto, profundo, escalarTextura){
           }
         }
 
-        // Cargamos los datos de los colores en un nuevo buffer igual que con las posiciones
-        this.cubeVertexColorBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexColorBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.generatedColors), gl.STATIC_DRAW);
-        this.cubeVertexColorBuffer.itemSize = 4;
-        this.cubeVertexColorBuffer.numItems = this.generatedColors.length / 4;
-
-        loadTexture(this, this.textureImage, "uvgrid.jpg");
+        if(this.conTextura){
+          this.cubeuvTextureBuffer = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeuvTextureBuffer);
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.coordenadasUV), gl.STATIC_DRAW);
+          this.cubeuvTextureBuffer.itemSize = 2;
+          this.cubeuvTextureBuffer.numItems = this.coordenadasUV.length / 2;
+        } else {
+          // Cargamos los datos de los colores en un nuevo buffer igual que con las posiciones
+          this.cubeVertexColorBuffer = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexColorBuffer);
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.generatedColors), gl.STATIC_DRAW);
+          this.cubeVertexColorBuffer.itemSize = 4;
+          this.cubeVertexColorBuffer.numItems = this.generatedColors.length / 4;  
+        }
     }
 
     // Método del objeto texturado, que es llamado de manera asincrónica
@@ -204,25 +205,37 @@ function cubo(ancho, alto, profundo, escalarTextura){
     }
 
     this.draw = function(modelMatrix, gl, shaderProgram){
-
         // Se configuran los buffers que alimentarán el pipeline
         gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.cubeVertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexColorBuffer);
-        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, this.cubeVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
+        if(! this.conTextura){
+          gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexColorBuffer);
+          gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, this.cubeVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);  
+        }
+        
         gl.uniformMatrix4fv(shaderProgram.modelMatrixUniform, false, modelMatrix);
 
         this.modelMatrix = modelMatrix;
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeuvTextureBuffer);
-        gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.cubeuvTextureBuffer.itemSize, gl.FLOAT, false, 0, 0);
+       if(this.conTextura){
+            var texMatrix = mat3.create();
+            mat3.identity(texMatrix);
+
+            // // Matriz de transformación de las coordenadas de Textura
+            // var auxMatrix = mat4.create();
+            // mat4.identity(auxMatrix);
+            // mat4.scale(texMatrix, texMatrix, [1.0, 1.0, 1.0]);
+            // mat3.fromMat4(texMatrix, texMatrix);
+            gl.uniformMatrix3fv(shaderProgram.texMatrixUniform, false, texMatrix);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeuvTextureBuffer);
+            gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.cubeuvTextureBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
             gl.uniform1i(shaderProgram.samplerUniform, 0);
-
+        }
         
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
         //gl.drawElements(gl.LINE_LOOP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
