@@ -99,8 +99,6 @@ function extrusion(forma, camino, escala) {
 
 
     this.initBuffers = function(gl, shaderProgram, color){
-        if (this.tapa1) console.log("position_buffer: " + this.tapa1.position_buffer.toString());
-
         this.webgl_position_buffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_position_buffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.position_buffer), gl.STATIC_DRAW);
