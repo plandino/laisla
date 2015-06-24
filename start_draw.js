@@ -89,6 +89,11 @@ function drawScene() {
   mat4.translate(matrix_mar, matrix_mar, [0.0, -10.0, 0.0]);
   mar.draw(matrix_mar, gl, shaderProgramTexturas);
 
+  var matrix_muelle = mat4.create();
+  mat4.identity(matrix_muelle);
+  mat4.translate(matrix_muelle, matrix_muelle, [-90.0, -8.0, -20.0]);
+  muelle.draw(matrix_muelle, gl, shaderProgramTexturas);
+
 
   if (inicio){
       for(var j = 0; j < cantidadContainers * 5 / 6; j++){
@@ -158,9 +163,9 @@ function drawScene() {
     gruita = new grua(1.0, 1.0, 1.0);
     gruita.initBuffers(gl, shaderProgramSimple);
 
-    muelle = new cubo(muelleX, muelleY, muelleZ, false);
+    muelle = new cubo(muelleX, muelleY, muelleZ, false, true);
     muelle.initBuffers(gl, null, "gris");
-    loadTexture(muelle, muelle.textureImage, "uvgrid.jpg");
+    loadTexture(muelle, muelle.textureImage, "texturas/concretoPlataforma.jpg");
 
 
     estructuraPuenteBarco = new cubo(estructuraPuenteX, estructuraPuenteY, estructuraPuenteZ);
@@ -176,7 +181,11 @@ function drawScene() {
     for(var i = 0; i < cantidadContainers; i++){
       var container = new cubo(containersX, containersY, containersZ, false, true);
       container.initBuffers(gl, shaderProgramSimple, "purple");
-      loadTexture(container, container.textureImage, "uvgrid.jpg");
+      if(i < 10) {
+        loadTexture(container, container.textureImage, "container_difusemapazul.jpg");
+      } else {
+        loadTexture(container, container.textureImage, "container_difusemaprojo.jpg");
+      }
       arrayContainers.push(container);
     }
 
