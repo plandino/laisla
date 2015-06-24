@@ -48,15 +48,6 @@ function drawScene() {
   mat4.translate(matrix_grua, matrix_grua, [0.0, 0.0, trasGruaZ]);
   gruita.draw(matrix_grua, gl, shaderProgramSimple);
 
-  var matrix_estructPuente = mat4.create();
-  mat4.identity(matrix_estructPuente);
-  mat4.translate(matrix_estructPuente, matrix_estructPuente, [trasEstructuraPuenteX, trasEstructuraPuenteY, trasEstructuraPuenteZ]);
-  estructuraPuenteBarco.draw(matrix_estructPuente, gl, shaderProgramSimple);
-
-  // Usando la misma matriz subo la cabina de mando del puente del barco
-  mat4.translate(matrix_estructPuente, matrix_estructPuente, [0.0, trasCabinaDeMandoBarcoY, 0.0]);
-  puenteBarco.draw(matrix_estructPuente, gl, shaderProgramSimple);
-
   var matrix_barco = mat4.create();
   mat4.identity(matrix_barco);
   mat4.translate(matrix_barco, matrix_barco, [trasBarcoX, trasBarcoY, trasBarcoZ]);
@@ -93,6 +84,15 @@ function drawScene() {
   mat4.identity(matrix_muelle);
   mat4.translate(matrix_muelle, matrix_muelle, [-90.0, -8.0, -20.0]);
   muelle.draw(matrix_muelle, gl, shaderProgramTexturas);
+
+  var matrix_estructPuente = mat4.create();
+  mat4.identity(matrix_estructPuente);
+  mat4.translate(matrix_estructPuente, matrix_estructPuente, [trasEstructuraPuenteX, trasEstructuraPuenteY, trasEstructuraPuenteZ]);
+  estructuraPuenteBarco.draw(matrix_estructPuente, gl, shaderProgramTexturas);
+
+  // Usando la misma matriz subo la cabina de mando del puente del barco
+  mat4.translate(matrix_estructPuente, matrix_estructPuente, [0.0, trasCabinaDeMandoBarcoY, 0.0]);
+  puenteBarco.draw(matrix_estructPuente, gl, shaderProgramTexturas);
 
 
   if (inicio){
@@ -168,11 +168,14 @@ function drawScene() {
     loadTexture(muelle, muelle.textureImage, "texturas/concretoPlataforma.jpg");
 
 
-    estructuraPuenteBarco = new cubo(estructuraPuenteX, estructuraPuenteY, estructuraPuenteZ);
+    estructuraPuenteBarco = new cubo(estructuraPuenteX, estructuraPuenteY, estructuraPuenteZ, false, true);
     estructuraPuenteBarco.initBuffers(gl, shaderProgramSimple, "gris");
+    loadTexture(estructuraPuenteBarco, estructuraPuenteBarco.textureImage, "cabinaBarco.jpg");
 
-    puenteBarco = new cubo(cabinaDeMandoX, cabinaDeMandoY, cabinaDeMandoZ);
+
+    puenteBarco = new cubo(cabinaDeMandoX, cabinaDeMandoY, cabinaDeMandoZ, false, true);
     puenteBarco.initBuffers(gl, shaderProgramSimple, "gris");
+    loadTexture(puenteBarco, puenteBarco.textureImage, "cabinaBarco.jpg");
 
     mar = new cubo(marX, marY, marZ, false, true);
     mar.initBuffers(gl, shaderProgramSimple, "blue");
