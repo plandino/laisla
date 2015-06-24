@@ -131,5 +131,14 @@ function initShadersConTexturas() {
 
     shaderProgramTexturas.samplerUniform            = gl.getUniformLocation(shaderProgramTexturas, "uSampler");
 
+    // Se hizo la luz!!!
+
+        shaderProgramTexturas.useLightingUniform = gl.getUniformLocation(shaderProgramTexturas, "uUseLighting");
+        shaderProgramTexturas.ambientColorUniform = gl.getUniformLocation(shaderProgramTexturas, "uAmbientColor");
+        shaderProgramTexturas.lightingDirectionUniform = gl.getUniformLocation(shaderProgramTexturas, "uLightPosition");
+        shaderProgramTexturas.directionalColorUniform = gl.getUniformLocation(shaderProgramTexturas, "uDirectionalColor");
+
+        shaderProgramTexturas.normalMatrixUniform = gl.getUniformLocation(shaderProgramTexturas, "uNormalMatrix");
+
     return shaderProgramTexturas;
 }

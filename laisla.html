@@ -28,6 +28,7 @@
   <script type="text/javascript" src="constantes.js"></script>
   <script type="text/javascript" src="lampara.js"></script>
   <script type="text/javascript" src="postes.js"></script>
+  <script type="text/javascript" src="luces.js"></script>
   <script type="text/javascript" src="inicializarShaders.js"></script>
   <script type="text/javascript" src="start_draw.js"></script>
 
@@ -64,20 +65,27 @@
   <script id="shadertexturas-vs" type="x-shader/x-vertex">
     attribute vec3 aVertexPosition;
     attribute vec2 aTextureCoord;
-    // attribute vec3 aVertexNormal;
-
-        // uniform mat3 uNormalMatrix;
+    attribute vec3 aVertexNormal;
 
     uniform mat4 uModelMatrix;
     uniform mat4 uViewMatrix;
     uniform mat4 uPerspectiveMatrix;
     uniform mat3 uTextureMatrix;
+    
+        uniform mat3 uNormalMatrix;
+
+        // Se hizo la luz!!!
+        uniform vec3 uAmbientColor;
+        uniform vec3 uLightPosition;
+        uniform vec3 uDirectionalColor;
+        uniform bool uUseLighting;
+
 
     varying vec3 vTextureCoord;
+    varying vec3 vLightWeighting;
 
     void main(void) {
 
-      // vec3 temporal = aVertexNormal;
       // Transformamos al vértice al espacio de la cámara
       vec4 pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
       
@@ -86,6 +94,19 @@
       
       // Coordenada de textura sin modifiaciones
       vTextureCoord = uTextureMatrix * vec3(aTextureCoord, 1.0);
+
+
+          ////////////////////////////////////////////
+          // Calculos de la iluminación
+          vec3 light_dir =  uLightPosition - vec3( pos_camera_view );
+          normalize(light_dir);
+          if (!uUseLighting) {
+                  vLightWeighting = vec3(1.0, 1.0, 1.0);
+          } else {
+                  vec3 transformedNormal = normalize(uNormalMatrix * aVertexNormal);
+                  float directionalLightWeighting = max(dot(transformedNormal, light_dir), 0.0);
+                  vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
+          }
     }
   </script>
 
@@ -109,13 +130,14 @@
   <script id="shadertexturas-fs" type="x-shader/x-fragment">
     precision mediump float;
 
+        varying vec3 vLightWeighting;
     varying vec3 vTextureCoord;
 
     uniform sampler2D uSampler;
 
     void main(void) {
         vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-        gl_FragColor = vec4(textureColor.rgb, textureColor.a);
+        gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
     }
   </script>
 

@@ -57,11 +57,6 @@ function drawScene() {
   mat4.translate(matrix_estructPuente, matrix_estructPuente, [0.0, trasCabinaDeMandoBarcoY, 0.0]);
   puenteBarco.draw(matrix_estructPuente, gl, shaderProgramSimple);
 
-  var matrix_mar = mat4.create();
-  mat4.identity(matrix_mar);
-  mat4.translate(matrix_mar, matrix_mar, [0.0, -10.0, 0.0]);
-  mar.draw(matrix_mar, gl, shaderProgramSimple);
-
   var matrix_barco = mat4.create();
   mat4.identity(matrix_barco);
   mat4.translate(matrix_barco, matrix_barco, [trasBarcoX, trasBarcoY, trasBarcoZ]);
@@ -82,9 +77,18 @@ function drawScene() {
 
 
   /***** CONTEXTO TEXTURAS *****/
+
   gl.useProgram(shaderProgramTexturas);
   gl.uniformMatrix4fv(gl.shaderProgramTexturas.perspectiveMatrixUniform, false, perspectiveMatrix);
   gl.uniformMatrix4fv(gl.shaderProgramTexturas.viewMatrixUniform, false, cameraMatrix );
+
+  setLuces(cameraMatrix, gl, shaderProgramTexturas);
+
+  var matrix_mar = mat4.create();
+  mat4.identity(matrix_mar);
+  mat4.translate(matrix_mar, matrix_mar, [0.0, -10.0, 0.0]);
+  mar.draw(matrix_mar, gl, shaderProgramTexturas);
+
 
   if (inicio){
       for(var j = 0; j < cantidadContainers * 5 / 6; j++){
@@ -165,8 +169,9 @@ function drawScene() {
     puenteBarco = new cubo(cabinaDeMandoX, cabinaDeMandoY, cabinaDeMandoZ);
     puenteBarco.initBuffers(gl, shaderProgramSimple, "gris");
 
-    mar = new cubo(marX, marY, marZ);
+    mar = new cubo(marX, marY, marZ, false, true);
     mar.initBuffers(gl, shaderProgramSimple, "blue");
+    loadTexture(mar, mar.textureImage, "texturas/sea-map.jpg");
 
     for(var i = 0; i < cantidadContainers; i++){
       var container = new cubo(containersX, containersY, containersZ, false, true);
