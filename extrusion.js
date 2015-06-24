@@ -13,6 +13,9 @@ function extrusion(forma, camino, escala) {
     this.camino = camino;
     this.escala = escala;
 
+    this.tapa1 = null;
+    this.tapa2 = null;
+
     this._createExtrusion = function(forma, camino, escala){
         this.cols = forma.length / 3;
         this.rows = camino.length;
@@ -22,7 +25,7 @@ function extrusion(forma, camino, escala) {
         for (var i = 0; i < this.rows; i++) {
             var traslacion = mat4.create();
             var escalado = mat4.create();
-            var modelView = mat4.create();
+            var modelado = mat4.create();
 
             mat4.identity(traslacion);
             mat4.translate(traslacion,traslacion, camino[i]);
@@ -30,15 +33,15 @@ function extrusion(forma, camino, escala) {
             mat4.identity(escalado);
             mat4.scale(escalado, escalado, escala[i]);
 
-            mat4.identity(modelView);
-            mat4.multiply(modelView, traslacion, escalado);
+            mat4.identity(modelado);
+            mat4.multiply(modelado, traslacion, escalado);
 
 
             for (var j = 0; j < forma.length; j+=3){
                 var punto = vec3.fromValues(forma[j], forma[j+1], forma[j+2]);
-                var fila = vec3.create();
-                vec3.transformMat4(fila, punto, modelView);
-                this.position_buffer.push(fila[0], fila[1], fila[2]);
+                var vertice = vec3.create();
+                vec3.transformMat4(vertice, punto, modelado);
+                this.position_buffer.push(vertice[0], vertice[1], vertice[2]);
             }
         }
     }
@@ -75,23 +78,34 @@ function extrusion(forma, camino, escala) {
 
 
     this.agregarTapa = function(pasoNro) {
-    	var centro = this.position_buffer.length/3;
-    	this.position_buffer.push(this.camino[pasoNro][0], this.camino[pasoNro][1], this.camino[pasoNro][2]);	//El centro de la tapa
 
-    	for (var i = 0; i < this.cols-1; i++){
-    		this.index_buffer.push(centro);
-    		this.index_buffer.push(pasoNro * this.cols + i);
-    		this.index_buffer.push(pasoNro * this.cols + i + 1);
-    	}
+        var centro = [this.camino[pasoNro][0], this.camino[pasoNro][1], this.camino[pasoNro][2]];
+        var perimetro = this.position_buffer.slice(3 * this.cols * pasoNro,   3 * this.cols * (pasoNro + 1));
+
+        if (this.tapa1 == null) {
+            this.tapa1 = new tapa(centro, perimetro);
+        } else {
+            this.tapa2 = new tapa(centro, perimetro);
+        }
+    	// var centro = this.position_buffer.length/3;
+    	// this.position_buffer.push(this.camino[pasoNro][0], this.camino[pasoNro][1], this.camino[pasoNro][2]);	//El centro de la tapa
+
+    	// for (var i = 0; i < this.cols-1; i++){
+    	// 	this.index_buffer.push(centro);
+    	// 	this.index_buffer.push(pasoNro * this.cols + i);
+    	// 	this.index_buffer.push(pasoNro * this.cols + i + 1);
+    	// }
     }
 
 
     this.initBuffers = function(gl, shaderProgram, color){
+        if (this.tapa1) console.log("position_buffer: " + this.tapa1.position_buffer.toString());
+
         this.webgl_position_buffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_position_buffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.position_buffer), gl.STATIC_DRAW);
         this.webgl_position_buffer.itemSize = 3;
-        this.webgl_position_buffer.numItems = this.position_buffer.length;
+        this.webgl_position_buffer.numItems = this.position_buffer.length / 3;
 
         this.webgl_index_buffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
@@ -114,7 +128,12 @@ function extrusion(forma, camino, escala) {
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_color_buffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.generatedColors), gl.STATIC_DRAW);   
         this.webgl_color_buffer.itemSize = 4;
-        this.webgl_color_buffer.numItems = this.generatedColors.length;
+        this.webgl_color_buffer.numItems = this.generatedColors.length / 4;
+
+        if (this.tapa1) 
+            this.tapa1.initBuffers(gl, color);
+        if (this.tapa2)
+            this.tapa2.initBuffers(gl, color);
     }
 
 
@@ -131,5 +150,12 @@ function extrusion(forma, camino, escala) {
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
 
         gl.drawElements(gl.TRIANGLE_STRIP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
+
+        if (this.tapa1){   
+            this.tapa1.draw(modelMatrix, gl, shaderProgram)
+        }
+        if (this.tapa2){
+            this.tapa2.draw(modelMatrix, gl, shaderProgram)
+        }
     }
 }

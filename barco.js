@@ -65,6 +65,7 @@ function barco(scaleX, scaleY, scaleZ){
     	}
     }
 
+
     this._cargarForma();
 
     this.camino = [];
@@ -80,6 +81,7 @@ function barco(scaleX, scaleY, scaleZ){
     this.extrusion = new extrusion(this.forma, this.camino, this.escala);
     this.extrusion.agregarTapa(1);
     this.extrusion.agregarTapa(this.camino.length-1);
+
 
 	this.initBuffers = function(gl, shaderProgram, color){
         this.extrusion.initBuffers(gl, shaderProgram, color);
