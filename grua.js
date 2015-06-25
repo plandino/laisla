@@ -31,11 +31,13 @@ function grua(scaleX, scaleY, scaleZ){
 	    this.pluma = new pluma(this.escalaX, this.escalaY, this.escalaZ);
 	    this.pluma.initBuffers(gl, shaderProgram);
 
-	    this.barraSupDerecha = new cubo(6.0 * this.escalaX, 6.0 * this.escalaY, 50.0 * this.escalaZ);
+	    this.barraSupDerecha = new cubo(6.0 * this.escalaX, 6.0 * this.escalaY, 45.0 * this.escalaZ, false, true);
 	    this.barraSupDerecha.initBuffers(gl, shaderProgram, "yellow");
+	    loadTexture(this.barraSupDerecha, this.barraSupDerecha.textureImage, "textfinales/texturaGrua.jpg");
 
-	    this.barraSupIzq = new cubo(6.0 * this.escalaX, 6.0 * this.escalaY, 50.0 * this.escalaZ);
+	    this.barraSupIzq = new cubo(6.0 * this.escalaX, 6.0 * this.escalaY, 45.0 * this.escalaZ, false, true);
 	    this.barraSupIzq.initBuffers(gl, shaderProgram, "yellow");
+	   	loadTexture(this.barraSupIzq, this.barraSupIzq.textureImage, "textfinales/texturaGrua.jpg");
 
 	    this.cabina = new cabina(this.escalaX, this.escalaY, this.escalaZ);
 	    this.cabina.initBuffers(gl, shaderProgram, "rojoOpaco");
@@ -60,6 +62,18 @@ function grua(scaleX, scaleY, scaleZ){
 	    mat4.translate(matrix_pluma, matrix_pluma, [0.0, 55.0 * this.escalaY, 0.0 ]);
 	    this.pluma.draw(matrix_pluma, gl, this.shaderTexturas);
 
+	   	var matrix_barraSupDer = mat4.create();
+	    mat4.identity(matrix_barraSupDer);
+	    mat4.multiply(matrix_barraSupDer, matrix_barraSupDer, modelMatrix);
+	    mat4.translate(matrix_barraSupDer, matrix_barraSupDer, [-10.0 * this.escalaX, 57.0 * this.escalaY, 0.0 ]);
+	    this.barraSupDerecha.draw(matrix_barraSupDer, gl, this.shaderTexturas);
+
+	    var matrix_barraSupIzq = mat4.create();
+	    mat4.identity(matrix_barraSupIzq);
+	    mat4.multiply(matrix_barraSupIzq, matrix_barraSupIzq, modelMatrix);
+	    mat4.translate(matrix_barraSupIzq, matrix_barraSupIzq, [10.0 * this.escalaX, 57.0 * this.escalaY, 0.0 ]);
+	    this.barraSupIzq.draw(matrix_barraSupIzq, gl, this.shaderTexturas);
+
 	    /***** CONTEXTO SIMPLE *****/
 		gl.useProgram(shaderProgramSimple);
 		gl.uniformMatrix4fv(gl.shaderProgramSimple.perspectiveMatrixUniform, false, perspectiveMatrix);
@@ -77,17 +91,17 @@ function grua(scaleX, scaleY, scaleZ){
 	    mat4.translate(matrix_pataDos, matrix_pataDos, [0.0, 0.0, -25.0 * this.escalaZ]);
 	    this.pataDos.draw(matrix_pataDos, gl, shaderProgram);
 
-	    var matrix_barraSupDer = mat4.create();
-	    mat4.identity(matrix_barraSupDer);
-	    mat4.multiply(matrix_barraSupDer, matrix_barraSupDer, modelMatrix);
-	    mat4.translate(matrix_barraSupDer, matrix_barraSupDer, [-10.0 * this.escalaX, 57.0 * this.escalaY, 0.0 ]);
-	    this.barraSupDerecha.draw(matrix_barraSupDer, gl, shaderProgram);
+	    // var matrix_barraSupDer = mat4.create();
+	    // mat4.identity(matrix_barraSupDer);
+	    // mat4.multiply(matrix_barraSupDer, matrix_barraSupDer, modelMatrix);
+	    // mat4.translate(matrix_barraSupDer, matrix_barraSupDer, [-10.0 * this.escalaX, 57.0 * this.escalaY, 0.0 ]);
+	    // this.barraSupDerecha.draw(matrix_barraSupDer, gl, shaderProgram);
 
-	    var matrix_barraSupIzq = mat4.create();
-	    mat4.identity(matrix_barraSupIzq);
-	    mat4.multiply(matrix_barraSupIzq, matrix_barraSupIzq, modelMatrix);
-	    mat4.translate(matrix_barraSupIzq, matrix_barraSupIzq, [10.0 * this.escalaX, 57.0 * this.escalaY, 0.0 ]);
-	    this.barraSupIzq.draw(matrix_barraSupIzq, gl, shaderProgram);
+	    // var matrix_barraSupIzq = mat4.create();
+	    // mat4.identity(matrix_barraSupIzq);
+	    // mat4.multiply(matrix_barraSupIzq, matrix_barraSupIzq, modelMatrix);
+	    // mat4.translate(matrix_barraSupIzq, matrix_barraSupIzq, [10.0 * this.escalaX, 57.0 * this.escalaY, 0.0 ]);
+	    // this.barraSupIzq.draw(matrix_barraSupIzq, gl, shaderProgram);
 
 	    var matrix_cabina = mat4.create();
 	    mat4.identity(matrix_cabina);
