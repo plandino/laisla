@@ -12,17 +12,21 @@ function pluma(scaleX, scaleY, scaleZ){
 
 	this.initBuffers = function(gl, shaderProgram){
 
-	    this.contrapeso = new cubo(contrapesoX * this.escalaX, contrapesoY * this.escalaY, contrapesoZ * this.escalaZ);
-	    this.contrapeso.initBuffers(gl, shaderProgram, "yellow");
+	    this.contrapeso = new cubo(contrapesoX * this.escalaX, contrapesoY * this.escalaY, contrapesoZ * this.escalaZ, false, true);
+	    this.contrapeso.initBuffers(gl, shaderProgram, "yellow", coordenadasUVContapeso);
+        loadTexture(this.contrapeso, this.contrapeso.textureImage, "textfinales/texturaGrua.jpg");
 
-	    this.barraDerecha = new cubo(largoPlumaX * this.escalaX, 6.0 * this.escalaY, 6.0 * this.escalaZ);
-	    this.barraDerecha.initBuffers(gl, shaderProgram, "yellow");
+	    this.barraDerecha = new cubo(largoPlumaX * this.escalaX, 6.0 * this.escalaY, 6.0 * this.escalaZ, false, true);
+	    this.barraDerecha.initBuffers(gl, shaderProgram, "yellow", coordenadasUVBarrasParalelasPluma);
+	    loadTexture(this.barraDerecha, this.barraDerecha.textureImage, "textfinales/texturaGrua.jpg");
 
-	    this.barraIzquierda = new cubo(largoPlumaX * this.escalaX, 6.0 * this.escalaY, 6.0 * this.escalaZ);
-	    this.barraIzquierda.initBuffers(gl, shaderProgram, "yellow");
+	    this.barraIzquierda = new cubo(largoPlumaX * this.escalaX, 6.0 * this.escalaY, 6.0 * this.escalaZ, false, true);
+	    this.barraIzquierda.initBuffers(gl, shaderProgram, "yellow", coordenadasUVBarrasParalelasPluma);
+	    loadTexture(this.barraIzquierda, this.barraIzquierda.textureImage, "textfinales/texturaGrua.jpg");
 
-	    this.barraAdelante = new cubo(4.0 * this.escalaX, 4.0 * this.escalaY, 15.0 * this.escalaZ);
-	    this.barraAdelante.initBuffers(gl, shaderProgram, "yellow");
+	    this.barraAdelante = new cubo(6.0 * this.escalaX, 6.0 * this.escalaY, 20.0 * this.escalaZ, false, true);
+	    this.barraAdelante.initBuffers(gl, shaderProgram, "yellow", coordenadasUVBarraCruzadaPluma);
+	    loadTexture(this.barraAdelante, this.barraAdelante.textureImage, "textfinales/texturaGrua.jpg");
 
 	}
 
@@ -50,7 +54,7 @@ function pluma(scaleX, scaleY, scaleZ){
 	    var matrix_barraAdelante = mat4.create();
 	    mat4.identity(matrix_barraAdelante);
 	    mat4.multiply(matrix_barraAdelante, matrix_barraAdelante, modelMatrix);
-	    mat4.translate(matrix_barraAdelante, matrix_barraAdelante, [87.0 * this.escalaX, 0.0, 0.0]);
+	    mat4.translate(matrix_barraAdelante, matrix_barraAdelante, [93.0 * this.escalaX, 0.0, 0.0]);
 	    this.barraAdelante.draw(matrix_barraAdelante, gl, shaderProgram);
 
 	}

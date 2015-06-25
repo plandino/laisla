@@ -165,6 +165,7 @@ function drawScene() {
 
     gruita = new grua(1.0, 1.0, 1.0);
     gruita.initBuffers(gl, shaderProgramSimple);
+    gruita.asignarShaders(shaderProgramSimple, shaderProgramTexturas);
 
     muelle = new cubo(muelleX, muelleY, muelleZ, false, true);
     muelle.initBuffers(gl, null, "gris");

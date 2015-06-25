@@ -12,6 +12,14 @@ function grua(scaleX, scaleY, scaleZ){
 	this.escalaY = scaleY;
 	this.escalaZ = scaleZ;
 
+	this.shaderSimple 	= null;
+	this.shaderTexturas = null;
+
+	this.asignarShaders = function(shaderProgSimple, shaderProgTexturas){
+		this.shaderSimple 	= shaderProgSimple;
+		this.shaderTexturas = shaderProgTexturas;
+	}
+
 	this.initBuffers = function(gl, shaderProgram){
 
 	    this.pataUno = new pataGrua(this.escalaX, this.escalaY, this.escalaY);
@@ -39,6 +47,24 @@ function grua(scaleX, scaleY, scaleZ){
 
 	this.draw = function(modelMatrix, gl, shaderProgram){
 
+		/***** CONTEXTO TEXTURAS *****/
+	    gl.useProgram(this.shaderTexturas);
+  		gl.uniformMatrix4fv(this.shaderTexturas.perspectiveMatrixUniform, false, perspectiveMatrix);
+  		gl.uniformMatrix4fv(this.shaderTexturas.viewMatrixUniform, false, cameraMatrix );
+
+  		setLuces(cameraMatrix, gl, this.shaderTexturas);
+
+	    var matrix_pluma = mat4.create();
+	    mat4.identity(matrix_pluma);
+	    mat4.multiply(matrix_pluma, matrix_pluma, modelMatrix);
+	    mat4.translate(matrix_pluma, matrix_pluma, [0.0, 55.0 * this.escalaY, 0.0 ]);
+	    this.pluma.draw(matrix_pluma, gl, this.shaderTexturas);
+
+	    /***** CONTEXTO SIMPLE *****/
+		gl.useProgram(shaderProgramSimple);
+		gl.uniformMatrix4fv(gl.shaderProgramSimple.perspectiveMatrixUniform, false, perspectiveMatrix);
+		gl.uniformMatrix4fv(gl.shaderProgramSimple.viewMatrixUniform, false, cameraMatrix );
+
 	    var matrix_pataUno = mat4.create();
 	    mat4.identity(matrix_pataUno);
 	    mat4.multiply(matrix_pataUno, matrix_pataUno, modelMatrix);
@@ -50,12 +76,6 @@ function grua(scaleX, scaleY, scaleZ){
 	    mat4.multiply(matrix_pataDos, matrix_pataDos, modelMatrix);
 	    mat4.translate(matrix_pataDos, matrix_pataDos, [0.0, 0.0, -25.0 * this.escalaZ]);
 	    this.pataDos.draw(matrix_pataDos, gl, shaderProgram);
-
-	    var matrix_pluma = mat4.create();
-	    mat4.identity(matrix_pluma);
-	    mat4.multiply(matrix_pluma, matrix_pluma, modelMatrix);
-	    mat4.translate(matrix_pluma, matrix_pluma, [0.0, 55.0 * this.escalaY, 0.0 ]);
-	    this.pluma.draw(matrix_pluma, gl, shaderProgram);
 
 	    var matrix_barraSupDer = mat4.create();
 	    mat4.identity(matrix_barraSupDer);
@@ -79,7 +99,7 @@ function grua(scaleX, scaleY, scaleZ){
 	    var matrix_lamparaCabeza = mat4.create();
 		mat4.identity(matrix_lamparaCabeza);
 		mat4.multiply(matrix_lamparaCabeza, matrix_lamparaCabeza, modelMatrix);
-		mat4.translate(matrix_lamparaCabeza, matrix_lamparaCabeza, [87.0, 52.0, 0.0]);
+		mat4.translate(matrix_lamparaCabeza, matrix_lamparaCabeza, [93.0, 50.0, 0.0]);
 		lamparaCabezaGrua.draw(matrix_lamparaCabeza, gl, shaderProgram);
 
 	}
