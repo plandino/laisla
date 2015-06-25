@@ -10,6 +10,8 @@ function islote() {
     this.forma = null;
     this.camino = null;
     this.escala = null;
+    this.tangentes = null;
+    this.normales = null;
 
     this.extrusion = null;
 
@@ -19,6 +21,8 @@ function islote() {
 
     this._cargarForma = function() {
     	this.forma = [];
+        this.tangentes = [];
+        this.normales = [];
     	this.index_buffer = [];
 
         var P = [];
@@ -69,6 +73,8 @@ function islote() {
         var totalPuntos = 0;
         for (var i in tramos){
             this.forma = this.forma.concat(tramos[i].getPositionBuffer());
+            this.tangentes = this.tangentes.concat(tramos[i].getTangentBuffer());
+            this.normales = this.normales.concat(tramos[i].getNormalBuffer());
             totalPuntos += tramos[i].getCantidadVertices();
         }
 
@@ -106,8 +112,8 @@ function islote() {
         this.escala.push([esc[i], esc[i], 1.0]);
     }
 
-    this.extrusion = new extrusion(this.forma, this.camino, this.escala);
-    this.extrusion.agregarTapa(this.camino.length-1);
+    this.extrusion = new extrusion(this.forma, this.camino, this.escala, this.tangentes, this.normales);
+    this.extrusion.agregarTapa(this.camino.length-1, true);
 
 
     this.initBuffers = function(gl, shaderProgram, color) {

@@ -10,6 +10,8 @@ function barco(scaleX, scaleY, scaleZ){
     this.forma = null;
     this.camino = null;
     this.escala = null;
+    this.tangentes = null;  // De la curva
+    this.normales = null;   // De la curva
 
     this.extrusion = null;
 
@@ -19,6 +21,8 @@ function barco(scaleX, scaleY, scaleZ){
 
     this._cargarForma = function(){
     	this.forma = [];
+        this.tangentes = [];
+        this.normales = [];
     	this.index_buffer = [];
 
 		var P = [];
@@ -58,6 +62,8 @@ function barco(scaleX, scaleY, scaleZ){
     	for (var i in tramos){
     		this.forma = this.forma.concat(tramos[i].getPositionBuffer());
     		totalPuntos += tramos[i].getCantidadVertices();
+            this.tangentes = this.tangentes.concat(tramos[i].getTangentBuffer());
+            this.normales = this.normales.concat(tramos[i].getNormalBuffer());
     	}
 
     	for (var i = 0; i <= totalPuntos; i++){
@@ -78,9 +84,9 @@ function barco(scaleX, scaleY, scaleZ){
     	this.escala.push([1-i*i/c, 1-i*i/c, 1.0])
     }
 
-    this.extrusion = new extrusion(this.forma, this.camino, this.escala);
-    this.extrusion.agregarTapa(1);
-    this.extrusion.agregarTapa(this.camino.length-1);
+    this.extrusion = new extrusion(this.forma, this.camino, this.escala, this.tangentes, this.normales);
+    this.extrusion.agregarTapa(1, true);
+    this.extrusion.agregarTapa(this.camino.length-1, false);
 
 
 	this.initBuffers = function(gl, shaderProgram, color){

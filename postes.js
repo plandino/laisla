@@ -8,14 +8,16 @@ function postes(){
 	this.initBuffers = function(gl, shaderProgram){
 
 	    var forma = [];
+	    var normales = [];
+	    var tangentes = [];
 	    var radio = 3.0;
 	    for (var i = 0; i <= 2*Math.PI + 0.0001; i += 2*Math.PI/30.0){
-	        var x = radio*Math.cos(i);
-	        var y = radio*Math.sin(i);
+	        var x = Math.cos(i);
+	        var y = Math.sin(i);
 
-	        forma.push(x);
-	        forma.push(y);
-	        forma.push(0);
+	        forma.push(radio*x, radio*y, 0);
+	        normales.push(vec3.fromValues(x, y, 0));
+	        tangentes.push(vec3.fromValues(-y, x, 0));
 	    }
 	    
 	    var camino = [];
@@ -26,12 +28,12 @@ function postes(){
 	        escala.push([1.0, 1.0, 1.0]);
 	    }
 
-	    this.posteUno = new extrusion(forma, camino, escala);
+	    this.posteUno = new extrusion(forma, camino, escala, tangentes, normales);
 	    this.posteUno.agregarTapa(0);
 	    this.posteUno.agregarTapa(camino.length-1);
 	    this.posteUno.initBuffers(gl, shaderProgram, "orange");
 
-	    this.posteDos = new extrusion(forma, camino, escala);
+	    this.posteDos = new extrusion(forma, camino, escala, tangentes, normales);
 	    this.posteDos.agregarTapa(0);
 	    this.posteDos.agregarTapa(camino.length-1);
 	    this.posteDos.initBuffers(gl, shaderProgram, "orange");

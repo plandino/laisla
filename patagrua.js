@@ -17,7 +17,6 @@ function pataGrua(scaleX, scaleY, scaleZ){
 	    this.pataUno = new cubo(4.0 * this.escalaX, gruaY * this.escalaY, 4.0 * this.escalaZ);
 	    this.pataUno.initBuffers(gl, shaderProgram, "yellow");
 
-
 	    this.pataDos = new cubo(4.0 * this.escalaX, gruaY * this.escalaY, 4.0 * this.escalaZ);
 	    this.pataDos.initBuffers(gl, shaderProgram, "yellow");
 
@@ -32,14 +31,16 @@ function pataGrua(scaleX, scaleY, scaleZ){
 
 
 	    var forma = [];
+	    var tangentes = [];
+	    var normales = [];
 	    var radio = 3.0;
 	    for (var i = 0; i <= 2*Math.PI + 0.0001; i += 2*Math.PI/30.0){
-	        var x = radio*Math.cos(i);
-	        var y = radio*Math.sin(i);
+	        var x = Math.cos(i);
+	        var y = Math.sin(i);
 
-	        forma.push(x);
-	        forma.push(y);
-	        forma.push(0);
+	        forma.push(radio*x, radio*y, 0);
+	        normales.push(vec3.fromValues(x, y, 0.0));
+	        tangentes.push(vec3.fromValues(-y, x, 0.0));
 	    }
 	    
 	    var camino = [];
@@ -50,14 +51,14 @@ function pataGrua(scaleX, scaleY, scaleZ){
 	        escala.push([1.0, 1.0, 1.0]);
 	    }
 
-	    this.ruedaUno = new extrusion(forma, camino, escala);
-	    this.ruedaUno.agregarTapa(0);
-	    this.ruedaUno.agregarTapa(camino.length-1);
+	    this.ruedaUno = new extrusion(forma, camino, escala, tangentes, normales);
+	    this.ruedaUno.agregarTapa(0, false);
+	    this.ruedaUno.agregarTapa(camino.length-1, true);
 	    this.ruedaUno.initBuffers(gl, shaderProgram, "green");
 
-	    this.ruedaDos = new extrusion(forma, camino, escala);
-	    this.ruedaUno.agregarTapa(0);
-	    this.ruedaUno.agregarTapa(camino.length-1);
+	    this.ruedaDos = new extrusion(forma, camino, escala, tangentes, normales);
+	    this.ruedaUno.agregarTapa(0, false);
+	    this.ruedaUno.agregarTapa(camino.length-1, true);
 	    this.ruedaUno.initBuffers(gl, shaderProgram, "green");
 	}
 

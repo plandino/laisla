@@ -1,4 +1,4 @@
-function tapa(centro, perimetro) {
+function tapa(centro, perimetro, esSuperior) {
     this.centro = centro;
     this.perimetro = perimetro;
     
@@ -7,6 +7,18 @@ function tapa(centro, perimetro) {
     this.index_buffer = [];
     for (var i = 0; i < this.position_buffer.length/3; i++)
         this.index_buffer.push(i);
+    
+    this.tangent_buffer = [];
+    this.normal_buffer = [];
+
+    var z;
+    if (esSuperior) z = 1.0;
+    else z = -1.0;
+    for (var i = 0; i < this.position_buffer; i+=3){
+        this.tangent_buffer.push(1.0, 0.0, 0.0);
+        this.normal_buffer.push(0.0, 0.0, z);
+    }
+
 
     this.webgl_position_buffer = null;
     this.webgl_color_buffer = null;
