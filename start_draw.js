@@ -48,12 +48,12 @@ function drawScene() {
   mat4.translate(matrix_grua, matrix_grua, [0.0, 0.0, trasGruaZ]);
   gruita.draw(matrix_grua, gl, shaderProgramSimple);
 
-  var matrix_barco = mat4.create();
-  mat4.identity(matrix_barco);
-  mat4.translate(matrix_barco, matrix_barco, [trasBarcoX, trasBarcoY, trasBarcoZ]);
-  mat4.rotateX(matrix_barco, matrix_barco, degToRad(90));
-  mat4.scale(matrix_barco, matrix_barco, [escBarcoX, escBarcoY, escBarcoZ]);
-  barco.draw(matrix_barco, gl, shaderProgramSimple);
+  // var matrix_barco = mat4.create();
+  // mat4.identity(matrix_barco);
+  // mat4.translate(matrix_barco, matrix_barco, [trasBarcoX, trasBarcoY, trasBarcoZ]);
+  // mat4.rotateX(matrix_barco, matrix_barco, degToRad(90));
+  // mat4.scale(matrix_barco, matrix_barco, [escBarcoX, escBarcoY, escBarcoZ]);
+  // barco.draw(matrix_barco, gl, shaderProgramSimple);
 
   var matrix_islote = mat4.create();
   mat4.identity(matrix_islote);
@@ -93,6 +93,13 @@ function drawScene() {
   // Usando la misma matriz subo la cabina de mando del puente del barco
   mat4.translate(matrix_estructPuente, matrix_estructPuente, [0.0, trasCabinaDeMandoBarcoY, 0.0]);
   puenteBarco.draw(matrix_estructPuente, gl, shaderProgramTexturas);
+
+  var matrix_barco = mat4.create();
+  mat4.identity(matrix_barco);
+  mat4.translate(matrix_barco, matrix_barco, [trasBarcoX, trasBarcoY, trasBarcoZ]);
+  mat4.rotateX(matrix_barco, matrix_barco, degToRad(90));
+  mat4.scale(matrix_barco, matrix_barco, [escBarcoX, escBarcoY, escBarcoZ]);
+  barco.draw(matrix_barco, gl, shaderProgramTexturas);
 
 
   if (inicio){
