@@ -172,12 +172,12 @@ function drawScene() {
 
 
     estructuraPuenteBarco = new cubo(estructuraPuenteX, estructuraPuenteY, estructuraPuenteZ, false, true);
-    estructuraPuenteBarco.initBuffers(gl, shaderProgramSimple, "gris");
+    estructuraPuenteBarco.initBuffers(gl, shaderProgramSimple, "gris", coordenadasUVPuenteBarco);
     loadTexture(estructuraPuenteBarco, estructuraPuenteBarco.textureImage, "textfinales/cabinaBarco.jpg");
 
 
     puenteBarco = new cubo(cabinaDeMandoX, cabinaDeMandoY, cabinaDeMandoZ, false, true);
-    puenteBarco.initBuffers(gl, shaderProgramSimple, "gris");
+    puenteBarco.initBuffers(gl, shaderProgramSimple, "gris", coordenadasUVCabinaBarco);
     loadTexture(puenteBarco, puenteBarco.textureImage, "textfinales/cabinaBarco.jpg");
 
     mar = new cubo(marX, marY, marZ, false, true);
@@ -186,7 +186,7 @@ function drawScene() {
 
     for(var i = 0; i < cantidadContainers; i++){
       var container = new cubo(containersX, containersY, containersZ, false, true);
-      container.initBuffers(gl, shaderProgramSimple, "purple");
+      container.initBuffers(gl, shaderProgramSimple, "purple", coordenadasUVContainer);
       if(i < 4) {
         loadTexture(container, container.textureImage, "textfinales/container_difusemapnaranja.jpg");
       } else if(i < 8){

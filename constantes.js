@@ -29,8 +29,8 @@
   var marZ = 1500.0;
 
   // Tamaño del puente del barco
-  var estructuraPuenteX = 60.0;
-  var estructuraPuenteY = 35.0;
+  var estructuraPuenteX = 50.0;
+  var estructuraPuenteY = 25.0;
   var estructuraPuenteZ = 15.0;
 
   var cabinaDeMandoX = 80.0;
@@ -62,7 +62,7 @@
   var trasEstructuraPuenteZ = -80.0;
 
   // La elevacion de la cabina de mando por sobre la estructura del puente del barco
-  var trasCabinaDeMandoBarcoY = 15.0;
+  var trasCabinaDeMandoBarcoY = 17.5;
 
   // Largo de la pluma
   var largoPlumaX = 130.0;

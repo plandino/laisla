@@ -22,7 +22,7 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura){
 
     // Inicio los valores, para los vertices(posicion, color) e indices
     // Luego los bindeo con los buffers
-    this.initBuffers = function(gl, shaderProgram, color){
+    this.initBuffers = function(gl, shaderProgram, color, coordUV){
 
         // Esto auxiliares los uso para construir los vertices del cubo
         var width   = ancho/2.0;
@@ -125,7 +125,11 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura){
         this.cubeVertexBuffer.itemSize = 3;
         this.cubeVertexBuffer.numItems = this.vertices.length / 3;
 
-        this.coordenadasUV = coordenadasUVContainer;
+        if(coordUV){
+          this.coordenadasUV = coordUV;
+        } else {
+          this.coordenadasUV = coordenadasUVContainer;
+        }
         // [
 
         // // Cara adelante
