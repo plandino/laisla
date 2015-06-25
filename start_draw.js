@@ -96,14 +96,16 @@ function drawScene() {
 
 
   if (inicio){
+      // Al principio coloco los containers que van en el muelle
       for(var j = 0; j < cantidadContainers * 5 / 6; j++){
         var matrix_containers = mat4.create();
         mat4.identity(matrix_containers);
-        mat4.translate(matrix_containers, matrix_containers, [ - 10.0 + 18.0 * (j % 2), 2.0, ( (j % 5) - 2) * 50.0]);
+        mat4.translate(matrix_containers, matrix_containers, [ - 10.0 + 18.0 * (j % 2), 2.1, ( (j % 5) - 2) * 50.0]);
         // mat4.translate(matrix_containers, matrix_containers, [ 15.0 * j , 0.0,  50.0]);
         posContainersAnterior.push(matrix_containers);
       }
 
+      // Al principio coloco los containers que van en el barco
       for(var j = cantidadContainers * 5 / 6; j < cantidadContainers; j++){
         var matrix_containers = mat4.create();
         mat4.identity(matrix_containers);
@@ -114,6 +116,7 @@ function drawScene() {
 
       inicio = false;
   } else {
+        // Con esto mantengo los containers actualizados con el movimiento de la grua
         for(var j = 0; j < cantidadContainers; j++){
         matrix_containers = posContainersAnterior[j];
         if(j == containerEnganchado){
@@ -170,12 +173,12 @@ function drawScene() {
 
     estructuraPuenteBarco = new cubo(estructuraPuenteX, estructuraPuenteY, estructuraPuenteZ, false, true);
     estructuraPuenteBarco.initBuffers(gl, shaderProgramSimple, "gris");
-    loadTexture(estructuraPuenteBarco, estructuraPuenteBarco.textureImage, "cabinaBarco.jpg");
+    loadTexture(estructuraPuenteBarco, estructuraPuenteBarco.textureImage, "textfinales/cabinaBarco.jpg");
 
 
     puenteBarco = new cubo(cabinaDeMandoX, cabinaDeMandoY, cabinaDeMandoZ, false, true);
     puenteBarco.initBuffers(gl, shaderProgramSimple, "gris");
-    loadTexture(puenteBarco, puenteBarco.textureImage, "cabinaBarco.jpg");
+    loadTexture(puenteBarco, puenteBarco.textureImage, "textfinales/cabinaBarco.jpg");
 
     mar = new cubo(marX, marY, marZ, false, true);
     mar.initBuffers(gl, shaderProgramSimple, "blue");
@@ -184,11 +187,17 @@ function drawScene() {
     for(var i = 0; i < cantidadContainers; i++){
       var container = new cubo(containersX, containersY, containersZ, false, true);
       container.initBuffers(gl, shaderProgramSimple, "purple");
-      if(i < 10) {
-        loadTexture(container, container.textureImage, "container_difusemapazul.jpg");
+      if(i < 4) {
+        loadTexture(container, container.textureImage, "textfinales/container_difusemapnaranja.jpg");
+      } else if(i < 8){
+        loadTexture(container, container.textureImage, "textfinales/container_difusemaprojo.jpg");
+      } else if(i < 12){
+        loadTexture(container, container.textureImage, "textfinales/container_difusemapceleste.jpg");
+      } else if(i < 16){
+        loadTexture(container, container.textureImage, "textfinales/container_difusemapverde.jpg");
       } else {
-        loadTexture(container, container.textureImage, "container_difusemaprojo.jpg");
-      }
+        loadTexture(container, container.textureImage, "textfinales/container_difusemapazul.jpg");
+      } 
       arrayContainers.push(container);
     }
 
