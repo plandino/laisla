@@ -25,7 +25,7 @@
 
   // Tamaño del mar
   var marX = 1500.0;
-  var marY = 0.1;
+  var marY = 0.8;
   var marZ = 1500.0;
 
   // Tamaño del puente del barco

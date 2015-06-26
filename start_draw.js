@@ -182,7 +182,7 @@ function drawScene() {
     gruita.asignarShaders(shaderProgramSimple, shaderProgramTexturas);
 
     muelle = new cubo(muelleX, muelleY, muelleZ, false, true);
-    muelle.initBuffers(gl, null, "gris");
+    muelle.initBuffers(gl, null, "gris", coordenadasUVMuelle);
     loadTexture(muelle, muelle.textureImage, "texturas/concretoPlataforma.jpg");
 
 
@@ -196,7 +196,7 @@ function drawScene() {
     loadTexture(puenteBarco, puenteBarco.textureImage, "textfinales/cabinaBarco.jpg");
 
     mar = new cubo(marX, marY, marZ, false, true);
-    mar.initBuffers(gl, shaderProgramSimple, "blue");
+    mar.initBuffers(gl, shaderProgramSimple, "blue", coordenadasUVMar);
     loadTexture(mar, mar.textureImage, "texturas/sea-map.jpg");
 
     for(var i = 0; i < cantidadContainers; i++){
