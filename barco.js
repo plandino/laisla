@@ -79,7 +79,7 @@ function barco(scaleX, scaleY, scaleZ){
             perimetro += vec3.distance(actual, siguiente);
         }
 
-        console.log("perimetro: " + perimetro);
+        // console.log("perimetro: " + perimetro);
 
         this.u.push(0);
         var recorrido = 0.0;
@@ -115,9 +115,21 @@ function barco(scaleX, scaleY, scaleZ){
     	this.escala.push([1-i*i/c, 1-i*i/c, 1.0])
     }
 
+    this._calcularUV = function(){
+        uv_buffer = [];
+        for (var i = 0.0; i <= pasos + 0.00000001; i++){
+            for (var j in this.u){
+                uv_buffer.push(this.u[j]);
+                uv_buffer.push(0.55 - 0.12*i/pasos);
+            }
+        }
+        this.extrusion.asignarCoordenadasUV(uv_buffer);
+    }
+
     this.extrusion = new extrusion(this.forma, this.camino, this.escala, this.tangentes, this.normales, this.u);
     // loadTexture(this.extrusion, this.extrusion.textureImage, "uvgrid.jpg");
     loadTexture(this.extrusion, this.extrusion.textureImage, "textfinales/cascoBarco.jpg");
+    this._calcularUV();
     this.extrusion.agregarTapa(4, true, "uvgrid.jpg");
     // this.extrusion.agregarTapa(1, true, "textfinales/concretoPlataforma.jpg");
     // this.extrusion.agregarTapa(this.camino.length-1, false);

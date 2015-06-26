@@ -85,18 +85,9 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
         }
     }
 
-    this._calcularUV = function(){
-        this.uv_buffer = [];
-        
-        console.log("cols:" + this.cols);
-        console.log("u:" + this.u.length);
 
-        for (var i = 0.0; i < this.rows; i++){
-            for (var j = 0.0; j < this.cols; j++){
-                this.uv_buffer.push(this.u[j]);
-                this.uv_buffer.push(0.55 - 0.12*i/(this.rows-1));
-            }
-        }
+    this.asignarCoordenadasUV = function(uv_buffer){
+        this.uv_buffer = uv_buffer;
     }
 
     this._createExtrusion = function(){
@@ -137,7 +128,6 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
         }
 
         this._calcularNormales();
-        if (this.esTexturada) this._calcularUV();
     }
     
 
@@ -260,17 +250,17 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
         if (this.tapa2)
             this.tapa2.initBuffers(gl, "purple");
 
-        if (this.esTexturada){  //DEBUG
-            // console.log("");
-            console.log("LONGITUDES EXTRUSION")
-            console.log("position_buffer: " + this.position_buffer.length);
-            console.log("index_buffer: " + this.index_buffer.length);
-            console.log("normal_buffer: " + this.normal_buffer.length);
-            console.log("tangent_buffer: " + this.tangent_buffer.length);
-            if (this.esTexturada) console.log("uv_buffer: " + this.uv_buffer.length);
-            console.log("maximo indice: " + Math.max.apply(Math, this.index_buffer));
-            // console.log("");
-        }
+        // if (this.esTexturada){  //DEBUG
+        //     // console.log("");
+        //     console.log("LONGITUDES EXTRUSION")
+        //     console.log("position_buffer: " + this.position_buffer.length);
+        //     console.log("index_buffer: " + this.index_buffer.length);
+        //     console.log("normal_buffer: " + this.normal_buffer.length);
+        //     console.log("tangent_buffer: " + this.tangent_buffer.length);
+        //     if (this.esTexturada) console.log("uv_buffer: " + this.uv_buffer.length);
+        //     console.log("maximo indice: " + Math.max.apply(Math, this.index_buffer));
+        //     // console.log("");
+        // }
     }
 
 
