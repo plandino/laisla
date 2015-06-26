@@ -23,7 +23,7 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
     this.forma = forma;
     this.camino = camino;
     this.escala = escala;
-    this.u = u;
+    // this.u = u;
 
     this.tangentesCurva = tangentes;
     if (typeof normales === "undefined") console.log("normales INDEFINIDA");    //DEBUG

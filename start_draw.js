@@ -108,6 +108,8 @@ function drawScene() {
   mat4.scale(matrix_islote, matrix_islote, [4.0, 3.0, 3.0]);
   islote.draw(matrix_islote, gl, shaderProgramTexturas);
 
+  cielo.draw(mat4.create(), gl, shaderProgramTexturas);
+
 
   if (inicio){
       // Al principio coloco los containers que van en el muelle
@@ -224,6 +226,9 @@ function drawScene() {
 
     posta = new postes();
     posta.initBuffers(gl, shaderProgramSimple);
+
+    cielo = new cielo();
+    cielo.initBuffers(gl, shaderProgramTexturas, "purple");
 
 
     setInterval(drawScene, 10);
