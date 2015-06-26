@@ -1,29 +1,31 @@
 function barco(scaleX, scaleY, scaleZ){
 
 	this.position_buffer = null;
-    this.index_buffer = null;
+    // this.index_buffer = null;
 
-    this.webgl_position_buffer = null;
-    this.webgl_color_buffer = null;
-    this.webgl_index_buffer = null;
+    // this.webgl_position_buffer = null;
+    // this.webgl_color_buffer = null;
+    // this.webgl_index_buffer = null;
 
     this.forma = null;
     this.camino = null;
     this.escala = null;
     this.tangentes = null;  // De la curva
     this.normales = null;   // De la curva
+    this.u = null;          // coord u de textura de la curva
 
     this.extrusion = null;
 
     var a = 100.0;
     var b = 100.0;
-    var n = 100;
+    var n = 50;
 
     this._cargarForma = function(){
     	this.forma = [];
         this.tangentes = [];
         this.normales = [];
-    	this.index_buffer = [];
+    	// this.index_buffer = [];
+        this.u = [];
 
 		var P = [];
 	    P.push([a/2,	0.0, 	0.0]);	// P0
@@ -66,9 +68,38 @@ function barco(scaleX, scaleY, scaleZ){
             this.normales = this.normales.concat(tramos[i].getNormalBuffer());
     	}
 
-    	for (var i = 0; i <= totalPuntos; i++){
-    		this.index_buffer.push(i);
-    	}
+    	// for (var i = 0; i <= totalPuntos; i++){
+    	// 	this.index_buffer.push(i);
+    	// }
+
+        var perimetro = 0.0;
+        for (var i = 0; i <= this.forma.length-5; i+=3){
+            var actual = vec3.fromValues(this.forma[i], this.forma[i+1], this.forma[i+2]);
+            var siguiente = vec3.fromValues(this.forma[i+3], this.forma[i+4], this.forma[i+5]);
+            perimetro += vec3.distance(actual, siguiente);
+        }
+
+        // console.log("perimetro: " + perimetro);
+
+        this.u.push(0);
+        var recorrido = 0.0;
+        for (var i = 0; i <= (this.forma.length - 5)/2; i+=3){
+            var actual = vec3.fromValues(this.forma[i], this.forma[i+1], this.forma[i+2]);
+            var siguiente = vec3.fromValues(this.forma[i+3], this.forma[i+4], this.forma[i+5]);
+            recorrido += vec3.distance(actual, siguiente);
+            // if (2*recorrido <= perimetro) 
+                this.u.push(2*recorrido/perimetro);
+            // else this.u.push(-2*recorrido/perimetro);
+        }
+        var aux = this.u.concat([]).reverse();
+        this.u = this.u.concat(aux);
+        this.u.pop();
+        // console.log("u: " + this.u.toString());
+        
+        // var epsilon = 0.000000000001;
+        // for (var i = 0.0; i <= 2.0 + epsilon; i+=2.0/totalPuntos){
+        //     this.u.push(i);
+        // }
     }
 
 
@@ -76,17 +107,32 @@ function barco(scaleX, scaleY, scaleZ){
 
     this.camino = [];
     this.escala = [];
-    var pasos = 3;
+    var pasos = 12;
     var profundidad = 30.0;
-    var c = 100.0;
+    var c = 20.0;
     for (var i = 0; i <= 1.000000001; i += 1.0/pasos){
     	this.camino.push([0, 0, profundidad*i]);
     	this.escala.push([1-i*i/c, 1-i*i/c, 1.0])
     }
 
-    this.extrusion = new extrusion(this.forma, this.camino, this.escala, this.tangentes, this.normales);
-    this.extrusion.agregarTapa(1, true);
-    this.extrusion.agregarTapa(this.camino.length-1, false);
+    this._calcularUV = function(){
+        uv_buffer = [];
+        for (var i = 0.0; i <= pasos + 0.00000001; i++){
+            for (var j in this.u){
+                uv_buffer.push(this.u[j]);
+                uv_buffer.push(0.55 - 0.12*i/pasos);
+            }
+        }
+        this.extrusion.asignarCoordenadasUV(uv_buffer);
+    }
+
+    this.extrusion = new extrusion(this.forma, this.camino, this.escala, this.tangentes, this.normales, this.u);
+    // loadTexture(this.extrusion, this.extrusion.textureImage, "uvgrid.jpg");
+    loadTexture(this.extrusion, this.extrusion.textureImage, "textfinales/cascoBarco.jpg");
+    this._calcularUV();
+    this.extrusion.agregarTapa(4, true, "uvgrid.jpg");
+    // this.extrusion.agregarTapa(1, true, "textfinales/concretoPlataforma.jpg");
+    // this.extrusion.agregarTapa(this.camino.length-1, false);
 
 
 	this.initBuffers = function(gl, shaderProgram, color){
@@ -94,6 +140,7 @@ function barco(scaleX, scaleY, scaleZ){
     }
 
     this.draw = function(modelMatrix, gl, shaderProgram){
-    	this.extrusion.draw(modelMatrix, gl, shaderProgram);
+        // this.extrusion.draw(modelMatrix, gl, shaderProgram);
+    	this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram);
     }
 }
