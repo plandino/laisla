@@ -267,8 +267,8 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura){
         this.modelMatrix = modelMatrix;
 
        if(this.conTextura){
-            // gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexNormalBuffer);
-            // gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.cubeVertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexNormalBuffer);
+            gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.cubeVertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
             var texMatrix = mat3.create();
             mat3.identity(texMatrix);
