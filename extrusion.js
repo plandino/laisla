@@ -225,8 +225,8 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
             this.webgl_color_buffer.numItems = this.generatedColors.length / 4;
 
             this.webgl_normal_buffer = gl.createBuffer();
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_normal_buffer);
-            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Float32Array(this.normal_buffer), gl.STATIC_DRAW);
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.normal_buffer), gl.STATIC_DRAW);
             this.webgl_normal_buffer.itemSize = 3;
             this.webgl_normal_buffer.numItems = this.normal_buffer.length / 3;
 
