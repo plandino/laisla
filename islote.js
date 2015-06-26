@@ -89,8 +89,8 @@ function islote() {
             recorrido += vec3.distance(actual, siguiente);
             this.u.push(repeticiones*recorrido/perimetro);
         }
-        console.log("perimetro: " + perimetro);
-        console.log("u: " + this.u.length);
+        // console.log("perimetro: " + perimetro);
+        // console.log("u: " + this.u.length);
     }
 
 
@@ -131,7 +131,7 @@ function islote() {
             }
         }
 
-        console.log("uv_buffer: " + uv_buffer.length);
+        // console.log("uv_buffer: " + uv_buffer.length);
         this.extrusion.asignarCoordenadasUV(uv_buffer);
     }
 
@@ -140,7 +140,7 @@ function islote() {
     loadTexture(this.extrusion, this.extrusion.textureImage, "textfinales/isla.jpg");
     this._calcularUV();
     // this.extrusion.agregarTapa(this.camino.length-1, true, "uvgrid.jpg");
-    this.extrusion.agregarTapa(this.camino.length-1, true, "textfinales/pastoIsla.jpg", 15.0, 15.0);
+    this.extrusion.agregarTapa(this.camino.length-1, true, true, "textfinales/pastoIsla.jpg", 15.0, 15.0);
 
 
     this.initBuffers = function(gl, shaderProgram, color) {

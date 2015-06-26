@@ -109,8 +109,8 @@ function barco(scaleX, scaleY, scaleZ){
     // loadTexture(this.extrusion, this.extrusion.textureImage, "uvgrid.jpg");
     loadTexture(this.extrusion, this.extrusion.textureImage, "textfinales/cascoBarco.jpg");
     this._calcularUV();
-    this.extrusion.agregarTapa(4, true, "uvgrid.jpg", 100.0, 100.0);
-    this.extrusion.agregarTapa(this.camino.length-1, false, "oihabfhi.jpg", 100.0, 100.0); //esto le pone fondo negro, je
+    this.extrusion.agregarTapa(4, true, true, "uvgrid.jpg", 100.0, 100.0);
+    this.extrusion.agregarTapa(this.camino.length-1, false, true, null, 100.0, 100.0); //esto le pone fondo negro, je
 
 
 	this.initBuffers = function(gl, shaderProgram, color){

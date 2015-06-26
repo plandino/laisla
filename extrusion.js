@@ -161,16 +161,16 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
     this._createIndexBuffer();  
 
 
-    this.agregarTapa = function(pasoNro, esSuperior, textura, escalaX, escalaY) {
+    this.agregarTapa = function(pasoNro, esSuperior, esTexturada, textura, escalaX, escalaY) {
         var centro = [this.camino[pasoNro][0], this.camino[pasoNro][1], this.camino[pasoNro][2]];
         var perimetro = this.position_buffer.slice(3 * this.cols * pasoNro,   3 * this.cols * (pasoNro + 1));
 
         if (!this.tapa1) {
-            this.tapa1 = new tapa(centro, perimetro, esSuperior, true, escalaX, escalaY);
-            loadTexture(this.tapa1, this.tapa1.textureImage, textura);
+            this.tapa1 = new tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY);
+            if (esTexturada) loadTexture(this.tapa1, this.tapa1.textureImage, textura);
         } else {
-            this.tapa2 = new tapa(centro, perimetro, esSuperior, true, escalaX, escalaY);
-            loadTexture(this.tapa2, this.tapa1.textureImage, textura);
+            this.tapa2 = new tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY);
+            if (esTexturada) loadTexture(this.tapa2, this.tapa1.textureImage, textura);
         }
     }
 
@@ -244,14 +244,8 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
                 this.webgl_uv_buffer.numItems = this.uv_buffer.length / 2;
             }
 
-        if (this.tapa1) 
-            // this.tapa1.initBuffers(gl, color);
-            this.tapa1.initBuffers(gl, "purple");
-        if (this.tapa2)
-            this.tapa2.initBuffers(gl, "purple");
-
         // if (this.esTexturada){  //DEBUG
-        //     // console.log("");
+        //     console.log();
         //     console.log("LONGITUDES EXTRUSION")
         //     console.log("position_buffer: " + this.position_buffer.length);
         //     console.log("index_buffer: " + this.index_buffer.length);
@@ -261,6 +255,12 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
         //     console.log("maximo indice: " + Math.max.apply(Math, this.index_buffer));
         //     // console.log("");
         // }
+
+        if (this.tapa1) 
+            // this.tapa1.initBuffers(gl, color);
+            this.tapa1.initBuffers(gl, "purple");
+        if (this.tapa2)
+            this.tapa2.initBuffers(gl, "purple");
     }
 
 
@@ -294,7 +294,7 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
 
         this.modelMatrix = modelMatrix;
 
-       if(this.texture){
+       if(this.esTexturada){
 
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
             gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.webgl_normal_buffer.itemSize, gl.FLOAT, false, 0, 0);
@@ -318,6 +318,7 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
             gl.uniform1i(shaderProgram.samplerUniform, 0);
         } else {
             // Asigno los colores
+            console.log("Entra a dibujar colores en extrusion texturada");
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_color_buffer);
             gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, this.webgl_color_buffer.itemSize, gl.FLOAT, false, 0, 0);  
         }

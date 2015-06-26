@@ -53,12 +53,12 @@ function pataGrua(scaleX, scaleY, scaleZ){
 
 	    this.ruedaUno = new extrusion(forma, camino, escala, tangentes, normales);
 	    this.ruedaUno.agregarTapa(0, false);
-	    this.ruedaUno.agregarTapa(camino.length-1, true);
+	    this.ruedaUno.agregarTapa(camino.length-1, true, false);
 	    this.ruedaUno.initBuffers(gl, shaderProgram, "green");
 
 	    this.ruedaDos = new extrusion(forma, camino, escala, tangentes, normales);
 	    this.ruedaUno.agregarTapa(0, false);
-	    this.ruedaUno.agregarTapa(camino.length-1, true);
+	    this.ruedaUno.agregarTapa(camino.length-1, true, false);
 	    this.ruedaUno.initBuffers(gl, shaderProgram, "green");
 	}
 

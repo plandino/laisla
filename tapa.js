@@ -97,7 +97,7 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
         }
 
         // if (this.esTexturada){
-        //     // console.log("");
+        //     console.log();
         //     console.log("LONGITUDES TAPA")
         //     console.log("position_buffer: " + this.position_buffer.length);
         //     console.log("index_buffer: " + this.index_buffer.length);
@@ -173,6 +173,7 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
             gl.uniform1i(shaderProgram.samplerUniform, 0);
         } else {
             // Asigno los colores
+            console.log("Entra a dibujar colores en tapa texturada");
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_color_buffer);
             gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, this.webgl_color_buffer.itemSize, gl.FLOAT, false, 0, 0);  
         }
