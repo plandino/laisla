@@ -53,13 +53,15 @@ function pataGrua(scaleX, scaleY, scaleZ){
 	    var camino = [];
 	    var escala = [];
 	    var uv = [];
-	    var longitud = 8.0;
+	    var longitud = 8;
 	    for (var i = 0; i < longitud; i++){
-	        camino.push([0, 0, i]);
-	        // if ( longitud/4 < i < 3*longitud/4)
-	        // 	escala.push(0.5,0.5,0.5)
-	        // else
-	        	escala.push([1.0, 1.0, 1.0]);
+	        camino.push([0, radio, i]);
+	        // if ( longitud/4 <= i < 3*longitud/4){
+	        // 	escala.push([0.5, 0.5, 0.5]);
+	        // } else {
+	        // 	escala.push([1.0, 1.0, 1.0]);
+	        // }
+        	escala.push([1.0, 1.0, 1.0]);
 	        uv = uv.concat(u);
 	    }
 
@@ -113,14 +115,14 @@ function pataGrua(scaleX, scaleY, scaleZ){
 	    var matrix_ruedaUno = mat4.create();
 	    mat4.identity(matrix_ruedaUno);
 	    mat4.multiply(matrix_ruedaUno, matrix_ruedaUno, modelMatrix);
-	    mat4.translate(matrix_ruedaUno, matrix_ruedaUno, [24.75 * this.escalaX, 0.0, 0.0]);
+	    mat4.translate(matrix_ruedaUno, matrix_ruedaUno, [25.5 * this.escalaX, 0.0, 0.0]);
 	    mat4.rotate(matrix_ruedaUno, matrix_ruedaUno, degToRad(-90.0), [0.0, 1.0, 0.0]);
 	    this.ruedaUno.drawConTextura(matrix_ruedaUno, gl, shaderProgram);
 
 	    var matrix_ruedaDos = mat4.create();
 	    mat4.identity(matrix_ruedaDos);
 	    mat4.multiply(matrix_ruedaDos, matrix_ruedaDos, modelMatrix);
-	    mat4.translate(matrix_ruedaDos, matrix_ruedaDos, [-17.75 * this.escalaX, 0.0, 0.0]);
+	    mat4.translate(matrix_ruedaDos, matrix_ruedaDos, [-18.5 * this.escalaX, 0.0, 0.0]);
 	    mat4.rotate(matrix_ruedaDos, matrix_ruedaDos, degToRad(-90.0), [0.0, 1.0, 0.0]);
 	    this.ruedaUno.drawConTextura(matrix_ruedaDos, gl, shaderProgram);
 	}
