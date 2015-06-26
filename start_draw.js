@@ -38,29 +38,10 @@ function drawScene() {
   gl.uniformMatrix4fv(gl.shaderProgramSimple.perspectiveMatrixUniform, false, perspectiveMatrix);
   gl.uniformMatrix4fv(gl.shaderProgramSimple.viewMatrixUniform, false, cameraMatrix );
 
-  var matrix_muelle = mat4.create();
-  mat4.identity(matrix_muelle);
-  mat4.translate(matrix_muelle, matrix_muelle, [-90.0, -8.0, -20.0]);
-  muelle.draw(matrix_muelle, gl, shaderProgramSimple);
-
   var matrix_grua = mat4.create();
   mat4.identity(matrix_grua);
   mat4.translate(matrix_grua, matrix_grua, [0.0, 0.0, trasGruaZ]);
   gruita.draw(matrix_grua, gl, shaderProgramSimple);
-
-  // var matrix_barco = mat4.create();
-  // mat4.identity(matrix_barco);
-  // mat4.translate(matrix_barco, matrix_barco, [trasBarcoX, trasBarcoY, trasBarcoZ]);
-  // mat4.rotateX(matrix_barco, matrix_barco, degToRad(90));
-  // mat4.scale(matrix_barco, matrix_barco, [escBarcoX, escBarcoY, escBarcoZ]);
-  // barco.draw(matrix_barco, gl, shaderProgramSimple);
-
-  // var matrix_islote = mat4.create();
-  // mat4.identity(matrix_islote);
-  // mat4.translate(matrix_islote, matrix_islote, [20.0, -8.0, -400.0]);
-  // mat4.rotateX(matrix_islote, matrix_islote, degToRad(90));
-  // mat4.scale(matrix_islote, matrix_islote, [4.0, 3.0, 3.0]);
-  // islote.draw(matrix_islote, gl, shaderProgramSimple);
 
   var matrix_postes = mat4.create();
   mat4.identity(matrix_postes);
