@@ -7,9 +7,9 @@ function cielo () {
 
     this.extrusion = null;
 
-    var radio = 750;
-    var longBands = 100;
-    var latBands = 100;
+    var radio = escCielo/2;
+    var longBands = cantidadDeMeridianos;
+    var latBands = cantidadDeParalelos;
 
     var epsilon = 0.000000001;
 
@@ -42,7 +42,7 @@ function cielo () {
 
     this._calcularUV = function(){
     	uv_buffer = [];
-		for (var v = 0.0; v <= 1.0 + epsilon; v += 0.5/latBands){
+		for (var v = 0.0; v <= 1.0 + epsilon; v += 0.5/latBands){ //El 0.5 porque es una semiesfera, no la esfera completa
 			for (var u = 0.0; u <= 1.0 + epsilon; u += 1.0/longBands){
     			uv_buffer.push(u,v);
     		}

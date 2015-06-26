@@ -28,6 +28,11 @@
   var marY = 0.8;
   var marZ = 1500.0;
 
+  // Tamaño del cielo
+  var escCielo = 1500.0;
+  var cantidadDeMeridianos = 100;
+  var cantidadDeParalelos = 100;
+
   // Tamaño del puente del barco
   var estructuraPuenteX = 50.0;
   var estructuraPuenteY = 25.0;
