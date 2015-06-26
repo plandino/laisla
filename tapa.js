@@ -148,6 +148,9 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
         this.modelMatrix = modelMatrix;
 
        if(this.esTexturada){
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_normal_buffer);
+            gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.webgl_normal_buffer.itemSize, gl.FLOAT, false, 0, 0);
+
             var texMatrix = mat3.create();
             mat3.identity(texMatrix);
 
