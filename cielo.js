@@ -20,18 +20,18 @@ function cielo () {
     	this.tangentes = [];
     	this.normales = [];
 
-		for (var i = 0; i <= 2*Math.PI + epsilon; i+= 2*Math.PI/longBands){
-			var x  = Math.cos(i);
-			var y  = Math.sin(i);
-			this.forma.push(x,0,y);
-			this.normales.push(vec3.fromValues(x,0,y));
-			this.tangentes.push(vec3.fromValues(-y,0,x));
+		for (var t = 0; t <= 2*Math.PI + epsilon; t+= 2*Math.PI/longBands){
+			var x  = Math.cos(t);
+			var z  = Math.sin(t);
+			this.forma.push(x,0,z);
+			this.normales.push(vec3.fromValues(x,0,z));
+			this.tangentes.push(vec3.fromValues(-z,0,x));
 		}
 
-		for (var j = 0; j <= radio + epsilon; j += 2*radio/latBands){
-			this.camino.push([0,j-10,0]);
+		for (var y = 0; y <= radio + epsilon; y += radio/latBands){
+			this.camino.push([0,y-10,0]);
 
-			var r = Math.sqrt(radio*radio - j*j);
+			var r = Math.sqrt(radio*radio - y*y);
 			this.escala.push([r,1,r]);
 		}
     }
@@ -42,9 +42,9 @@ function cielo () {
 
     this._calcularUV = function(){
     	uv_buffer = [];
-			for (var j = 0.0; j <= 1.0 + epsilon; j += 1.0/latBands){
-		for (var i = 0.0; i <= 1.0 + epsilon; i+= 1.0/longBands){
-    			uv_buffer.push(1-j,0.5+i);
+		for (var v = 0.0; v <= 1.0 + epsilon; v += 0.5/latBands){
+			for (var u = 0.0; u <= 1.0 + epsilon; u += 1.0/longBands){
+    			uv_buffer.push(u,v);
     		}
     	}
     	this.extrusion.asignarCoordenadasUV(uv_buffer);
@@ -53,7 +53,7 @@ function cielo () {
 
     this.extrusion = new extrusion(this.forma, this.camino, this.escala, this.tangentes, this.normales, true);
     this._calcularUV();
-    loadTexture(this.extrusion, this.extrusion.textureImage, "texturas/skyBox.jpg");
+    loadTexture(this.extrusion, this.extrusion.textureImage, "textfinales/skyBox.jpg");
 
 
 	this.initBuffers = function(gl, shaderProgram, color){
