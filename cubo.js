@@ -273,7 +273,8 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura){
             var texMatrix = mat3.create();
             mat3.identity(texMatrix);
 
-            // // Matriz de transformación de las coordenadas de Textura
+            // DEJAR POR LAS DUDAS
+            // // Matriz de transformación de las coordenadas de Textura  ESTO AL FINAL NO ES NECESARIO, LO HAGO CON LAS COORD UV
             // var auxMatrix = mat4.create();
             // mat4.identity(auxMatrix);
             // mat4.scale(texMatrix, texMatrix, [1.0, 1.0, 1.0]);

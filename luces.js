@@ -17,7 +17,7 @@ function setLuces(mvMatrix, gl, shaderProgram){
     mat3.fromMat4(normalMatrix, mvMatrix);
     mat3.invert(normalMatrix, normalMatrix);
     mat3.transpose(normalMatrix, normalMatrix);
-    mat3.scale(normalMatrix, normalMatrix, [0.0,0.0,0.0]);
+    // mat3.scale(normalMatrix, normalMatrix, [0.0,0.0,0.0]);
     gl.uniformMatrix3fv(shaderProgram.normalMatrixUniform, false, normalMatrix);
 
 

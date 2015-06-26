@@ -295,10 +295,15 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
         this.modelMatrix = modelMatrix;
 
        if(this.texture){
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
+            gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.webgl_normal_buffer.itemSize, gl.FLOAT, false, 0, 0);
+
             var texMatrix = mat3.create();
             mat3.identity(texMatrix);
 
-            // // Matriz de transformación de las coordenadas de Textura
+            // DEJAR POR LAS DUDAS
+            // // Matriz de transformación de las coordenadas de Textura ESTO AL FINAL NO ES NECESARIO, LO HAGO CON LAS COORD UV
             // var auxMatrix = mat4.create();
             // mat4.identity(auxMatrix);
             // mat4.scale(texMatrix, texMatrix, [1.0, 1.0, 1.0]);
