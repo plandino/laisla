@@ -1,12 +1,5 @@
 function barco(scaleX, scaleY, scaleZ){
 
-	this.position_buffer = null;
-    // this.index_buffer = null;
-
-    // this.webgl_position_buffer = null;
-    // this.webgl_color_buffer = null;
-    // this.webgl_index_buffer = null;
-
     this.forma = null;
     this.camino = null;
     this.escala = null;
@@ -68,10 +61,6 @@ function barco(scaleX, scaleY, scaleZ){
             this.normales = this.normales.concat(tramos[i].getNormalBuffer());
     	}
 
-    	// for (var i = 0; i <= totalPuntos; i++){
-    	// 	this.index_buffer.push(i);
-    	// }
-
         var perimetro = 0.0;
         for (var i = 0; i <= this.forma.length-5; i+=3){
             var actual = vec3.fromValues(this.forma[i], this.forma[i+1], this.forma[i+2]);
@@ -79,27 +68,17 @@ function barco(scaleX, scaleY, scaleZ){
             perimetro += vec3.distance(actual, siguiente);
         }
 
-        // console.log("perimetro: " + perimetro);
-
         this.u.push(0);
         var recorrido = 0.0;
         for (var i = 0; i <= (this.forma.length - 5)/2; i+=3){
             var actual = vec3.fromValues(this.forma[i], this.forma[i+1], this.forma[i+2]);
             var siguiente = vec3.fromValues(this.forma[i+3], this.forma[i+4], this.forma[i+5]);
             recorrido += vec3.distance(actual, siguiente);
-            // if (2*recorrido <= perimetro) 
                 this.u.push(2*recorrido/perimetro);
-            // else this.u.push(-2*recorrido/perimetro);
         }
         var aux = this.u.concat([]).reverse();
         this.u = this.u.concat(aux);
-        this.u.pop();
-        // console.log("u: " + this.u.toString());
-        
-        // var epsilon = 0.000000000001;
-        // for (var i = 0.0; i <= 2.0 + epsilon; i+=2.0/totalPuntos){
-        //     this.u.push(i);
-        // }
+        this.u.pop();   //porque repite el 0 inicial sino
     }
 
 
@@ -130,9 +109,8 @@ function barco(scaleX, scaleY, scaleZ){
     // loadTexture(this.extrusion, this.extrusion.textureImage, "uvgrid.jpg");
     loadTexture(this.extrusion, this.extrusion.textureImage, "textfinales/cascoBarco.jpg");
     this._calcularUV();
-    this.extrusion.agregarTapa(4, true, "uvgrid.jpg");
-    // this.extrusion.agregarTapa(1, true, "textfinales/concretoPlataforma.jpg");
-    // this.extrusion.agregarTapa(this.camino.length-1, false);
+    this.extrusion.agregarTapa(4, true, "uvgrid.jpg", 100.0, 100.0);
+    this.extrusion.agregarTapa(this.camino.length-1, false, "oihabfhi.jpg", 100.0, 100.0); //esto le pone fondo negro, je
 
 
 	this.initBuffers = function(gl, shaderProgram, color){

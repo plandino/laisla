@@ -161,15 +161,15 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
     this._createIndexBuffer();  
 
 
-    this.agregarTapa = function(pasoNro, esSuperior, textura) {
+    this.agregarTapa = function(pasoNro, esSuperior, textura, escalaX, escalaY) {
         var centro = [this.camino[pasoNro][0], this.camino[pasoNro][1], this.camino[pasoNro][2]];
         var perimetro = this.position_buffer.slice(3 * this.cols * pasoNro,   3 * this.cols * (pasoNro + 1));
 
         if (!this.tapa1) {
-            this.tapa1 = new tapa(centro, perimetro, esSuperior, true);
+            this.tapa1 = new tapa(centro, perimetro, esSuperior, true, escalaX, escalaY);
             loadTexture(this.tapa1, this.tapa1.textureImage, textura);
         } else {
-            this.tapa2 = new tapa(centro, perimetro, esSuperior, true);
+            this.tapa2 = new tapa(centro, perimetro, esSuperior, true, escalaX, escalaY);
             loadTexture(this.tapa2, this.tapa1.textureImage, textura);
         }
     }

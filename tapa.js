@@ -1,7 +1,9 @@
-function tapa(centro, perimetro, esSuperior, esTexturada) {
+function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
     this.centro = centro;
     this.perimetro = perimetro;
     this.esTexturada = esTexturada;
+    this.escalaX = escalaX;
+    this.escalaY = escalaY;
     
     this.position_buffer = centro.concat(perimetro);
 
@@ -37,8 +39,8 @@ function tapa(centro, perimetro, esSuperior, esTexturada) {
         this.uv_buffer = [];
         // this.uv_buffer.push(0.5, 0.5); // el centro
         for (var i = 0; i < this.position_buffer.length-1; i+=3){
-            this.uv_buffer.push(this.position_buffer[i] / 100.0);
-            this.uv_buffer.push(this.position_buffer[i+1] / 100.0);
+            this.uv_buffer.push(this.position_buffer[i] / this.escalaX);
+            this.uv_buffer.push(this.position_buffer[i+1] / this.escalaY);
         }
     }
 

@@ -1,19 +1,14 @@
 function islote() {
 
-	this.position_buffer = null;
-    this.index_buffer = null;
-
-    this.webgl_position_buffer = null;
-    this.webgl_color_buffer = null;
-    this.webgl_index_buffer = null;
-
     this.forma = null;
     this.camino = null;
     this.escala = null;
     this.tangentes = null;
     this.normales = null;
+    this.u = null;
 
     this.extrusion = null;
+
 
     var a = 100.0;
     var b = 100.0;
@@ -23,7 +18,7 @@ function islote() {
     	this.forma = [];
         this.tangentes = [];
         this.normales = [];
-    	this.index_buffer = [];
+        this.u = [];
 
         var P = [];
 	    P.push([0.0,	50.0, 	0.0]);	// P0
@@ -78,9 +73,24 @@ function islote() {
             totalPuntos += tramos[i].getCantidadVertices();
         }
 
-        for (var i = 0; i < totalPuntos; i++){
-            this.index_buffer.push(i);
+        var perimetro = 0.0;
+        for (var i = 0; i <= this.forma.length-5; i+=3){
+            var actual = vec3.fromValues(this.forma[i], this.forma[i+1], this.forma[i+2]);
+            var siguiente = vec3.fromValues(this.forma[i+3], this.forma[i+4], this.forma[i+5]);
+            perimetro += vec3.distance(actual, siguiente);
         }
+
+        var repeticiones = 15;
+        this.u.push(0);
+        var recorrido = 0.0;
+        for (var i = 0; i <= this.forma.length - 5; i+=3){
+            var actual = vec3.fromValues(this.forma[i], this.forma[i+1], this.forma[i+2]);
+            var siguiente = vec3.fromValues(this.forma[i+3], this.forma[i+4], this.forma[i+5]);
+            recorrido += vec3.distance(actual, siguiente);
+            this.u.push(repeticiones*recorrido/perimetro);
+        }
+        console.log("perimetro: " + perimetro);
+        console.log("u: " + this.u.length);
     }
 
 
@@ -112,8 +122,25 @@ function islote() {
         this.escala.push([esc[i], esc[i], 1.0]);
     }
 
-    this.extrusion = new extrusion(this.forma, this.camino, this.escala, this.tangentes, this.normales);
-    this.extrusion.agregarTapa(this.camino.length-1, true);
+    this._calcularUV = function(){
+        uv_buffer = [];
+        for (var i = 0.0; i <= pasos + 0.00000001; i++){
+            for (var j in this.u){
+                uv_buffer.push(this.u[j]);
+                uv_buffer.push(i/pasos);
+            }
+        }
+
+        console.log("uv_buffer: " + uv_buffer.length);
+        this.extrusion.asignarCoordenadasUV(uv_buffer);
+    }
+
+    this.extrusion = new extrusion(this.forma, this.camino, this.escala, this.tangentes, this.normales, this.u);
+    // loadTexture(this.extrusion, this.extrusion.textureImage, "uvgrid.jpg");
+    loadTexture(this.extrusion, this.extrusion.textureImage, "textfinales/isla.jpg");
+    this._calcularUV();
+    // this.extrusion.agregarTapa(this.camino.length-1, true, "uvgrid.jpg");
+    this.extrusion.agregarTapa(this.camino.length-1, true, "textfinales/pastoIsla.jpg", 15.0, 15.0);
 
 
     this.initBuffers = function(gl, shaderProgram, color) {
@@ -121,6 +148,8 @@ function islote() {
     }
 
     this.draw = function(modelMatrix, gl, shaderProgram) {
-    	this.extrusion.draw(modelMatrix, gl, shaderProgram);
+        this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram);
     }
+
+
 }
