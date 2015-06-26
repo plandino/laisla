@@ -37,7 +37,6 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
 
     this._calcularUV = function(){
         this.uv_buffer = [];
-        // this.uv_buffer.push(0.5, 0.5); // el centro
         for (var i = 0; i < this.position_buffer.length-1; i+=3){
             this.uv_buffer.push(this.position_buffer[i] / this.escalaX);
             this.uv_buffer.push(this.position_buffer[i+1] / this.escalaY);
@@ -111,21 +110,16 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
 
 
      this.handleLoadedTexture = function(objectImage) {
-        // this.tiene_textura = true;
         this.texture = gl.createTexture();
 
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
-        // Vinculamos la textura creada con la etapa TEXTURE_2D dentro del pipeline
-        // Todas las operaciones sobre esta etapa que se ejecuten a continuación afectan
-        // al objeto texture.
         gl.bindTexture(gl.TEXTURE_2D, this.texture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, objectImage);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
         gl.generateMipmap(gl.TEXTURE_2D);
 
-        // Desvinculamos la textura de la etapa.
         gl.bindTexture(gl.TEXTURE_2D, null);
     }
 
@@ -146,7 +140,6 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
     }
 
     this.drawConTextura = function(modelMatrix, gl, shaderProgram){
-       // Se configuran los buffers que alimentarán el pipeline
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_position_buffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.webgl_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
         
@@ -172,16 +165,13 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
             gl.uniform1i(shaderProgram.samplerUniform, 0);
         } else {
-            // Asigno los colores
             console.log("Entra a dibujar colores en tapa texturada");
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_color_buffer);
             gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, this.webgl_color_buffer.itemSize, gl.FLOAT, false, 0, 0);  
         }
         
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
-        //gl.drawElements(gl.LINE_LOOP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
         gl.drawElements(gl.TRIANGLE_FAN, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
-        /////////////////////////////////
     }
 
 

@@ -112,7 +112,6 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
 
             for (var j = 0; j < this.forma.length; j+=3){
                 var punto = vec3.fromValues(this.forma[j], this.forma[j+1], this.forma[j+2]);
-                // console.log("punto: " + vec3.str(punto));
                 var vertice = vec3.create();
                 vec3.transformMat4(vertice, punto, modelado);
                 this.position_buffer.push(vertice[0], vertice[1], vertice[2]);
@@ -176,21 +175,16 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
 
 
     this.handleLoadedTexture = function(objectImage) {
-        // this.tiene_textura = true;
         this.texture = gl.createTexture();
 
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
-        // Vinculamos la textura creada con la etapa TEXTURE_2D dentro del pipeline
-        // Todas las operaciones sobre esta etapa que se ejecuten a continuación afectan
-        // al objeto texture.
         gl.bindTexture(gl.TEXTURE_2D, this.texture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, objectImage);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
         gl.generateMipmap(gl.TEXTURE_2D);
 
-        // Desvinculamos la textura de la etapa.
         gl.bindTexture(gl.TEXTURE_2D, null);
     }
 
@@ -257,7 +251,6 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
         // }
 
         if (this.tapa1) 
-            // this.tapa1.initBuffers(gl, color);
             this.tapa1.initBuffers(gl, "purple");
         if (this.tapa2)
             this.tapa2.initBuffers(gl, "purple");
@@ -286,7 +279,6 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
     }
 
     this.drawConTextura = function(modelMatrix, gl, shaderProgram){
-        // Se configuran los buffers que alimentarán el pipeline
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_position_buffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.webgl_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
         
@@ -317,16 +309,13 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
             gl.uniform1i(shaderProgram.samplerUniform, 0);
         } else {
-            // Asigno los colores
             console.log("Entra a dibujar colores en extrusion texturada");
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_color_buffer);
             gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, this.webgl_color_buffer.itemSize, gl.FLOAT, false, 0, 0);  
         }
         
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
-        //gl.drawElements(gl.LINE_LOOP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
         gl.drawElements(gl.TRIANGLE_STRIP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
-        /////////////////////////////////
 
         if (this.tapa1){   
             this.tapa1.drawConTextura(modelMatrix, gl, shaderProgram)

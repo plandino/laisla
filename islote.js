@@ -89,8 +89,6 @@ function islote() {
             recorrido += vec3.distance(actual, siguiente);
             this.u.push(repeticiones*recorrido/perimetro);
         }
-        // console.log("perimetro: " + perimetro);
-        // console.log("u: " + this.u.length);
     }
 
 
@@ -131,7 +129,6 @@ function islote() {
             }
         }
 
-        // console.log("uv_buffer: " + uv_buffer.length);
         this.extrusion.asignarCoordenadasUV(uv_buffer);
     }
 

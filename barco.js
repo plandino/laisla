@@ -17,7 +17,6 @@ function barco(scaleX, scaleY, scaleZ){
     	this.forma = [];
         this.tangentes = [];
         this.normales = [];
-    	// this.index_buffer = [];
         this.u = [];
 
 		var P = [];
