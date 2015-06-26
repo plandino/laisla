@@ -29,7 +29,7 @@
   var marZ = 1500.0;
 
   // Tamaño del cielo
-  var escCielo = 1500.0;
+  var escCielo = Math.min(marX, marZ);  // Debería ser igual al mínimos de marX y marZ
   var cantidadDeMeridianos = 100;
   var cantidadDeParalelos = 100;
 

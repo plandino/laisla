@@ -28,14 +28,14 @@ function postes(){
 	        escala.push([1.0, 1.0, 1.0]);
 	    }
 
-	    this.posteUno = new extrusion(forma, camino, escala, tangentes, normales);
-	    this.posteUno.agregarTapa(0);
-	    this.posteUno.agregarTapa(camino.length-1);
+	    this.posteUno = new extrusion(forma, camino, escala, tangentes, normales, null);
+	    this.posteUno.agregarTapa(0, false, false, null, 0, 0);
+	    this.posteUno.agregarTapa(camino.length-1, true, false, null, 0, 0);
 	    this.posteUno.initBuffers(gl, shaderProgram, "orange");
 
-	    this.posteDos = new extrusion(forma, camino, escala, tangentes, normales);
-	    this.posteDos.agregarTapa(0);
-	    this.posteDos.agregarTapa(camino.length-1);
+	    this.posteDos = new extrusion(forma, camino, escala, tangentes, normales, null);
+	    this.posteDos.agregarTapa(0, false, false, null, 0, 0);
+	    this.posteDos.agregarTapa(camino.length-1, true, false, null, 0, 0);
 	    this.posteDos.initBuffers(gl, shaderProgram, "orange");
 
 	    this.lamparaUno = new lampara(10,10);

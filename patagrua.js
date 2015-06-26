@@ -39,6 +39,7 @@ function pataGrua(scaleX, scaleY, scaleZ){
 	    var tangentes = [];
 	    var normales = [];
 	    var radio = 3.0;
+	    var u = [];
 	    for (var i = 0; i <= 2*Math.PI + 0.0001; i += 2*Math.PI/30.0){
 	        var x = Math.cos(i);
 	        var y = Math.sin(i);
@@ -46,24 +47,32 @@ function pataGrua(scaleX, scaleY, scaleZ){
 	        forma.push(radio*x, radio*y, 0);
 	        normales.push(vec3.fromValues(x, y, 0.0));
 	        tangentes.push(vec3.fromValues(-y, x, 0.0));
+	        u.push(x,y);
 	    }
 	    
 	    var camino = [];
 	    var escala = [];
-
-	    for (var i = 0; i < 8; i++){
+	    var uv = [];
+	    var longitud = 8.0;
+	    for (var i = 0; i < longitud; i++){
 	        camino.push([0, 0, i]);
-	        escala.push([1.0, 1.0, 1.0]);
+	        // if ( longitud/4 < i < 3*longitud/4)
+	        // 	escala.push(0.5,0.5,0.5)
+	        // else
+	        	escala.push([1.0, 1.0, 1.0]);
+	        uv = uv.concat(u);
 	    }
 
-	    this.ruedaUno = new extrusion(forma, camino, escala, tangentes, normales);
-	    this.ruedaUno.agregarTapa(0, false);
-	    this.ruedaUno.agregarTapa(camino.length-1, true, false);
+	    this.ruedaUno = new extrusion(forma, camino, escala, tangentes, normales, true);
+	    this.ruedaUno.asignarCoordenadasUV(uv);
+	    loadTexture(this.ruedaUno, this.ruedaUno.textureImage, "null");
+	    this.ruedaUno.agregarTapa(0, false, true, "null", 10, 10);
+	    this.ruedaUno.agregarTapa(camino.length-1, true, true, "null", 10, 10);
 	    this.ruedaUno.initBuffers(gl, shaderProgram, "green");
 
-	    this.ruedaDos = new extrusion(forma, camino, escala, tangentes, normales);
-	    this.ruedaUno.agregarTapa(0, false);
-	    this.ruedaUno.agregarTapa(camino.length-1, true, false);
+	    this.ruedaDos = new extrusion(forma, camino, escala, tangentes, normales, true);
+	    this.ruedaUno.agregarTapa(0, false, true, null, 10, 10);
+	    this.ruedaUno.agregarTapa(camino.length-1, true, true, null, 10, 10);
 	    this.ruedaUno.initBuffers(gl, shaderProgram, "green");
 	}
 
@@ -106,14 +115,13 @@ function pataGrua(scaleX, scaleY, scaleZ){
 	    mat4.multiply(matrix_ruedaUno, matrix_ruedaUno, modelMatrix);
 	    mat4.translate(matrix_ruedaUno, matrix_ruedaUno, [24.75 * this.escalaX, 0.0, 0.0]);
 	    mat4.rotate(matrix_ruedaUno, matrix_ruedaUno, degToRad(-90.0), [0.0, 1.0, 0.0]);
-	    this.ruedaUno.draw(matrix_ruedaUno, gl, shaderProgram);
-
+	    this.ruedaUno.drawConTextura(matrix_ruedaUno, gl, shaderProgram);
 
 	    var matrix_ruedaDos = mat4.create();
 	    mat4.identity(matrix_ruedaDos);
 	    mat4.multiply(matrix_ruedaDos, matrix_ruedaDos, modelMatrix);
 	    mat4.translate(matrix_ruedaDos, matrix_ruedaDos, [-17.75 * this.escalaX, 0.0, 0.0]);
 	    mat4.rotate(matrix_ruedaDos, matrix_ruedaDos, degToRad(-90.0), [0.0, 1.0, 0.0]);
-	    this.ruedaUno.draw(matrix_ruedaDos, gl, shaderProgram);
+	    this.ruedaUno.drawConTextura(matrix_ruedaDos, gl, shaderProgram);
 	}
 }
