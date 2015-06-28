@@ -39,9 +39,9 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
             return this._posicion(this.rows-1, j);
 
         var posicion = vec3.create();
-        posicion.x = this.position_buffer[3*this.cols*i + j];
-        posicion.y = this.position_buffer[3*this.cols*i + j + 1];
-        posicion.z = this.position_buffer[3*this.cols*i + j + 2];
+        posicion[0] = this.position_buffer[3*this.cols*i + j];
+        posicion[1] = this.position_buffer[3*this.cols*i + j + 1];
+        posicion[2] = this.position_buffer[3*this.cols*i + j + 2];
         return posicion;
     }
 
@@ -80,7 +80,7 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
                 vec3.transformMat4(normalSuperficie, normalCurva, rotacion);
                 vec3.normalize(normalSuperficie, normalSuperficie);
 
-                this.normal_buffer.push(normalSuperficie.x, normalSuperficie.y, normalSuperficie.z);
+                this.normal_buffer.push(normalSuperficie[0], normalSuperficie[1], normalSuperficie[2]);
             }
         }
     }
@@ -219,8 +219,8 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
             this.webgl_color_buffer.numItems = this.generatedColors.length / 4;
 
             this.webgl_normal_buffer = gl.createBuffer();
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_normal_buffer);
-            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Float32Array(this.normal_buffer), gl.STATIC_DRAW);
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.normal_buffer), gl.STATIC_DRAW);
             this.webgl_normal_buffer.itemSize = 3;
             this.webgl_normal_buffer.numItems = this.normal_buffer.length / 3;
 
@@ -288,7 +288,7 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
 
        if(this.esTexturada){
 
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_normal_buffer);
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
             gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.webgl_normal_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
             var texMatrix = mat3.create();

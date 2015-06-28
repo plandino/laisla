@@ -38,7 +38,7 @@ function curvaBezier(P0, P1, P2, P3, cantPasos) {
         vec3.normalize(tangente, tangente);
         this.tangent_buffer.push(tangente);
         
-        var normal = vec3.fromValues(dy, -dx, 0.0);
+        var normal = vec3.fromValues(-dy, dx, 0.0);
         vec3.normalize(normal, normal);
         this.normal_buffer.push(normal);
 	}
