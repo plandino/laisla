@@ -14,12 +14,12 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
     this.tangent_buffer = [];
     this.normal_buffer = [];
 
-    var z;
-    if (esSuperior) z = 1.0;
-    else z = -1.0;
+    var y;
+    if (esSuperior) y = 1.0;
+    else y = -1.0;
     for (var i = 0; i < this.position_buffer.length-1; i+=3){
         this.tangent_buffer.push(1.0, 0.0, 0.0);
-        this.normal_buffer.push(0.0, 0.0, z);
+        this.normal_buffer.push(0.0, y, 0.0);
     }
 
     this.uv_buffer = null;
@@ -76,8 +76,8 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
         this.webgl_color_buffer.numItems = this.generatedColors.length / 4;
 
         this.webgl_normal_buffer = gl.createBuffer();
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_normal_buffer);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Float32Array(this.normal_buffer), gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.normal_buffer), gl.STATIC_DRAW);
         this.webgl_normal_buffer.itemSize = 3;
         this.webgl_normal_buffer.numItems = this.normal_buffer.length / 3;
 
@@ -148,7 +148,7 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
         this.modelMatrix = modelMatrix;
 
        if(this.esTexturada){
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_normal_buffer);
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
             gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.webgl_normal_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
             var texMatrix = mat3.create();
