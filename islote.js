@@ -12,7 +12,7 @@ function islote() {
 
     var a = 100.0;
     var b = 100.0;
-    var n = 20;
+    var n = 10;
 
     this._cargarForma = function() {
     	this.forma = [];
