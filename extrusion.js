@@ -122,7 +122,7 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
         for (var i = 0; i < this.rows; i++){
             for (var j in this.tangentesCurva){
                 var t = this.tangentesCurva[j];
-                this.tangent_buffer.push(t.x, t.y, t.z);
+                this.tangent_buffer.push(t[0], t[1], t[2]);
             }
         }
 
