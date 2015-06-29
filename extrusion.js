@@ -33,10 +33,8 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
     this.tapa2 = null;
 
     this._posicion = function(i,j){
-        if (i < 0)
-            return this._posicion(0,j);
-        else if (i >= this.rows)
-            return this._posicion(this.rows-1, j);
+        if (i < 0 || this.rows <= i)
+            return vec3.fromValues(0,0,0);
 
         var posicion = vec3.create();
         posicion[0] = this.position_buffer[3*this.cols*i + j];
