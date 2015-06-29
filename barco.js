@@ -11,7 +11,7 @@ function barco(scaleX, scaleY, scaleZ){
 
     var a = 100.0;
     var b = 100.0;
-    var n = 50;
+    var n = 30;
 
     this._cargarForma = function(){
     	this.forma = [];
