@@ -23,7 +23,7 @@ function drawScene() {
 
   if(camaraCabina){
 
-    mat4.lookAt(cameraMatrix, [36.5 + traslacionXCabina, 51.4, trasGruaZ], [1000, 51.4, trasGruaZ], [0,1,0]);
+    mat4.lookAt(cameraMatrix, [36.0 + traslacionXCabina, 49.4, trasGruaZ], [1000, 49.4, trasGruaZ], [0,1,0]);
     mat4.rotateX(camaraAux, camaraAux, degToRad(rotarCamaraX));
     mat4.rotateY(camaraAux, camaraAux, degToRad(rotarCamaraY));
     mat4.multiply(cameraMatrix, camaraAux, cameraMatrix);
