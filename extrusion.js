@@ -57,17 +57,12 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
                 var w = vec3.create();
                 vec3.subtract(v, siguiente, posicion);
                 vec3.subtract(w, anterior, posicion);
+                vec3.normalize(v, v);
+                vec3.normalize(w, w);
 
                 var n = vec3.create();
                 vec3.lerp(n, v, w, 0.5);
-                vec3.normalize(n, n);
-
-                // if (vec3.dot(n, normalCurva) < 0){
-                //     vec3.negate(n,n);
-                //     console.log("sucede");
-                // } else {
-                //     console.log("no");
-                // }
+                // vec3.normalize(n, n);
 
                 var arriba;
                 if (this.arriba == "y")
@@ -248,18 +243,6 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
                 this.webgl_uv_buffer.itemSize = 2;
                 this.webgl_uv_buffer.numItems = this.uv_buffer.length / 2;
             }
-
-        // if (this.esTexturada){  //DEBUG
-        //     console.log();
-        //     console.log("LONGITUDES EXTRUSION")
-        //     console.log("position_buffer: " + this.position_buffer.length);
-        //     console.log("index_buffer: " + this.index_buffer.length);
-        //     console.log("normal_buffer: " + this.normal_buffer.length);
-        //     console.log("tangent_buffer: " + this.tangent_buffer.length);
-        //     if (this.esTexturada) console.log("uv_buffer: " + this.uv_buffer.length);
-        //     console.log("maximo indice: " + Math.max.apply(Math, this.index_buffer));
-        //     // console.log("");
-        // }
 
         if (this.tapa1) 
             this.tapa1.initBuffers(gl, "purple");
