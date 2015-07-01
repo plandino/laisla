@@ -1,7 +1,7 @@
 function setLuces(mvMatrix, gl, shaderProgram){
 
     var lightPosition = vec3.create();
-    vec3.set(lightPosition,0.01,0.01, 0.01);
+    vec3.set(lightPosition,1,0, 0);
 
     gl.uniform3fv(shaderProgram.lightingDirectionUniform, lightPosition);
 
@@ -9,7 +9,7 @@ function setLuces(mvMatrix, gl, shaderProgram){
     gl.uniform3f(shaderProgram.ambientColorUniform, 0.3, 0.3, 0.3 );
     gl.uniform3f(shaderProgram.directionalColorUniform, 0.2, 0.2, 0.2);
 
-    var lighting = false;
+    var lighting = true;
     gl.uniform1i(shaderProgram.useLightingUniform, lighting);
 
     var normalMatrix = mat3.create();
