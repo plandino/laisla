@@ -25,7 +25,7 @@
 
   // Tamaño del mar
   var marX = 1500.0;
-  var marY = 0.8;
+  var marY = 2.0;
   var marZ = 1500.0;
 
   // Tamaño del cielo

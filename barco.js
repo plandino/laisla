@@ -27,8 +27,8 @@ function barco(scaleX, scaleY, scaleZ){
     	P.push([0.0,	b, 		0.0]);	// P4
     	P.push([0.0, 	2.8*b, 	0.0]);	// P5
     	P.push([0.1*a,	3*b, 	0.0]);	// P6
-    	P.push([0.22*a, 3.2*b, 	0.0]);	// P7
-    	P.push([0.3*a, 	3.4*b, 	0.0]);	// P8
+    	P.push([0.2*a,  3.2*b, 	0.0]);	// P7
+    	P.push([0.31*a, 3.4*b, 	0.0]);	// P8
     	P.push([0.38*a, 3.5*b, 	0.0]);	// P9
     	P.push([0.45*a,	3.6*b,	0.0]);	// P10
 
