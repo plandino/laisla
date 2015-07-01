@@ -35,34 +35,23 @@
   <script type="text/javascript" src="start_draw.js"></script>
 
 
-  <!--
-  Vertex shader
-  El vertex shader define la posición y forma de cada vertice de cada polígono.
-  --> 
   <script id="shader-vs" type="x-shader/x-vertex">
-    // Los atributos son características propias de cada vertice.
     attribute vec3 aVertexPosition;
     attribute vec4 aVertexColor;
 
-    // Los uniforms son características propias de una etapa de dibujado completa.
-    // Son comunes a todos los vertices involucrados en el dibujado.
     uniform mat4 uViewMatrix;
     uniform mat4 uModelMatrix;
     uniform mat4 uPerspectiveMatrix;
 
-    // Los varying son propiedades que toman valor para cada fragmento a partir
-    // de interpolar linealmente entre los valores que se les asigna en cada 
-    // vértice del polígono al cual pertenecen.
     varying highp vec4 vColor;    
   
     void main(void) {
-      // gl_Position es una variable "built-in" de GLSL que es usada para 
-      // almacenar la posición resultante del fragmento.
       vec4 pos_camara = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
       gl_Position =   uPerspectiveMatrix * pos_camara ;
       vColor = aVertexColor;
     }
   </script>
+
 
   <script id="shadertexturas-vs" type="x-shader/x-vertex">
     attribute vec3 aVertexPosition;
@@ -74,20 +63,11 @@
     uniform mat4 uPerspectiveMatrix;
     uniform mat3 uTextureMatrix;
     
-        uniform mat3 uNormalMatrix;
-
-        // // Se hizo la luz!!!
-        // uniform vec3 uAmbientColor;
-        // uniform vec3 uLightPosition;
-        // uniform vec3 uDirectionalColor;
-        // uniform bool uUseLighting;
-
+    uniform mat3 uNormalMatrix;
 
     varying vec3 vTextureCoord;
-    // varying vec3 vLightWeighting;
     varying vec4 pos_camera_view;
     varying vec3 vNormal;
-    // varying vec3 vPosition;
 
     void main(void) {
 
@@ -101,27 +81,19 @@
       vTextureCoord = uTextureMatrix * vec3(aTextureCoord, 1.0);
 
       vNormal = normalize(uNormalMatrix*aVertexNormal);
-
       // vNormal = normalize(aVertexNormal);	// DEBUG
     }
   </script>
 
-  <!--
-  Fragment shader
- 
-  Cada pixel en un polígono se llama fragmento. El fragment shader se encarga de
-  establecer el color de cada pixel. En este caso, asignamos el color blanco a 
-  cada pixel.
-  -->
+
   <script id="shader-fs" type="x-shader/x-fragment">
     varying highp vec4 vColor;
 
     void main(void) {
-      // gl_FragColor es una variable "built-in" de GLSL que es usada para 
-      // almacenar el color resultante del fragmento.
       gl_FragColor = vColor;
     }
   </script>
+
 
   <script id="shadertexturas-fs" type="x-shader/x-fragment">
     precision mediump float;
@@ -133,60 +105,36 @@
 
     uniform sampler2D uSampler;
 
-        // uniform mat3 uNormalMatrix;
+    // Se hizo la luz!!!
+    uniform vec3 uAmbientColor;
+    uniform vec3 uLightPosition;
+    uniform vec3 uDirectionalColor;
+    uniform bool uUseLighting;
 
-        // Se hizo la luz!!!
-        uniform vec3 uAmbientColor;
-        uniform vec3 uLightPosition;
-        uniform vec3 uDirectionalColor;
-        uniform bool uUseLighting;
+    vec3 ads( ) {
+      	float Ka = 0.5;
+      	float Kd = 0.5;
+      	float Ks = 0.5;
+      	float Shininess = 1.0;
+      	vec3 LightIntensity = vec3(1.0, 1.0, 1.0);
 
-        vec3 ads( ) {
-        	float Ka = 0.5;
-        	float Kd = 0.5;
-        	float Ks = 0.5;
-        	float Shininess = 1.0;
-        	vec3 LightIntensity = vec3(1.0, 1.0, 1.0);
-
-			vec3 n = normalize( vNormal );
-			vec3 s = normalize( uLightPosition - vec3(pos_camera_view) );
-			vec3 v = normalize(vec3(-pos_camera_view));
-			vec3 r = reflect( -s, n );
-			return LightIntensity *	( Ka + Kd * max( dot(s, n), 0.0 ) + Ks * pow( max( dot(r,v), 0.0 ), Shininess ) );
+  			vec3 n = normalize( vNormal );
+  			vec3 s = normalize( uLightPosition - vec3(pos_camera_view) );
+  			vec3 v = normalize(vec3(-pos_camera_view));
+  			vec3 r = reflect( -s, n );
+  			return LightIntensity *	( Ka + Kd * max( dot(s, n), 0.0 ) + Ks * pow( max( dot(r,v), 0.0 ), Shininess ) );
 		}
 
 		void main() {
-			/** DEBUG: COLOR SEGUN NORMAL **/
-          // vec3 color = vec3( (vNormal.x+1.0)/2.0, (vNormal.y+1.0)/2.0, (vNormal.z+1.0)/2.0 );
-          // gl_FragColor = vec4( color, 1.0);
-          // return;
+			  /** DEBUG: COLOR SEGUN NORMAL **/
+        // vec3 color = vec3( (vNormal.x+1.0)/2.0, (vNormal.y+1.0)/2.0, (vNormal.z+1.0)/2.0 );
+        // gl_FragColor = vec4( color, 1.0);
+        // return;
 
-          	/** COLOR POSTA **/
-        	vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-			gl_FragColor = vec4(ads(), 1.0) * textureColor;
+        /** COLOR POSTA **/
+        vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+			  gl_FragColor = vec4(ads(), 1.0) * textureColor;
 		}
-
-    // void main(void) {
-    //     vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-
-    //       ////////////////////////////////////////////
-    //       // Calculos de la iluminación
-    //       vec3 light_dir = vec3( vPosition ) - uLightPosition;
-    //       normalize(light_dir);
-          
-    //       vec3 vLightWeighting;
-    //       if (!uUseLighting) {
-    //               vLightWeighting = vec3(1.0, 1.0, 1.0);
-    //               gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-    //       } else {
-    //               vec3 transformedNormal = normalize(uNormalMatrix * vNormal);
-    //               float directionalLightWeighting = max(dot(transformedNormal, light_dir), 0.0);
-    //               vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
-    //       }
-    //       ////////////////////////////////////////////
-
-    //     gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
-    // }
   </script>
 
 
