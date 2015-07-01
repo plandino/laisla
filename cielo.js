@@ -50,8 +50,7 @@ function cielo () {
     	this.extrusion.asignarCoordenadasUV(uv_buffer);
     }
 
-
-    this.extrusion = new extrusion(this.forma, this.camino, this.escala, this.tangentes, this.normales, true);
+    this.extrusion = new extrusion(this.forma, this.camino, this.escala, this.tangentes, this.normales, true, "y");
     this._calcularUV();
     loadTexture(this.extrusion, this.extrusion.textureImage, "textfinales/skyBox.jpg");
 

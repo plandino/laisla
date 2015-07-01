@@ -1,4 +1,4 @@
-function extrusion(forma, camino, escala, tangentes, normales, u) {
+function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
     this.cols = 0;
     this.rows = 0;
     
@@ -7,6 +7,7 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
     this.tangent_buffer = null;
     this.normal_buffer = null;
     this.uv_buffer = null;
+    this.arriba = arriba;
 
     this.esTexturada = (!!u);   //casteo a booleano
 
@@ -61,11 +62,23 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
                 vec3.lerp(n, v, w, 0.5);
                 vec3.normalize(n, n);
 
-                var z = vec3.fromValues(0,0,1.0);
-                var theta = Math.PI/2 - Math.acos(vec3.dot(n,z));
+                // if (vec3.dot(n, normalCurva) < 0){
+                //     vec3.negate(n,n);
+                //     console.log("sucede");
+                // } else {
+                //     console.log("no");
+                // }
+
+                var arriba;
+                if (this.arriba == "y")
+                    arriba = vec3.fromValues(0,1,0);
+                else
+                    arriba = vec3.fromValues(0,0,1);
+
+                var theta = Math.PI/2 - Math.acos(vec3.dot(n,arriba));
 
                 var ejeRotacion = vec3.create();
-                vec3.cross(ejeRotacion, n, z);
+                vec3.cross(ejeRotacion, n, arriba);
 
                 var rotacion = mat4.create();
                 mat4.rotate(rotacion, rotacion, theta, ejeRotacion);
@@ -292,12 +305,6 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
             var texMatrix = mat3.create();
             mat3.identity(texMatrix);
 
-            // DEJAR POR LAS DUDAS
-            // // Matriz de transformación de las coordenadas de Textura ESTO AL FINAL NO ES NECESARIO, LO HAGO CON LAS COORD UV
-            // var auxMatrix = mat4.create();
-            // mat4.identity(auxMatrix);
-            // mat4.scale(texMatrix, texMatrix, [1.0, 1.0, 1.0]);
-            // mat3.fromMat4(texMatrix, texMatrix);
             gl.uniformMatrix3fv(shaderProgram.texMatrixUniform, false, texMatrix);
 
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_uv_buffer);
@@ -306,7 +313,7 @@ function extrusion(forma, camino, escala, tangentes, normales, u) {
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
             gl.uniform1i(shaderProgram.samplerUniform, 0);
-        } else {
+        } else {    // DEBUG
             console.log("Entra a dibujar colores en extrusion texturada");
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_color_buffer);
             gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, this.webgl_color_buffer.itemSize, gl.FLOAT, false, 0, 0);  
