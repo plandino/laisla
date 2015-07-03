@@ -150,6 +150,11 @@ function drawScene() {
     gl.shaderProgramSimple = initShadersSimple();
     if (!gl.shaderProgramSimple)
       return;
+
+    // Compilamos y linkeamos los shaders
+    gl.shaderProgramRelieve = initShadersRelieve();
+    if (!gl.shaderProgramRelieve)
+      return;
     
     // Color de fondo para la escena 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);

@@ -4,13 +4,13 @@
         return (degrees * Math.PI) / 180;
     }
 
-    loadTexture = function(object3D, objectImage, texture_file){
+    loadTexture = function(object3D, objectImage, texture_file, conRelieve){
             
             
             objectImage = new Image();
 
             objectImage.onload = function () {
-                   object3D.handleLoadedTexture(objectImage)
+                   object3D.handleLoadedTexture(objectImage, conRelieve)
             }
             objectImage.src = texture_file;
     }
