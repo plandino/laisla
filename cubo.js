@@ -1,24 +1,29 @@
-function cubo(ancho, alto, profundo, escalarTextura, conTextura){
+function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
     // Estos son los arrays donde defino los valores        
     this.vertices           = null;
     this.indices            = null;
     this.generatedColors    = null;
     this.coordenadasUV      = null;
     this.normales           = null;
+    this.tangentes          = null;
 
     this.conTextura = conTextura;
+    this.conRelieve = conRelieve;
 
     // Estos son los buffers que voy a bindear para mandar a los shaders
-    this.cubeVertexBuffer       = null;
-    this.cubeVertexIndexBuffer  = null;
-    this.cubeVertexColorBuffer  = null;
-    this.cubeVertexNormalBuffer = null;
-    this.cubeuvTextureBuffer    = null;
+    this.cubeVertexBuffer         = null;
+    this.cubeVertexIndexBuffer    = null;
+    this.cubeVertexColorBuffer    = null;
+    this.cubeVertexNormalBuffer   = null;
+    this.cubeVertexTangentBuffer  = null;
+    this.cubeuvTextureBuffer      = null;
 
     this.modelMatrix            = null;   // Esto es para guardar y devolver la posicion, lo uso para la traslaciones
 
     this.texture      = null;
     this.textureImage = null;
+    this.normalMapTexture      = null;
+    this.normalMapTextureImage = null;
 
     // Inicio los valores, para los vertices(posicion, color) e indices
     // Luego los bindeo con los buffers
@@ -116,6 +121,54 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura){
         this.cubeVertexNormalBuffer.itemSize = 3;
         this.cubeVertexNormalBuffer.numItems = this.vertices.length / 3;
 
+        this.tangentes = [
+           
+           // Tangentes adelante
+           1.0,0.0,0.0,
+           1.0,0.0,0.0,
+           1.0,0.0,0.0,
+           1.0,0.0,0.0,
+
+           // Tangentes atras
+           -1.0,0.0,0.0,
+           -1.0,0.0,0.0,
+           -1.0,0.0,0.0,
+           -1.0,0.0,0.0,
+
+           // Tangentes izquierda
+            0.0,0.0,1.0,
+            0.0,0.0,1.0,
+            0.0,0.0,1.0,
+            0.0,0.0,1.0,
+
+          // Tangentes derecha
+            0.0,0.0,-1.0,
+            0.0,0.0,-1.0,
+            0.0,0.0,-1.0,
+            0.0,0.0,-1.0,
+
+           // Tangentes arriba
+           1.0,0.0,0.0,
+           1.0,0.0,0.0,
+           1.0,0.0,0.0,
+           1.0,0.0,0.0,
+
+           // Tangentes abajo
+           -1.0,0.0,0.0,
+           -1.0,0.0,0.0,
+           -1.0,0.0,0.0,
+           -1.0,0.0,0.0,
+        ];
+
+        // // Asigno el buffer de las normales
+        // this.cubeVertexTangentBuffer = gl.createBuffer();
+        // gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexTangentBuffer);
+        // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.tangentes), gl.STATIC_DRAW);
+        // this.cubeVertexTangentBuffer.itemSize = 3;
+        // this.cubeVertexTangentBuffer.numItems = this.tangentes.length / 3;
+
+
+
         // Creamos un buffer de vertices para WebGL.
         this.cubeVertexBuffer = gl.createBuffer();
         // Le decimos a WebGL que las siguientes funciones se relacionan con ese buffer.
@@ -130,45 +183,6 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura){
         } else {
           this.coordenadasUV = coordenadasUVContainer;
         }
-        // [
-
-        // // Cara adelante
-        //   1.0, 0.0,
-        //   1.0, 1.0,
-        //   0.0, 1.0,
-        //   0.0, 0.0,
-
-        // // Cara atras
-        //   1.0, 0.0,
-        //   1.0, 1.0,
-        //   0.0, 1.0,
-        //   0.0, 0.0,
-
-        // // Cara izquierda
-        //   1.0, 0.0,
-        //   1.0, 1.0,
-        //   0.0, 1.0,
-        //   0.0, 0.0,
-
-        // // Cara derecha
-        //   1.0, 0.0,
-        //   1.0, 1.0,
-        //   0.0, 1.0,
-        //   0.0, 0.0,
-
-        // // Cara arriba
-        //   1.0, 0.0,
-        //   1.0, 1.0,
-        //   0.0, 1.0,
-        //   0.0, 0.0,
-
-        // // Cara abajo
-        //   1.0, 0.0,
-        //   1.0, 1.0,
-        //   0.0, 1.0,
-        //   0.0, 0.0,
-        // ];
-
 
         this.indices = [
 
@@ -238,16 +252,28 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura){
     // cuando es cargado un archivo de imagen en un objeto Image de JavaScript
     // Dentro de este método se crea el objeto texture a nivel del driver de WebGL
     // y se iniciliza y carga con la información del archivo de imagen.
-    this.handleLoadedTexture =function(objectImage) {
+    this.handleLoadedTexture =function(objectImage, texturaRelieve) {
 
-        this.texture = gl.createTexture();
+        if( texturaRelieve){
+          this.normalMapTexture = gl.createTexture();
+          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+          gl.bindTexture(gl.TEXTURE_2D, this.normalMapTexture);
+        } else {
+          this.texture = gl.createTexture();
+          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+          // Vinculamos la textura creada con la etapa TEXTURE_2D dentro del pipeline
+          // Todas las operaciones sobre esta etapa que se ejecuten a continuación afectan
+          // al objeto texture.
+          gl.bindTexture(gl.TEXTURE_2D, this.texture);
+        }
+        // this.texture = gl.createTexture();
 
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        // gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
-        // Vinculamos la textura creada con la etapa TEXTURE_2D dentro del pipeline
-        // Todas las operaciones sobre esta etapa que se ejecuten a continuación afectan
-        // al objeto texture.
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+        // // Vinculamos la textura creada con la etapa TEXTURE_2D dentro del pipeline
+        // // Todas las operaciones sobre esta etapa que se ejecuten a continuación afectan
+        // // al objeto texture.
+        // gl.bindTexture(gl.TEXTURE_2D, this.texture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, objectImage);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
@@ -286,7 +312,16 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura){
 
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
-            gl.uniform1i(shaderProgram.samplerUniform, 0);
+            gl.uniform1i(shaderProgram.samplerUniformTextureMap, 0);
+
+            if(this.conRelieve){
+              // gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexTangentBuffer);
+              // gl.vertexAttribPointer(shaderProgram.vertexTangentAttribute, this.cubeVertexTangentBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+              gl.activeTexture(gl.TEXTURE1);
+              gl.bindTexture(gl.TEXTURE_2D, this.normalMapTexture);
+              gl.uniform1i(shaderProgram.samplerUniformNormalMap, 0); 
+            }
         } else {
             // Asigno los colores
             gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexColorBuffer);

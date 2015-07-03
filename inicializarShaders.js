@@ -123,13 +123,17 @@ function initShadersConTexturas() {
     shaderProgramTexturas.vertexNormalAttribute = gl.getAttribLocation(shaderProgramTexturas, "aVertexNormal");
     gl.enableVertexAttribArray(shaderProgramTexturas.vertexNormalAttribute);
 
+    // shaderProgramTexturas.vertexTangentAttribute = gl.getAttribLocation(shaderProgramTexturas, "aVertexTangent");
+    // gl.enableVertexAttribArray(shaderProgramTexturas.vertexTangentAttribute);
+
     // Con esto accedo a las matrices uniformes del shader
     shaderProgramTexturas.perspectiveMatrixUniform  = gl.getUniformLocation(shaderProgramTexturas, "uPerspectiveMatrix");
     shaderProgramTexturas.viewMatrixUniform         = gl.getUniformLocation(shaderProgramTexturas, "uViewMatrix");
     shaderProgramTexturas.modelMatrixUniform        = gl.getUniformLocation(shaderProgramTexturas, "uModelMatrix");
     shaderProgramTexturas.texMatrixUniform          = gl.getUniformLocation(shaderProgramTexturas, "uTextureMatrix");
 
-    shaderProgramTexturas.samplerUniform            = gl.getUniformLocation(shaderProgramTexturas, "uSampler");
+    shaderProgramTexturas.samplerUniformTextureMap  = gl.getUniformLocation(shaderProgramTexturas, "uSamplerTextureMap");
+    shaderProgramTexturas.samplerUniformNormalMap   = gl.getUniformLocation(shaderProgramTexturas, "uSamplerNormalMap");
 
     // Se hizo la luz!!!
 
@@ -142,3 +146,62 @@ function initShadersConTexturas() {
 
     return shaderProgramTexturas;
 }
+
+// function initShadersConRelieve() {
+//     // Obtenemos los shaders ya compilados
+//     var fragmentShaderText = getShader(gl, "shadertexturas-fs");
+//     var vertexShaderText = getShader(gl, "shadertexturas-vs");
+
+//     // Creamos un programa de shaders de WebGL.
+//     shaderProgramTexturas = gl.createProgram();
+
+//     // Asociamos cada shader compilado al programa.
+//     gl.attachShader(shaderProgramTexturas, vertexShaderText);
+//     gl.attachShader(shaderProgramTexturas, fragmentShaderText);
+
+//     // Linkeamos los shaders para generar el programa ejecutable.
+//     gl.linkProgram(shaderProgramTexturas);
+
+//     // Chequeamos y reportamos si hubo algún error.
+//     if (!gl.getProgramParameter(shaderProgramTexturas, gl.LINK_STATUS)) {
+//       alert("Unable to initialize the shader program: " + 
+//             gl.getProgramInfoLog(shaderProgramTexturas));
+//       return null;
+//     }
+
+//     // Le decimos a WebGL que de aquí en adelante use el programa generado.
+//     gl.useProgram(shaderProgramTexturas);
+
+//     // Tomamos referencias Javascript para acceder a las variables propias 
+//     // del shader.
+//     shaderProgramTexturas.vertexPositionAttribute = gl.getAttribLocation(shaderProgramTexturas, "aVertexPosition");
+//     gl.enableVertexAttribArray(shaderProgramTexturas.vertexPositionAttribute);
+//     shaderProgramTexturas.textureCoordAttribute = gl.getAttribLocation(shaderProgramTexturas, "aTextureCoord");
+//     gl.enableVertexAttribArray(shaderProgramTexturas.textureCoordAttribute);
+
+//     shaderProgramTexturas.vertexNormalAttribute = gl.getAttribLocation(shaderProgramTexturas, "aVertexNormal");
+//     gl.enableVertexAttribArray(shaderProgramTexturas.vertexNormalAttribute);
+
+//     shaderProgramTexturas.vertexTangentAttribute = gl.getAttribLocation(shaderProgramTexturas, "aVertexTangent");
+//     gl.enableVertexAttribArray(shaderProgramTexturas.vertexTangentAttribute);
+
+//     // Con esto accedo a las matrices uniformes del shader
+//     shaderProgramTexturas.perspectiveMatrixUniform  = gl.getUniformLocation(shaderProgramTexturas, "uPerspectiveMatrix");
+//     shaderProgramTexturas.viewMatrixUniform         = gl.getUniformLocation(shaderProgramTexturas, "uViewMatrix");
+//     shaderProgramTexturas.modelMatrixUniform        = gl.getUniformLocation(shaderProgramTexturas, "uModelMatrix");
+//     shaderProgramTexturas.texMatrixUniform          = gl.getUniformLocation(shaderProgramTexturas, "uTextureMatrix");
+
+//     shaderProgramTexturas.samplerUniformTextureMap  = gl.getUniformLocation(shaderProgramTexturas, "uSamplerTextureMap");
+//     shaderProgramTexturas.samplerUniformNormalMap   = gl.getUniformLocation(shaderProgramTexturas, "uSamplerNormalMap");
+
+//     // Se hizo la luz!!!
+
+//     shaderProgramTexturas.useLightingUniform = gl.getUniformLocation(shaderProgramTexturas, "uUseLighting");
+//     shaderProgramTexturas.ambientColorUniform = gl.getUniformLocation(shaderProgramTexturas, "uAmbientColor");
+//     shaderProgramTexturas.lightingDirectionUniform = gl.getUniformLocation(shaderProgramTexturas, "uLightPosition");
+//     shaderProgramTexturas.directionalColorUniform = gl.getUniformLocation(shaderProgramTexturas, "uDirectionalColor");
+    
+//     shaderProgramTexturas.normalMatrixUniform = gl.getUniformLocation(shaderProgramTexturas, "uNormalMatrix");
+
+//     return shaderProgramTexturas;
+// }

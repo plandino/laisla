@@ -164,10 +164,10 @@ function drawScene() {
     gruita.initBuffers(gl, shaderProgramSimple);
     gruita.asignarShaders(shaderProgramSimple, shaderProgramTexturas);
 
-    muelle = new cubo(muelleX, muelleY, muelleZ, false, true);
+    muelle = new cubo(muelleX, muelleY, muelleZ, false, true, true);
     muelle.initBuffers(gl, null, "gris", coordenadasUVMuelle);
-    loadTexture(muelle, muelle.textureImage, "texturas/concretoPlataforma.jpg");
-
+    loadTexture(muelle, muelle.textureImage, "textfinales/concretoPlataforma.jpg");
+    loadTexture(muelle, muelle.normalMapTextureImage, "textfinales/concretoPlataformaNomalMap.jpg", true);
 
     estructuraPuenteBarco = new cubo(estructuraPuenteX, estructuraPuenteY, estructuraPuenteZ, false, true);
     estructuraPuenteBarco.initBuffers(gl, shaderProgramSimple, "gris", coordenadasUVPuenteBarco);
