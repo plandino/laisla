@@ -255,28 +255,21 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
     this.handleLoadedTexture =function(objectImage, texturaRelieve) {
 
         if( texturaRelieve){
+          
           gl.activeTexture(gl.TEXTURE1);
           this.normalMapTexture = gl.createTexture();
+
           gl.bindTexture(gl.TEXTURE_2D, this.normalMapTexture);
           gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
         } else {
+
           gl.activeTexture(gl.TEXTURE0);
           this.texture = gl.createTexture();
 
           gl.bindTexture(gl.TEXTURE_2D, this.texture);
           gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-          // Vinculamos la textura creada con la etapa TEXTURE_2D dentro del pipeline
-          // Todas las operaciones sobre esta etapa que se ejecuten a continuación afectan
-          // al objeto texture.
         }
-        // this.texture = gl.createTexture();
 
-        // gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-
-        // // Vinculamos la textura creada con la etapa TEXTURE_2D dentro del pipeline
-        // // Todas las operaciones sobre esta etapa que se ejecuten a continuación afectan
-        // // al objeto texture.
-        // gl.bindTexture(gl.TEXTURE_2D, this.texture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, objectImage);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);

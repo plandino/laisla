@@ -1,8 +1,8 @@
 function setLuces(mvMatrix, gl, shaderProgram){
 
-    var lightPosition = vec3.create();
-    vec3.set(lightPosition,0,0, -1);
-
+    var lightPosition = vec4.create();
+    vec4.set(lightPosition,0.0,0.0, -1.0, 1.0);
+    // mat4.multiply(lightPosition, mvMatrix, lightPosition);
     gl.uniform3fv(shaderProgram.lightingDirectionUniform, lightPosition);
 
       // Se inicializan las variables asociadas con la Iluminación
