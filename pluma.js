@@ -12,21 +12,25 @@ function pluma(scaleX, scaleY, scaleZ){
 
 	this.initBuffers = function(gl, shaderProgram){
 
-	    this.contrapeso = new cubo(contrapesoX * this.escalaX, contrapesoY * this.escalaY, contrapesoZ * this.escalaZ, false, true);
+	    this.contrapeso = new cubo(contrapesoX * this.escalaX, contrapesoY * this.escalaY, contrapesoZ * this.escalaZ, false, true, true);
 	    this.contrapeso.initBuffers(gl, shaderProgram, "yellow", coordenadasUVContapeso);
         loadTexture(this.contrapeso, this.contrapeso.textureImage, "textfinales/texturaGrua.jpg");
+   	    loadTexture(this.contrapeso, this.contrapeso.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);
 
-	    this.barraDerecha = new cubo(largoPlumaX * this.escalaX, 6.0 * this.escalaY, 6.0 * this.escalaZ, false, true);
+	    this.barraDerecha = new cubo(largoPlumaX * this.escalaX, 6.0 * this.escalaY, 6.0 * this.escalaZ, false, true, true);
 	    this.barraDerecha.initBuffers(gl, shaderProgram, "yellow", coordenadasUVBarrasParalelasPluma);
 	    loadTexture(this.barraDerecha, this.barraDerecha.textureImage, "textfinales/texturaGrua.jpg");
+	    loadTexture(this.barraDerecha, this.barraDerecha.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);
 
-	    this.barraIzquierda = new cubo(largoPlumaX * this.escalaX, 6.0 * this.escalaY, 6.0 * this.escalaZ, false, true);
+	    this.barraIzquierda = new cubo(largoPlumaX * this.escalaX, 6.0 * this.escalaY, 6.0 * this.escalaZ, false, true, true);
 	    this.barraIzquierda.initBuffers(gl, shaderProgram, "yellow", coordenadasUVBarrasParalelasPluma);
 	    loadTexture(this.barraIzquierda, this.barraIzquierda.textureImage, "textfinales/texturaGrua.jpg");
+	    loadTexture(this.barraIzquierda, this.barraIzquierda.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);
 
-	    this.barraAdelante = new cubo(6.0 * this.escalaX, 6.0 * this.escalaY, 20.0 * this.escalaZ, false, true);
+	    this.barraAdelante = new cubo(6.0 * this.escalaX, 6.0 * this.escalaY, 20.0 * this.escalaZ, false, true, true);
 	    this.barraAdelante.initBuffers(gl, shaderProgram, "yellow", coordenadasUVBarraCruzadaPluma);
 	    loadTexture(this.barraAdelante, this.barraAdelante.textureImage, "textfinales/texturaGrua.jpg");
+	    loadTexture(this.barraAdelante, this.barraAdelante.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);
 
 	}
 

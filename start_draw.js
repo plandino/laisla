@@ -38,14 +38,17 @@ function drawScene() {
   gl.uniformMatrix4fv(gl.shaderProgramSimple.perspectiveMatrixUniform, false, perspectiveMatrix);
   gl.uniformMatrix4fv(gl.shaderProgramSimple.viewMatrixUniform, false, cameraMatrix );
 
+  var matrix_postes = mat4.create();
+  mat4.identity(matrix_postes);
+  posta.draw(matrix_postes, gl, shaderProgramSimple);
+
   var matrix_grua = mat4.create();
   mat4.identity(matrix_grua);
   mat4.translate(matrix_grua, matrix_grua, [0.0, 0.0, trasGruaZ]);
   gruita.draw(matrix_grua, gl, shaderProgramSimple);
 
-  var matrix_postes = mat4.create();
-  mat4.identity(matrix_postes);
-  posta.draw(matrix_postes, gl, shaderProgramSimple);
+
+
 
 
   /***** CONTEXTO TEXTURAS *****/
@@ -60,11 +63,6 @@ function drawScene() {
   mat4.identity(matrix_mar);
   mat4.translate(matrix_mar, matrix_mar, [0.0, -10.0, 0.0]);
   mar.draw(matrix_mar, gl, shaderProgramTexturas);
-
-  var matrix_muelle = mat4.create();
-  mat4.identity(matrix_muelle);
-  mat4.translate(matrix_muelle, matrix_muelle, [-90.0, -8.0, -20.0]);
-  muelle.draw(matrix_muelle, gl, shaderProgramTexturas);
 
   var matrix_estructPuente = mat4.create();
   mat4.identity(matrix_estructPuente);
@@ -130,6 +128,19 @@ function drawScene() {
 
   /* Avanza el tiempo */
   t = t + 0.01;
+  
+  /***** CONTEXTO NORMAL MAP *****/
+
+  gl.useProgram(shaderProgramRelieve);
+  gl.uniformMatrix4fv(gl.shaderProgramRelieve.perspectiveMatrixUniform, false, perspectiveMatrix);
+  gl.uniformMatrix4fv(gl.shaderProgramRelieve.viewMatrixUniform, false, cameraMatrix );
+
+  setLuces(cameraMatrix, gl, shaderProgramRelieve);
+
+  var matrix_muelle = mat4.create();
+  mat4.identity(matrix_muelle);
+  mat4.translate(matrix_muelle, matrix_muelle, [-90.0, -8.0, -20.0]);
+  muelle.draw(matrix_muelle, gl, shaderProgramRelieve);
 }
 
   // INIT
@@ -164,15 +175,14 @@ function drawScene() {
     gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
     gl.viewport(0, 0, canvas.width, canvas.height);
 
-
-    gruita = new grua(1.0, 1.0, 1.0);
-    gruita.initBuffers(gl, shaderProgramSimple);
-    gruita.asignarShaders(shaderProgramSimple, shaderProgramTexturas);
-
     muelle = new cubo(muelleX, muelleY, muelleZ, false, true, true);
     muelle.initBuffers(gl, null, "gris", coordenadasUVMuelle);
     loadTexture(muelle, muelle.textureImage, "textfinales/concretoPlataforma.jpg");
     loadTexture(muelle, muelle.normalMapTextureImage, "textfinales/concretoPlataformaNomalMap.jpg", true);
+
+    gruita = new grua(1.0, 1.0, 1.0);
+    gruita.initBuffers(gl, shaderProgramSimple);
+    gruita.asignarShaders(shaderProgramSimple, shaderProgramTexturas, shaderProgramRelieve);
 
     estructuraPuenteBarco = new cubo(estructuraPuenteX, estructuraPuenteY, estructuraPuenteZ, false, true);
     estructuraPuenteBarco.initBuffers(gl, shaderProgramSimple, "gris", coordenadasUVPuenteBarco);

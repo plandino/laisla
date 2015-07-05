@@ -172,10 +172,15 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
 
         if (!this.tapa1) {
             this.tapa1 = new tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY);
-            if (esTexturada) loadTexture(this.tapa1, this.tapa1.textureImage, textura);
+            if (esTexturada){
+                 loadTexture(this.tapa1, this.tapa1.textureImage, textura);
+                 // loadTexture(this.tapa1, this.tapa1.normalMapTextureImage, "textfinales/concretoPlataformaNomalMap.jpg", true);
+            }
         } else {
             this.tapa2 = new tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY);
             if (esTexturada) loadTexture(this.tapa2, this.tapa1.textureImage, textura);
+                // loadTexture(muelle, muelle.normalMapTextureImage, "textfinales/concretoPlataformaNomalMap.jpg", true);
+
         }
     }
 
@@ -231,8 +236,8 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
             this.webgl_normal_buffer.numItems = this.normal_buffer.length / 3;
 
             this.webgl_tangent_buffer = gl.createBuffer();
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_tangent_buffer);
-            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Float32Array(this.tangent_buffer), gl.STATIC_DRAW);
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_tangent_buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.tangent_buffer), gl.STATIC_DRAW);
             this.webgl_tangent_buffer.itemSize = 3;
             this.webgl_tangent_buffer.numItems = this.tangent_buffer.length / 3;
 
@@ -281,6 +286,10 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
         this.modelMatrix = modelMatrix;
 
        if(this.esTexturada){
+
+            // // TANGENTEEEEES
+            // gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_tangent_buffer);
+            // gl.vertexAttribPointer(shaderProgram.vertexTangentAttribute, this.webgl_tangent_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
             gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.webgl_normal_buffer.itemSize, gl.FLOAT, false, 0, 0);

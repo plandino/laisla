@@ -33,6 +33,8 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
 
     this.texture = null;
     this.textureImage = null;
+    this.normalMapTexture      = null;
+
 
 
     this._calcularUV = function(){
@@ -82,8 +84,8 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
         this.webgl_normal_buffer.numItems = this.normal_buffer.length / 3;
 
         this.webgl_tangent_buffer = gl.createBuffer();
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_tangent_buffer);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Float32Array(this.tangent_buffer), gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_tangent_buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.tangent_buffer), gl.STATIC_DRAW);
         this.webgl_tangent_buffer.itemSize = 3;
         this.webgl_tangent_buffer.numItems = this.tangent_buffer.length / 3;
 
@@ -109,17 +111,48 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
     }
 
 
-     this.handleLoadedTexture = function(objectImage) {
-        this.texture = gl.createTexture();
+    //  this.handleLoadedTexture = function(objectImage) {
+    //     this.texture = gl.createTexture();
 
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    //     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+    //     gl.bindTexture(gl.TEXTURE_2D, this.texture);
+    //     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, objectImage);
+    //     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    //     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+    //     gl.generateMipmap(gl.TEXTURE_2D);
+
+    //     gl.bindTexture(gl.TEXTURE_2D, null);
+    // }
+
+    this.handleLoadedTexture =function(objectImage, texturaRelieve) {
+
+        if( texturaRelieve){
+          this.normalMapTexture = gl.createTexture();
+          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+          gl.bindTexture(gl.TEXTURE_2D, this.normalMapTexture);
+        } else {
+          this.texture = gl.createTexture();
+          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+          // Vinculamos la textura creada con la etapa TEXTURE_2D dentro del pipeline
+          // Todas las operaciones sobre esta etapa que se ejecuten a continuación afectan
+          // al objeto texture.
+          gl.bindTexture(gl.TEXTURE_2D, this.texture);
+        }
+        // this.texture = gl.createTexture();
+
+        // gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
+        // // Vinculamos la textura creada con la etapa TEXTURE_2D dentro del pipeline
+        // // Todas las operaciones sobre esta etapa que se ejecuten a continuación afectan
+        // // al objeto texture.
+        // gl.bindTexture(gl.TEXTURE_2D, this.texture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, objectImage);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
         gl.generateMipmap(gl.TEXTURE_2D);
 
+        // Desvinculamos la textura de la etapa.
         gl.bindTexture(gl.TEXTURE_2D, null);
     }
 
@@ -148,6 +181,18 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
         this.modelMatrix = modelMatrix;
 
        if(this.esTexturada){
+
+            // // TANGENTEEES
+            // gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_tangent_buffer);
+            // gl.vertexAttribPointer(shaderProgram.vertexTangentAttribute, this.webgl_tangent_buffer.itemSize, gl.FLOAT, false, 0, 0);
+
+            
+            //   gl.activeTexture(gl.TEXTURE1);
+            //   gl.bindTexture(gl.TEXTURE_2D, this.normalMapTexture);
+            //   gl.uniform1i(shaderProgram.samplerUniformNormalMap, 0); 
+            //   // console.log("ya mande todo con relieve");
+
+
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
             gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.webgl_normal_buffer.itemSize, gl.FLOAT, false, 0, 0);
 

@@ -13,7 +13,11 @@
         // Con esto roto la camara si tengo el mouse apretado, divido por 5 para que gire mas despacio
         if(mouseDown){
           rotarCamaraY = rotarCamaraY + (x - mouseX) / 5;
-          rotarCamaraX = rotarCamaraX - (mouseY - y) / 5;  
+          // if( (rotarCamaraX < -3.0) && ((mouseY - y) > 0) ){
+            // Me pase del limite inferior y quier serguir bajando => NO HAGO NADA
+          // } else {
+             rotarCamaraX = rotarCamaraX - (mouseY - y) / 5;  
+          // }
         }
 
         // Esto limita la camara para que no se de vuelta

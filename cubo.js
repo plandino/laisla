@@ -160,12 +160,12 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
            -1.0,0.0,0.0,
         ];
 
-        // // Asigno el buffer de las normales
-        // this.cubeVertexTangentBuffer = gl.createBuffer();
-        // gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexTangentBuffer);
-        // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.tangentes), gl.STATIC_DRAW);
-        // this.cubeVertexTangentBuffer.itemSize = 3;
-        // this.cubeVertexTangentBuffer.numItems = this.tangentes.length / 3;
+        // Asigno el buffer de las normales
+        this.cubeVertexTangentBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexTangentBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.tangentes), gl.STATIC_DRAW);
+        this.cubeVertexTangentBuffer.itemSize = 3;
+        this.cubeVertexTangentBuffer.numItems = this.tangentes.length / 3;
 
 
 
@@ -310,18 +310,28 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
             gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeuvTextureBuffer);
             gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.cubeuvTextureBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
+
+            if(this.conRelieve){
+              // console.log("voy a dibujar con relieve");
+              gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexTangentBuffer);
+              gl.vertexAttribPointer(shaderProgram.vertexTangentAttribute, this.cubeVertexTangentBuffer.itemSize, gl.FLOAT, false, 0, 0);
+            }
+
+
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
             gl.uniform1i(shaderProgram.samplerUniformTextureMap, 0);
 
             if(this.conRelieve){
-              // gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexTangentBuffer);
-              // gl.vertexAttribPointer(shaderProgram.vertexTangentAttribute, this.cubeVertexTangentBuffer.itemSize, gl.FLOAT, false, 0, 0);
+              // console.log("voy a dibujar con relieve");
 
               gl.activeTexture(gl.TEXTURE1);
               gl.bindTexture(gl.TEXTURE_2D, this.normalMapTexture);
               gl.uniform1i(shaderProgram.samplerUniformNormalMap, 0); 
+              // console.log("ya mande todo con relieve");
             }
+
+
         } else {
             // Asigno los colores
             gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexColorBuffer);

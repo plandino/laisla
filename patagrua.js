@@ -14,25 +14,30 @@ function pataGrua(scaleX, scaleY, scaleZ){
 
 	this.initBuffers = function(gl, shaderProgram){
 
-	    this.pataUno = new cubo(4.0 * this.escalaX, gruaY * this.escalaY, 4.0 * this.escalaZ, false, true);
+	    this.pataUno = new cubo(4.0 * this.escalaX, gruaY * this.escalaY, 4.0 * this.escalaZ, false, true, true);
 	    this.pataUno.initBuffers(gl, shaderProgram, "yellow", coordenadasUVPatasVerticalesGrua);
 	    loadTexture(this.pataUno, this.pataUno.textureImage, "textfinales/texturaGrua.jpg");
+	    loadTexture(this.pataUno, this.pataUno.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);
 
-	    this.pataDos = new cubo(4.0 * this.escalaX, gruaY * this.escalaY, 4.0 * this.escalaZ, false, true);
+	    this.pataDos = new cubo(4.0 * this.escalaX, gruaY * this.escalaY, 4.0 * this.escalaZ, false, true, true);
 	    this.pataDos.initBuffers(gl, shaderProgram, "yellow", coordenadasUVPatasVerticalesGrua);
 	    loadTexture(this.pataDos, this.pataDos.textureImage, "textfinales/texturaGrua.jpg");
+	    loadTexture(this.pataDos, this.pataDos.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);
 
-	    this.barraCruzadaAbajoGrua = new cubo(40.0 * this.escalaX, 6.0 * this.escalaY, 4.0 * this.escalaZ, false, true);
+	    this.barraCruzadaAbajoGrua = new cubo(40.0 * this.escalaX, 6.0 * this.escalaY, 4.0 * this.escalaZ, false, true, true);
 	    this.barraCruzadaAbajoGrua.initBuffers(gl, shaderProgram, "yellow", coordenadasUVPatasHorizontalesGrua);
    	    loadTexture(this.barraCruzadaAbajoGrua, this.barraCruzadaAbajoGrua.textureImage, "textfinales/texturaGrua.jpg");
+   	    loadTexture(this.barraCruzadaAbajoGrua, this.barraCruzadaAbajoGrua.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);
 
-	    this.barraCruzadaArribaGrua = new cubo(40.0 * this.escalaX, 6.0 * this.escalaY, 4.0 * this.escalaZ, false, true);
+	    this.barraCruzadaArribaGrua = new cubo(40.0 * this.escalaX, 6.0 * this.escalaY, 4.0 * this.escalaZ, false, true, true);
 	    this.barraCruzadaArribaGrua.initBuffers(gl, shaderProgram, "yellow", coordenadasUVPatasHorizontalesGrua);
 	    loadTexture(this.barraCruzadaArribaGrua, this.barraCruzadaArribaGrua.textureImage, "textfinales/texturaGrua.jpg");
+	    loadTexture(this.barraCruzadaArribaGrua, this.barraCruzadaArribaGrua.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);
 
-	    this.barraDiagonalGrua = new cubo(50.0 * this.escalaX, 6.0 * this.escalaY, 3.9 * this.escalaZ, false, true);
+	    this.barraDiagonalGrua = new cubo(50.0 * this.escalaX, 6.0 * this.escalaY, 3.9 * this.escalaZ, false, true, true);
 	    this.barraDiagonalGrua.initBuffers(gl, shaderProgram, "yellow", coordenadasUVPatasDiagonalGrua);
 	    loadTexture(this.barraDiagonalGrua, this.barraDiagonalGrua.textureImage, "textfinales/texturaGrua.jpg");
+	    loadTexture(this.barraDiagonalGrua, this.barraDiagonalGrua.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);
 
 
 	    var forma = [];
