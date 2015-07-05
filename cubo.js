@@ -255,16 +255,19 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
     this.handleLoadedTexture =function(objectImage, texturaRelieve) {
 
         if( texturaRelieve){
+          gl.activeTexture(gl.TEXTURE1);
           this.normalMapTexture = gl.createTexture();
-          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
           gl.bindTexture(gl.TEXTURE_2D, this.normalMapTexture);
+          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
         } else {
+          gl.activeTexture(gl.TEXTURE0);
           this.texture = gl.createTexture();
+
+          gl.bindTexture(gl.TEXTURE_2D, this.texture);
           gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
           // Vinculamos la textura creada con la etapa TEXTURE_2D dentro del pipeline
           // Todas las operaciones sobre esta etapa que se ejecuten a continuación afectan
           // al objeto texture.
-          gl.bindTexture(gl.TEXTURE_2D, this.texture);
         }
         // this.texture = gl.createTexture();
 
@@ -327,7 +330,7 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
 
               gl.activeTexture(gl.TEXTURE1);
               gl.bindTexture(gl.TEXTURE_2D, this.normalMapTexture);
-              gl.uniform1i(shaderProgram.samplerUniformNormalMap, 0); 
+              gl.uniform1i(shaderProgram.samplerUniformNormalMap, 1); 
               // console.log("ya mande todo con relieve");
             }
 

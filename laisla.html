@@ -236,7 +236,7 @@
         float Ka = 0.5;
         float Kd = 0.5;
         float Ks = 0.5;
-        float Shininess = 4.0;
+        float Shininess = 1.0;
         vec3 LightIntensity = vec3(1.0, 1.0, 1.0);
 
         vec3 n = normalize( vNormal);
@@ -248,7 +248,7 @@
         // Adelante
         vec3 LightDirection = normalize( toLocalObject * s );
         vec3 ViewDirection  = normalize( toLocalObject * v);
-        normalMap = normalize(toLocalObject * normalMap);
+        // normalMap = normalize(toLocalObject * normalMap);
 
         // vec3 LightDirection = s;
         // vec3 ViewDirection = v;
@@ -257,13 +257,13 @@
         // vec3 LightDirection = normalize( s * toLocalObject );
         // vec3 ViewDirection  = normalize( vec3(-pos_camera_view) * toLocalObject);
 
-        vec3 reflection = normalize(reflect( LightDirection, normalMap ));
+        vec3 reflection = (reflect( LightDirection, normalMap ));
         float sDotN = max( dot(LightDirection, normalMap), 0.0 );   // Este es el nuevo
 
         // float sDotN = max( dot(s, n), 0.0 );  // Este es el viejo
 
         // float lightReflectionDir = max( dot(r,v), 0.0 );  // Este es el viejo
-        float lightReflectionDir = max( dot(reflection, normalMap), 0.0 );   // Este es el nuevo
+        float lightReflectionDir = max( dot(reflection, ViewDirection), 0.0 );   // Este es el nuevo
         return LightIntensity * ( Ka + Kd * sDotN + Ks * pow( lightReflectionDir, Shininess ) );
     }
 
@@ -273,27 +273,14 @@
         // gl_FragColor = vec4( color, 1.0);
         // return;
 
-        /** DEBUG: NORMAL MAP **/
-        
-        // // Obtengo los valores rgb de la textura de normal map
-        // vec3 nMap         = texture2D(uSamplerNormalMap, vec2(vTextureCoord.s, vTextureCoord.t)).rgb; 
-
-        // // Pase de valores rgb a valor [-1.0 ; 1.0] 
-        // vec3 normalMap    = normalize(nMap * 2.0 - 1.0);
-
-        // // vec3 color = vec3( (vNormal.x+1.0)/2.0, (vNormal.y+1.0)/2.0, (vNormal.z+1.0)/2.0 );
-        // gl_FragColor = vec4( normalMap, 1.0);
-        // return;
-
         /** COLOR POSTA **/
+        vec4 textureColor = texture2D(uSamplerTextureMap, vec2(vTextureCoord.s, vTextureCoord.t));
 
         // Obtengo los valores rgb de la textura de normal map
         vec3 nMap         = texture2D(uSamplerNormalMap, vec2(vTextureCoord.s, vTextureCoord.t)).rgb; 
 
-        vec4 textureColor = texture2D(uSamplerTextureMap, vec2(vTextureCoord.s, vTextureCoord.t));
         // Pase de valores rgb a valor [-1.0 ; 1.0] 
         vec3 normalMap    = (nMap * 2.0 - 1.0);
-
 
         gl_FragColor = vec4(ads(normalMap), 1.0) * textureColor;
     }
