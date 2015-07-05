@@ -81,13 +81,13 @@ function grua(scaleX, scaleY, scaleZ){
 	    mat4.identity(matrix_pataUno);
 	    mat4.multiply(matrix_pataUno, matrix_pataUno, modelMatrix);
 	    mat4.translate(matrix_pataUno, matrix_pataUno, [0.0, -1.0, 23.0 * this.escalaZ]);
-	    this.pataUno.draw(matrix_pataUno, gl, this.shaderRelieve);
+	    this.pataUno.draw(matrix_pataUno, gl, this.shaderRelieve, this.shaderSimple);
 
 	    var matrix_pataDos = mat4.create();
 	    mat4.identity(matrix_pataDos);
 	    mat4.multiply(matrix_pataDos, matrix_pataDos, modelMatrix);
 	    mat4.translate(matrix_pataDos, matrix_pataDos, [0.0, -1.0, -25.0 * this.escalaZ]);
-	    this.pataDos.draw(matrix_pataDos, gl, this.shaderRelieve);
+	    this.pataDos.draw(matrix_pataDos, gl, this.shaderRelieve, this.shaderSimple);
 
 	    /***** CONTEXTO SIMPLE *****/
 		gl.useProgram(this.shaderSimple);

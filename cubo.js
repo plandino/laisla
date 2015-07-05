@@ -255,7 +255,7 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
     this.handleLoadedTexture =function(objectImage, texturaRelieve) {
 
         if( texturaRelieve){
-          
+
           gl.activeTexture(gl.TEXTURE1);
           this.normalMapTexture = gl.createTexture();
 
