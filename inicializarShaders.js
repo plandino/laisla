@@ -132,7 +132,8 @@ function initShadersConTexturas() {
     shaderProgramTexturas.samplerUniform            = gl.getUniformLocation(shaderProgramTexturas, "uSampler");
 
     
-    shaderProgramTexturas.normalMatrixUniform = gl.getUniformLocation(shaderProgramTexturas, "uNormalMatrix");
+    shaderProgramTexturas.normalMatrixUniform = gl.getUniformLocation(shaderProgramTexturas, "umNormalMatrix");
+    shaderProgramTexturas.MVnormalMatrixUniform = gl.getUniformLocation(shaderProgramTexturas, "umvNormalMatrix");
    
     shaderProgramTexturas.solPositionUniform     = gl.getUniformLocation(shaderProgramTexturas, "uSol.position");
     shaderProgramTexturas.solIntensityUniform    = gl.getUniformLocation(shaderProgramTexturas, "uSol.intensity");

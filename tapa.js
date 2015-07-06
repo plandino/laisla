@@ -154,6 +154,14 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
         gl.uniformMatrix3fv(shaderProgram.normalMatrixUniform, false, normalMatrix);
 
 
+        var MVnormalMatrix = mat3.create();
+        mat3.identity(MVnormalMatrix);
+        mat3.fromMat4(MVnormalMatrix, cameraMatrix);
+        mat3.invert(MVnormalMatrix, MVnormalMatrix);
+        mat3.transpose(MVnormalMatrix, MVnormalMatrix);
+        gl.uniformMatrix3fv(shaderProgram.MVnormalMatrixUniform, false, MVnormalMatrix);
+
+
        if(this.esTexturada){
             gl.uniform1f(shaderProgram.ka, KA);
             gl.uniform1f(shaderProgram.kd, KD);

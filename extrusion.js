@@ -290,6 +290,15 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
         gl.uniform1f(shaderProgram.ks, ks);
         gl.uniform1f(shaderProgram.shininess, shininess);
 
+        var mvMatrix = mat4.create();
+        mat4.multiply(mvMatrix, cameraMatrix, modelMatrix);
+        var MVnormalMatrix = mat3.create();
+        mat3.identity(MVnormalMatrix);
+        mat3.fromMat4(MVnormalMatrix, mvMatrix);
+        mat3.invert(MVnormalMatrix, MVnormalMatrix);
+        mat3.transpose(MVnormalMatrix, MVnormalMatrix);
+        gl.uniformMatrix3fv(shaderProgram.MVnormalMatrixUniform, false, MVnormalMatrix);
+
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_position_buffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.webgl_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
