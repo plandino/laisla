@@ -377,7 +377,7 @@
         vec4 refelctionTexture = texture2D(uSamplerReflectionMap, vec2(reflectionDir.s, reflectionDir.t) );
 
 
-        gl_FragColor = mix(  textureColor , refelctionTexture, 0.3);
+        gl_FragColor = mix(  textureColor , refelctionTexture, 0.3) * vec4(ads(), 1.0);
     }
 
 //     vec4 cubeMapColor = texture(CubeMapTex,ReflectDir);
