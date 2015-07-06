@@ -297,7 +297,7 @@
      vec3 worldView = normalize( worldCameraPosition - worldPos ); // - worldPos
      reflectionDir  = normalize( reflect( -worldView, worldNorm ) );
      if(reflectionDir.t >  0.45)  reflectionDir.t =  0.90 - reflectionDir.t ;
-     // if(reflectionDir.t < -0.65 ) reflectionDir.t = -1.3 + reflectionDir.t ;
+     else if(reflectionDir.t < -0.55 ) reflectionDir.t = -1.1 - reflectionDir.t ;
     }
 
 
