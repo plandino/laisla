@@ -73,12 +73,12 @@ function drawScene() {
   mat4.translate(matrix_estructPuente, matrix_estructPuente, [0.0, trasCabinaDeMandoBarcoY, 0.0]);
   puenteBarco.draw(matrix_estructPuente, gl, shaderProgramTexturas);
 
-  var matrix_barco = mat4.create();
-  mat4.identity(matrix_barco);
-  mat4.translate(matrix_barco, matrix_barco, [trasBarcoX, trasBarcoY, trasBarcoZ]);
-  mat4.rotateX(matrix_barco, matrix_barco, degToRad(90));
-  mat4.scale(matrix_barco, matrix_barco, [escBarcoX, escBarcoY, escBarcoZ]);
-  barco.draw(matrix_barco, gl, shaderProgramTexturas);
+  // var matrix_barco = mat4.create();
+  // mat4.identity(matrix_barco);
+  // mat4.translate(matrix_barco, matrix_barco, [trasBarcoX, trasBarcoY, trasBarcoZ]);
+  // mat4.rotateX(matrix_barco, matrix_barco, degToRad(90));
+  // mat4.scale(matrix_barco, matrix_barco, [escBarcoX, escBarcoY, escBarcoZ]);
+  // barco.draw(matrix_barco, gl, shaderProgramTexturas);
 
   var matrix_islote = mat4.create();
   mat4.identity(matrix_islote);
@@ -125,11 +125,7 @@ function drawScene() {
       }
 
   }
-
-  /* Avanza el tiempo */
-  t = t + 0.01;
-  
-  /***** CONTEXTO NORMAL MAP *****/
+    /***** CONTEXTO NORMAL MAP *****/
 
   gl.useProgram(shaderProgramRelieve);
   gl.uniformMatrix4fv(gl.shaderProgramRelieve.perspectiveMatrixUniform, false, perspectiveMatrix);
@@ -141,6 +137,23 @@ function drawScene() {
   mat4.identity(matrix_muelle);
   mat4.translate(matrix_muelle, matrix_muelle, [-90.0, -8.0, -20.0]);
   muelle.draw(matrix_muelle, gl, shaderProgramRelieve);
+
+    /***** CONTEXTO REFLECTION MAP *****/
+
+  gl.useProgram(shaderProgramReflection);
+  gl.uniformMatrix4fv(gl.shaderProgramReflection.perspectiveMatrixUniform, false, perspectiveMatrix);
+  gl.uniformMatrix4fv(gl.shaderProgramReflection.viewMatrixUniform, false, cameraMatrix );
+
+  setLuces(cameraMatrix, gl, shaderProgramReflection);
+
+  var matrix_barco = mat4.create();
+  mat4.identity(matrix_barco);
+  mat4.translate(matrix_barco, matrix_barco, [trasBarcoX, trasBarcoY, trasBarcoZ]);
+  mat4.rotateX(matrix_barco, matrix_barco, degToRad(90));
+  mat4.scale(matrix_barco, matrix_barco, [escBarcoX, escBarcoY, escBarcoZ]);
+  barco.draw(matrix_barco, gl, shaderProgramReflection);
+  
+
 }
 
   // INIT
@@ -165,6 +178,11 @@ function drawScene() {
     // Compilamos y linkeamos los shaders
     gl.shaderProgramRelieve = initShadersRelieve();
     if (!gl.shaderProgramRelieve)
+      return;
+
+    // Compilamos y linkeamos los shaders
+    gl.shaderProgramReflection = initShadersRelefction();
+    if (!gl.shaderProgramReflection)
       return;
     
     // Color de fondo para la escena 

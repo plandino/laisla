@@ -20,6 +20,9 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
 
     this.texture = null;
     this.textureImage = null;
+    this.reflectionTexture = null;
+    this.reflectionTextureImage = null;
+    this.tieneReflejo = false;
 
     this.forma = forma;
     this.camino = camino;
@@ -185,12 +188,23 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
     }
 
 
-    this.handleLoadedTexture = function(objectImage) {
-        this.texture = gl.createTexture();
+    this.handleLoadedTexture = function(objectImage, conReflection) {
 
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        if(conReflection){
+            this.tieneReflejo = true;
+            this.reflectionTexture = gl.createTexture();
 
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
+            gl.bindTexture(gl.TEXTURE_2D, this.reflectionTexture);
+        } else {
+            this.texture = gl.createTexture();
+
+            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
+            gl.bindTexture(gl.TEXTURE_2D, this.texture);    
+        }
+        
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, objectImage);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
@@ -304,7 +318,13 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
 
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
-            gl.uniform1i(shaderProgram.samplerUniform, 0);
+            gl.uniform1i(shaderProgram.samplerUniformTextureMap, 0);
+
+            if(this.tieneReflejo){
+                gl.activeTexture(gl.TEXTURE1);
+                gl.bindTexture(gl.TEXTURE_2D, this.reflectionTexture);
+                gl.uniform1i(shaderProgram.samplerUniformReflectionMap, 1);
+            }
         } else {    // DEBUG
             console.log("Entra a dibujar colores en extrusion texturada");
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_color_buffer);
