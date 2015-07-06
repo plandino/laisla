@@ -118,8 +118,8 @@ function barco(scaleX, scaleY, scaleZ){
         this.extrusion.initBuffers(gl, shaderProgram, color);
     }
 
-    this.draw = function(modelMatrix, gl, shaderProgram){
+    this.draw = function(modelMatrix, gl, shaderProgram, shaderProgramSoloTexturas){
         // this.extrusion.draw(modelMatrix, gl, shaderProgram);
-    	this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram);
+    	this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram, shaderProgramSoloTexturas);
     }
 }

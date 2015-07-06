@@ -151,7 +151,7 @@ function drawScene() {
   mat4.translate(matrix_barco, matrix_barco, [trasBarcoX, trasBarcoY, trasBarcoZ]);
   mat4.rotateX(matrix_barco, matrix_barco, degToRad(90));
   mat4.scale(matrix_barco, matrix_barco, [escBarcoX, escBarcoY, escBarcoZ]);
-  barco.draw(matrix_barco, gl, shaderProgramReflection);
+  barco.draw(matrix_barco, gl, shaderProgramReflection, shaderProgramTexturas);
   
 
 }

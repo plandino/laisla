@@ -291,7 +291,7 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
         }
     }
 
-    this.drawConTextura = function(modelMatrix, gl, shaderProgram){
+    this.drawConTextura = function(modelMatrix, gl, shaderProgram, shaderProgramSoloTextura){
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_position_buffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.webgl_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
         
@@ -334,12 +334,37 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
         gl.drawElements(gl.TRIANGLE_STRIP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
 
-        if (this.tapa1){   
-            this.tapa1.drawConTextura(modelMatrix, gl, shaderProgram)
+        if(shaderProgramSoloTextura){
+            /***** CONTEXTO TEXTURAS *****/
+            gl.useProgram(shaderProgramSoloTextura);
+            gl.uniformMatrix4fv(shaderProgramSoloTextura.perspectiveMatrixUniform, false, perspectiveMatrix);
+            gl.uniformMatrix4fv(shaderProgramSoloTextura.viewMatrixUniform, false, cameraMatrix );
+
+            setLuces(cameraMatrix, gl, shaderProgramSoloTextura);
+
+            if (this.tapa1){   
+                this.tapa1.drawConTextura(modelMatrix, gl, shaderProgramSoloTextura)
+            }
+            if (this.tapa2){
+                this.tapa2.drawConTextura(modelMatrix, gl, shaderProgramSoloTextura)
+            }
+
+            /***** CONTEXTO ANTERIOR *****/
+            gl.useProgram(shaderProgram);
+            gl.uniformMatrix4fv(shaderProgram.perspectiveMatrixUniform, false, perspectiveMatrix);
+            gl.uniformMatrix4fv(shaderProgram.viewMatrixUniform, false, cameraMatrix );
+
+            setLuces(cameraMatrix, gl, shaderProgram);
+        } else {
+            if (this.tapa1){   
+                this.tapa1.drawConTextura(modelMatrix, gl, shaderProgram)
+            }
+            if (this.tapa2){
+                this.tapa2.drawConTextura(modelMatrix, gl, shaderProgram)
+            }    
         }
-        if (this.tapa2){
-            this.tapa2.drawConTextura(modelMatrix, gl, shaderProgram)
-        }
+
+        
     }
 
 
