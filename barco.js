@@ -118,6 +118,6 @@ function barco(scaleX, scaleY, scaleZ){
 
     this.draw = function(modelMatrix, gl, shaderProgram){
         // this.extrusion.draw(modelMatrix, gl, shaderProgram);
-    	this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram);
+    	this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram, KA, KD, 0.3, S);
     }
 }

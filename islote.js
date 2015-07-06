@@ -145,7 +145,7 @@ function islote() {
     }
 
     this.draw = function(modelMatrix, gl, shaderProgram) {
-        this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram);
+        this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram, KA, KD, 0.0, S);
     }
 
 

@@ -117,13 +117,13 @@ function pataGrua(scaleX, scaleY, scaleZ){
 	    mat4.multiply(matrix_ruedaUno, matrix_ruedaUno, modelMatrix);
 	    mat4.translate(matrix_ruedaUno, matrix_ruedaUno, [25.5 * this.escalaX, -2.0, 0.0]);
 	    mat4.rotate(matrix_ruedaUno, matrix_ruedaUno, degToRad(-90.0), [0.0, 1.0, 0.0]);
-	    this.ruedaUno.drawConTextura(matrix_ruedaUno, gl, shaderProgram);
+	    this.ruedaUno.drawConTextura(matrix_ruedaUno, gl, shaderProgram, 1.0, 1.0, 1.0, 1.0);
 
 	    var matrix_ruedaDos = mat4.create();
 	    mat4.identity(matrix_ruedaDos);
 	    mat4.multiply(matrix_ruedaDos, matrix_ruedaDos, modelMatrix);
 	    mat4.translate(matrix_ruedaDos, matrix_ruedaDos, [-18.5 * this.escalaX, -2.0, 0.0]);
 	    mat4.rotate(matrix_ruedaDos, matrix_ruedaDos, degToRad(-90.0), [0.0, 1.0, 0.0]);
-	    this.ruedaUno.drawConTextura(matrix_ruedaDos, gl, shaderProgram);
+	    this.ruedaUno.drawConTextura(matrix_ruedaDos, gl, shaderProgram, 1.0, 1.0, 1.0, 1.0);
 	}
 }

@@ -65,7 +65,9 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
                 // vec3.normalize(n, n);
 
                 var arriba;
-                if (this.arriba == "y")
+                if (this.arriba == "x")
+                    arriba = vec3.fromValues(1,0,0);
+                else if (this.arriba == "y")
                     arriba = vec3.fromValues(0,1,0);
                 else
                     arriba = vec3.fromValues(0,0,1);
@@ -272,7 +274,23 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
         }
     }
 
-    this.drawConTextura = function(modelMatrix, gl, shaderProgram){
+    this.drawConTextura = function(modelMatrix, gl, shaderProgram, ka, kd, ks, shininess){
+        // var mvMatrix = mat4.create();
+        // mat4.multiply(mvMatrix, cameraMatrix, modelMatrix);
+        var normalMatrix = mat3.create();
+        mat3.identity(normalMatrix);
+        mat3.fromMat4(normalMatrix, modelMatrix);
+        mat3.invert(normalMatrix, normalMatrix);
+        mat3.transpose(normalMatrix, normalMatrix);
+        // mat3.scale(normalMatrix, normalMatrix, [0.0,0.0,0.0]);
+        gl.uniformMatrix3fv(shaderProgram.normalMatrixUniform, false, normalMatrix);
+
+        gl.uniform1f(shaderProgram.ka, ka);
+        gl.uniform1f(shaderProgram.kd, kd);
+        gl.uniform1f(shaderProgram.ks, ks);
+        gl.uniform1f(shaderProgram.shininess, shininess);
+
+
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_position_buffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.webgl_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
         

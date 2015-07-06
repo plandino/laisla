@@ -61,6 +61,6 @@ function cielo () {
 
     this.draw = function(modelMatrix, gl, shaderProgram){
         // this.extrusion.draw(modelMatrix, gl, shaderProgram);
-    	this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram);
+    	this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram, 0.25, 0.0, 0.0, S);
     }
 }

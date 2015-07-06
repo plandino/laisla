@@ -64,12 +64,12 @@ function postes(){
 
 	    var matrix_lamparaUno = mat4.create();
 		mat4.identity(matrix_lamparaUno);
-		mat4.translate(matrix_lamparaUno, matrix_lamparaUno, [20.0, 20.0, 150.0]);
+		mat4.translate(matrix_lamparaUno, matrix_lamparaUno, [lamparasX, lamparasY, lamparaZ1]);
 		this.lamparaUno.draw(matrix_lamparaUno, gl, shaderProgramSimple);
 
 		var matrix_lamparaDos = mat4.create();
 		mat4.identity(matrix_lamparaDos);
-		mat4.translate(matrix_lamparaDos, matrix_lamparaDos, [20.0, 20.0, -70.0]);
+		mat4.translate(matrix_lamparaDos, matrix_lamparaDos, [lamparasX, lamparasY, lamparaZ2]);
 		this.lamparaDos.draw(matrix_lamparaDos, gl, shaderProgramSimple);
 	}
 }

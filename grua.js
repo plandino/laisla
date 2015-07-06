@@ -125,7 +125,7 @@ function grua(scaleX, scaleY, scaleZ){
 	    var matrix_lamparaCabeza = mat4.create();
 		mat4.identity(matrix_lamparaCabeza);
 		mat4.multiply(matrix_lamparaCabeza, matrix_lamparaCabeza, modelMatrix);
-		mat4.translate(matrix_lamparaCabeza, matrix_lamparaCabeza, [93.0, 49.0, 0.0]);
+		mat4.translate(matrix_lamparaCabeza, matrix_lamparaCabeza, [lamparaGruaX, lamparaGruaY, lamparaGruaZ]);
 		lamparaCabezaGrua.draw(matrix_lamparaCabeza, gl, shaderProgram);
 
 	}

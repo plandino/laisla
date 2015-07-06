@@ -73,5 +73,26 @@
   var largoPlumaX = 130.0;
 
 
+  // Posicion Lamparas
+    //faroles
+    var lamparasX = 20.0;
+    var lamparasY = 20.0;
+    var lamparaZ1 = -70.0;
+    var lamparaZ2 = 150.0;
+
+    //grua
+    var lamparaGruaX = 93.0;
+    var lamparaGruaY = 49.0;
+    var lamparaGruaZ = 0.0;
+
+    //sol
+    var t = 0.9;
+    var solX = escCielo*Math.cos(t * Math.PI);
+    var solY = escCielo/8;
+    var solZ = escCielo*Math.sin(t * Math.PI);
 
 
+  // ILUMINACION
+    var KA = 0.1;
+    var KD = 0.4;
+    var S = 1.0;

@@ -131,14 +131,29 @@ function initShadersConTexturas() {
 
     shaderProgramTexturas.samplerUniform            = gl.getUniformLocation(shaderProgramTexturas, "uSampler");
 
-    // Se hizo la luz!!!
-
-    shaderProgramTexturas.useLightingUniform = gl.getUniformLocation(shaderProgramTexturas, "uUseLighting");
-    shaderProgramTexturas.ambientColorUniform = gl.getUniformLocation(shaderProgramTexturas, "uAmbientColor");
-    shaderProgramTexturas.lightingDirectionUniform = gl.getUniformLocation(shaderProgramTexturas, "uLightPosition");
-    shaderProgramTexturas.directionalColorUniform = gl.getUniformLocation(shaderProgramTexturas, "uDirectionalColor");
     
     shaderProgramTexturas.normalMatrixUniform = gl.getUniformLocation(shaderProgramTexturas, "uNormalMatrix");
+   
+    shaderProgramTexturas.solPositionUniform     = gl.getUniformLocation(shaderProgramTexturas, "uSol.position");
+    shaderProgramTexturas.solIntensityUniform    = gl.getUniformLocation(shaderProgramTexturas, "uSol.intensity");
+    shaderProgramTexturas.solPersistanceUniform    = gl.getUniformLocation(shaderProgramTexturas, "uSol.persistance");
+    
+    shaderProgramTexturas.farolAPositionUniform     = gl.getUniformLocation(shaderProgramTexturas, "uFarolA.position");
+    shaderProgramTexturas.farolAIntensityUniform    = gl.getUniformLocation(shaderProgramTexturas, "uFarolA.intensity");
+    shaderProgramTexturas.farolAPersistanceUniform    = gl.getUniformLocation(shaderProgramTexturas, "uFarolA.persistance");
+
+    shaderProgramTexturas.farolBPositionUniform     = gl.getUniformLocation(shaderProgramTexturas, "uFarolB.position");
+    shaderProgramTexturas.farolBIntensityUniform    = gl.getUniformLocation(shaderProgramTexturas, "uFarolB.intensity");
+    shaderProgramTexturas.farolBPersistanceUniform    = gl.getUniformLocation(shaderProgramTexturas, "uFarolB.persistance");
+
+    shaderProgramTexturas.farolGruaPositionUniform     = gl.getUniformLocation(shaderProgramTexturas, "uFarolGrua.position");
+    shaderProgramTexturas.farolGruaIntensityUniform    = gl.getUniformLocation(shaderProgramTexturas, "uFarolGrua.intensity");
+    shaderProgramTexturas.farolGruaPersistanceUniform    = gl.getUniformLocation(shaderProgramTexturas, "uFarolGrua.persistance");
+
+    shaderProgramTexturas.ka = gl.getUniformLocation(shaderProgramTexturas, "ka");
+    shaderProgramTexturas.kd = gl.getUniformLocation(shaderProgramTexturas, "kd");
+    shaderProgramTexturas.ks = gl.getUniformLocation(shaderProgramTexturas, "ks");
+    shaderProgramTexturas.shininess = gl.getUniformLocation(shaderProgramTexturas, "shininess");
 
     return shaderProgramTexturas;
 }

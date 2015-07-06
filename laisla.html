@@ -66,13 +66,16 @@
     uniform mat3 uNormalMatrix;
 
     varying vec3 vTextureCoord;
-    varying vec4 pos_camera_view;
+    varying vec4 vPosition;
     varying vec3 vNormal;
+    varying mat3 vViewMatrix;
 
     void main(void) {
 
-      // Transformamos al vértice al espacio de la cámara
-      pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
+      vPosition = uModelMatrix * vec4(aVertexPosition, 1.0);
+
+      vec4 pos_camera_view = uViewMatrix * vPosition;
+      // vPosition = pos_camera_view;
       
       // Transformamos al vértice al espacio de la proyección
       gl_Position = uPerspectiveMatrix * pos_camera_view;
@@ -80,8 +83,11 @@
       // Coordenada de textura sin modifiaciones
       vTextureCoord = uTextureMatrix * vec3(aTextureCoord, 1.0);
 
-      vNormal = normalize(uNormalMatrix*aVertexNormal);
+      // mat3 normalMatrix = mat3(uViewMatrix * uModelMatrix);
+      vNormal = normalize(uNormalMatrix * aVertexNormal);
       // vNormal = normalize(aVertexNormal);	// DEBUG
+      
+      vViewMatrix = mat3(uViewMatrix);
     }
   </script>
 
@@ -99,42 +105,55 @@
     precision mediump float;
 
     varying vec3 vTextureCoord;
-    varying vec4 pos_camera_view;
+    varying vec4 vPosition;
+    vec3 vPos = vec3(vPosition);
+
     varying vec3 vNormal;
-    varying vec3 vPosition;
+    // varying vec3 vPosition;
+    varying mat3 vViewMatrix;
 
     uniform sampler2D uSampler;
 
-    // Se hizo la luz!!!
-    uniform vec3 uAmbientColor;
-    uniform vec3 uLightPosition;
-    uniform vec3 uDirectionalColor;
-    uniform bool uUseLighting;
+    struct Light{
+    	vec3 position;
+    	vec3 intensity;
+		float persistance;
+    };
+	uniform float ka;
+	uniform float kd;
+	uniform float ks;
+	uniform float shininess;
 
-    vec3 ads( ) {
-      	float Ka = 0.5;
-      	float Kd = 0.5;
-      	float Ks = 0.5;
-      	float Shininess = 1.0;
-      	vec3 LightIntensity = vec3(1.0, 1.0, 1.0);
+    uniform Light uSol;
+    uniform Light uFarolA;
+    uniform Light uFarolB;
+    uniform Light uFarolGrua;
+  	
 
-  			vec3 n = normalize( vNormal );
-  			vec3 s = normalize( uLightPosition - vec3(pos_camera_view) );
-  			vec3 v = normalize(vec3(-pos_camera_view));
-  			vec3 r = reflect( -s, n );
-  			return LightIntensity *	( Ka + Kd * max( dot(s, n), 0.0 ) + Ks * pow( max( dot(r,v), 0.0 ), Shininess ) );
-		}
+	vec3 ads( in Light luz ) {
+		vec3 n = vNormal;
+		vec3 diff = luz.position - vPos;
+		vec3 s = normalize( diff );
 
-		void main() {
-			  /** DEBUG: COLOR SEGUN NORMAL **/
-        // vec3 color = vec3( (vNormal.x+1.0)/2.0, (vNormal.y+1.0)/2.0, (vNormal.z+1.0)/2.0 );
-        // gl_FragColor = vec4( color, 1.0);
-        // return;
+		vec3 v = normalize( -vPos );
+		vec3 r = reflect( s, n );
 
-        /** COLOR POSTA **/
-        vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-			  gl_FragColor = vec4(ads(), 1.0) * textureColor;
-		}
+		float decaimiento = luz.persistance / length(diff);
+		
+		return luz.intensity * ( ka + kd * decaimiento * max( dot(s, n), 0.0 ) + ks * decaimiento * pow( max( dot(r,v), 0.0 ), shininess ) );
+	}
+
+	void main() {
+	  // // /** DEBUG: COLOR SEGUN NORMAL **/
+   //  vec3 color = vec3( (vNormal.x+1.0)/2.0, (vNormal.y+1.0)/2.0, (vNormal.z+1.0)/2.0 );
+   //  gl_FragColor = vec4( color, 1.0);
+   //  return;
+
+    /** COLOR POSTA **/
+    	vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+    	vec3 phong = ads(uSol) + ads(uFarolA) + ads(uFarolB) + ads(uFarolGrua);
+		gl_FragColor = vec4(phong, 1.0) * textureColor;
+	}
   </script>
 
 
