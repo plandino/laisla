@@ -20,6 +20,9 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
 
     this.texture = null;
     this.textureImage = null;
+    this.reflectionTexture = null;
+    this.reflectionTextureImage = null;
+    this.tieneReflejo = false;
 
     this.forma = forma;
     this.camino = camino;
@@ -182,12 +185,23 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
     }
 
 
-    this.handleLoadedTexture = function(objectImage) {
-        this.texture = gl.createTexture();
+    this.handleLoadedTexture = function(objectImage, conReflection) {
 
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        if(conReflection){
+            this.tieneReflejo = true;
+            this.reflectionTexture = gl.createTexture();
 
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
+            gl.bindTexture(gl.TEXTURE_2D, this.reflectionTexture);
+        } else {
+            this.texture = gl.createTexture();
+
+            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
+            gl.bindTexture(gl.TEXTURE_2D, this.texture);    
+        }
+        
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, objectImage);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
@@ -233,8 +247,8 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
             this.webgl_normal_buffer.numItems = this.normal_buffer.length / 3;
 
             this.webgl_tangent_buffer = gl.createBuffer();
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_tangent_buffer);
-            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Float32Array(this.tangent_buffer), gl.STATIC_DRAW);
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_tangent_buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.tangent_buffer), gl.STATIC_DRAW);
             this.webgl_tangent_buffer.itemSize = 3;
             this.webgl_tangent_buffer.numItems = this.tangent_buffer.length / 3;
 
@@ -274,7 +288,7 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
         }
     }
 
-    this.drawConTextura = function(modelMatrix, gl, shaderProgram, ka, kd, ks, shininess){
+    this.drawConTextura = function(modelMatrix, gl, shaderProgram, ka, kd, ks, shininess, shaderProgramSoloTextura){
         // var mvMatrix = mat4.create();
         // mat4.multiply(mvMatrix, cameraMatrix, modelMatrix);
         var normalMatrix = mat3.create();
@@ -309,6 +323,10 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
 
        if(this.esTexturada){
 
+            // // TANGENTEEEEES
+            // gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_tangent_buffer);
+            // gl.vertexAttribPointer(shaderProgram.vertexTangentAttribute, this.webgl_tangent_buffer.itemSize, gl.FLOAT, false, 0, 0);
+
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
             gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.webgl_normal_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
@@ -322,7 +340,13 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
 
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
-            gl.uniform1i(shaderProgram.samplerUniform, 0);
+            gl.uniform1i(shaderProgram.samplerUniformTextureMap, 0);
+
+            if(this.tieneReflejo){
+                gl.activeTexture(gl.TEXTURE1);
+                gl.bindTexture(gl.TEXTURE_2D, this.reflectionTexture);
+                gl.uniform1i(shaderProgram.samplerUniformReflectionMap, 1);
+            }
         } else {    // DEBUG
             console.log("Entra a dibujar colores en extrusion texturada");
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_color_buffer);
@@ -332,12 +356,37 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
         gl.drawElements(gl.TRIANGLE_STRIP, this.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
 
-        if (this.tapa1){   
-            this.tapa1.drawConTextura(modelMatrix, gl, shaderProgram)
+        if(shaderProgramSoloTextura){
+            /***** CONTEXTO TEXTURAS *****/
+            gl.useProgram(shaderProgramSoloTextura);
+            gl.uniformMatrix4fv(shaderProgramSoloTextura.perspectiveMatrixUniform, false, perspectiveMatrix);
+            gl.uniformMatrix4fv(shaderProgramSoloTextura.viewMatrixUniform, false, cameraMatrix );
+
+            setLuces(cameraMatrix, gl, shaderProgramSoloTextura);
+
+            if (this.tapa1){   
+                this.tapa1.drawConTextura(modelMatrix, gl, shaderProgramSoloTextura)
+            }
+            if (this.tapa2){
+                this.tapa2.drawConTextura(modelMatrix, gl, shaderProgramSoloTextura)
+            }
+
+            /***** CONTEXTO ANTERIOR *****/
+            gl.useProgram(shaderProgram);
+            gl.uniformMatrix4fv(shaderProgram.perspectiveMatrixUniform, false, perspectiveMatrix);
+            gl.uniformMatrix4fv(shaderProgram.viewMatrixUniform, false, cameraMatrix );
+
+            setLuces(cameraMatrix, gl, shaderProgram);
+        } else {
+            if (this.tapa1){   
+                this.tapa1.drawConTextura(modelMatrix, gl, shaderProgram)
+            }
+            if (this.tapa2){
+                this.tapa2.drawConTextura(modelMatrix, gl, shaderProgram)
+            }    
         }
-        if (this.tapa2){
-            this.tapa2.drawConTextura(modelMatrix, gl, shaderProgram)
-        }
+
+        
     }
 
 

@@ -54,33 +54,33 @@ function drawScene() {
   gl.uniformMatrix4fv(gl.shaderProgramTexturas.perspectiveMatrixUniform, false, perspectiveMatrix);
   gl.uniformMatrix4fv(gl.shaderProgramTexturas.viewMatrixUniform, false, cameraMatrix );
 
-  setLuces(cameraMatrix, gl, shaderProgramTexturas);
+  setLucesNormal(cameraMatrix, gl, shaderProgramTexturas);
 
   var matrix_mar = mat4.create();
   mat4.identity(matrix_mar);
   mat4.translate(matrix_mar, matrix_mar, [0.0, -10.0, 0.0]);
-  mar.draw(matrix_mar, gl, shaderProgramTexturas);
+  mar.drawSoloTextura(matrix_mar, gl, shaderProgramTexturas);
 
-  var matrix_muelle = mat4.create();
-  mat4.identity(matrix_muelle);
-  mat4.translate(matrix_muelle, matrix_muelle, [-90.0, -8.0, -20.0]);
-  muelle.draw(matrix_muelle, gl, shaderProgramTexturas);
+  // var matrix_muelle = mat4.create();
+  // mat4.identity(matrix_muelle);
+  // mat4.translate(matrix_muelle, matrix_muelle, [-90.0, -8.0, -20.0]);
+  // muelle.draw(matrix_muelle, gl, shaderProgramTexturas);
 
   var matrix_estructPuente = mat4.create();
   mat4.identity(matrix_estructPuente);
   mat4.translate(matrix_estructPuente, matrix_estructPuente, [trasEstructuraPuenteX, trasEstructuraPuenteY, trasEstructuraPuenteZ]);
-  estructuraPuenteBarco.draw(matrix_estructPuente, gl, shaderProgramTexturas);
+  estructuraPuenteBarco.drawSoloTextura(matrix_estructPuente, gl, shaderProgramTexturas);
 
   // Usando la misma matriz subo la cabina de mando del puente del barco
   mat4.translate(matrix_estructPuente, matrix_estructPuente, [0.0, trasCabinaDeMandoBarcoY, 0.0]);
-  puenteBarco.draw(matrix_estructPuente, gl, shaderProgramTexturas);
+  puenteBarco.drawSoloTextura(matrix_estructPuente, gl, shaderProgramTexturas);
 
-  var matrix_barco = mat4.create();
-  mat4.identity(matrix_barco);
-  mat4.translate(matrix_barco, matrix_barco, [trasBarcoX, trasBarcoY, trasBarcoZ]);
-  mat4.rotateX(matrix_barco, matrix_barco, degToRad(90));
-  mat4.scale(matrix_barco, matrix_barco, [escBarcoX, escBarcoY, escBarcoZ]);
-  barco.draw(matrix_barco, gl, shaderProgramTexturas);
+  // var matrix_barco = mat4.create();
+  // mat4.identity(matrix_barco);
+  // mat4.translate(matrix_barco, matrix_barco, [trasBarcoX, trasBarcoY, trasBarcoZ]);
+  // mat4.rotateX(matrix_barco, matrix_barco, degToRad(90));
+  // mat4.scale(matrix_barco, matrix_barco, [escBarcoX, escBarcoY, escBarcoZ]);
+  // barco.draw(matrix_barco, gl, shaderProgramTexturas);
 
   var matrix_islote = mat4.create();
   mat4.identity(matrix_islote);
@@ -122,14 +122,39 @@ function drawScene() {
           posContainersAnterior[j] = matrix_containers;
         }
         posContainersAnterior[j] = matrix_containers;
-        arrayContainers[j].draw(matrix_containers, gl, shaderProgramTexturas);
+        arrayContainers[j].drawSoloTextura(matrix_containers, gl, shaderProgramTexturas);
         posContainersAnterior[j] = matrix_containers;
       }
 
   }
 
-  /* Avanza el tiempo */
-  t = t + 0.01;
+    /***** CONTEXTO NORMAL MAP *****/
+
+    gl.useProgram(shaderProgramRelieve);
+    gl.uniformMatrix4fv(gl.shaderProgramRelieve.perspectiveMatrixUniform, false, perspectiveMatrix);
+    gl.uniformMatrix4fv(gl.shaderProgramRelieve.viewMatrixUniform, false, cameraMatrix );
+
+    setLucesEspeciales(cameraMatrix, gl, shaderProgramRelieve);
+
+    var matrix_muelle = mat4.create();
+    mat4.identity(matrix_muelle);
+    mat4.translate(matrix_muelle, matrix_muelle, [-90.0, -8.0, -20.0]);
+    muelle.drawEspecial(matrix_muelle, gl, shaderProgramRelieve);
+
+      /***** CONTEXTO REFLECTION MAP *****/
+
+    gl.useProgram(shaderProgramReflection);
+    gl.uniformMatrix4fv(gl.shaderProgramReflection.perspectiveMatrixUniform, false, perspectiveMatrix);
+    gl.uniformMatrix4fv(gl.shaderProgramReflection.viewMatrixUniform, false, cameraMatrix );
+
+    setLucesEspeciales(cameraMatrix, gl, shaderProgramReflection);
+
+    var matrix_barco = mat4.create();
+    mat4.identity(matrix_barco);
+    mat4.translate(matrix_barco, matrix_barco, [trasBarcoX, trasBarcoY, trasBarcoZ]);
+    mat4.rotateX(matrix_barco, matrix_barco, degToRad(90));
+    mat4.scale(matrix_barco, matrix_barco, [escBarcoX, escBarcoY, escBarcoZ]);
+    barco.draw(matrix_barco, gl, shaderProgramReflection, shaderProgramTexturas);
 }
 
   // INIT
@@ -150,6 +175,16 @@ function drawScene() {
     gl.shaderProgramSimple = initShadersSimple();
     if (!gl.shaderProgramSimple)
       return;
+
+    // Compilamos y linkeamos los shaders
+    gl.shaderProgramRelieve = initShadersRelieve();
+    if (!gl.shaderProgramRelieve)
+      return;
+
+    // Compilamos y linkeamos los shaders
+    gl.shaderProgramReflection = initShadersRelefction();
+    if (!gl.shaderProgramReflection)
+      return;
     
     // Color de fondo para la escena 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -162,11 +197,12 @@ function drawScene() {
 
     gruita = new grua(1.0, 1.0, 1.0);
     gruita.initBuffers(gl, shaderProgramSimple);
-    gruita.asignarShaders(shaderProgramSimple, shaderProgramTexturas);
+    gruita.asignarShaders(shaderProgramSimple, shaderProgramTexturas, shaderProgramRelieve);
 
-    muelle = new cubo(muelleX, muelleY, muelleZ, false, true);
+    muelle = new cubo(muelleX, muelleY, muelleZ, false, true, true);
     muelle.initBuffers(gl, null, "gris", coordenadasUVMuelle);
-    loadTexture(muelle, muelle.textureImage, "texturas/concretoPlataforma.jpg");
+    loadTexture(muelle, muelle.textureImage, "textfinales/concretoPlataforma.jpg");
+    loadTexture(muelle, muelle.normalMapTextureImage, "textfinales/concretoPlataformaNomalMap.jpg", true);
 
 
     estructuraPuenteBarco = new cubo(estructuraPuenteX, estructuraPuenteY, estructuraPuenteZ, false, true);

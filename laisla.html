@@ -166,6 +166,260 @@
 	}
   </script>
 
+  <script id="shaderrelieve-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+    attribute vec2 aTextureCoord;
+    attribute vec3 aVertexTangent;
+
+    uniform mat4 uModelMatrix;
+    uniform mat4 uViewMatrix;
+    uniform mat4 uPerspectiveMatrix;
+    uniform mat3 uTextureMatrix;
+    
+    uniform mat3 uNormalMatrix;
+
+    varying vec3 vTextureCoord;
+    varying vec4 pos_camera_view;
+    varying vec3 vNormal;
+    varying mat3 toLocalObject;
+
+    void main(void) {
+
+      // Transformamos al vértice al espacio de la cámara
+      pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
+      
+      // Transformamos al vértice al espacio de la proyección
+      gl_Position = uPerspectiveMatrix * pos_camera_view;
+      
+      // Coordenada de textura sin modifiaciones
+      vTextureCoord = uTextureMatrix * vec3(aTextureCoord, 1.0);
+
+      vec3 normal   = normalize(uNormalMatrix * aVertexNormal);
+      vec3 tangente = normalize(uNormalMatrix * aVertexTangent);
+      vec3 binormal = cross (normal, tangente); //* vec3(-1.0,-1.0,-1.0);
+
+      // // Matriz para pasar de coordenadas de vista a coordenadas tangentes(coordenadas para hacer el normal mapping)
+      toLocalObject = mat3( 
+          tangente.x, binormal.x, normal.x,
+          tangente.y, binormal.y, normal.y,
+          tangente.z, binormal.z, normal.z ) ;
+
+      // // Matriz para pasar de coordenadas de vista a coordenadas tangentes(coordenadas para hacer el normal mapping)
+      // toLocalObject = mat3( 
+      //     tangente.x, tangente.x, tangente.x,
+      //     binormal.y, binormal.y, binormal.y,
+      //     normal.z,   normal.z,   normal.z ) ;
+
+      vNormal = normal;
+      // vNormal = normalize(aVertexNormal);  // DEBUG
+    }
+  </script>
+
+  <script id="shaderrelieve-fs" type="x-shader/x-fragment">
+    precision mediump float;
+
+    varying vec3 vTextureCoord;
+    varying vec4 pos_camera_view;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    varying mat3 toLocalObject;
+
+    uniform sampler2D uSamplerTextureMap;
+    uniform sampler2D uSamplerNormalMap;
+
+    // Se hizo la luz!!!
+    uniform vec3 uAmbientColor;
+    uniform vec3 uLightPosition;
+    uniform vec3 uDirectionalColor;
+    uniform bool uUseLighting;
+
+    vec3 ads( vec3 normalMap ) {
+        float Ka = 0.5;
+        float Kd = 0.5;
+        float Ks = 0.8;
+        float Shininess = 1.0;
+        vec3 LightIntensity = vec3(1.0, 1.0, 1.0);
+
+        vec3 n = normalize( vNormal);
+        vec3 s = normalize( uLightPosition - vec3(pos_camera_view) );
+        vec3 v = normalize(vec3(-pos_camera_view));
+        vec3 r = reflect( -s, n );
+
+
+        // Adelante
+        // vec3 LightDirection = normalize( toLocalObject * s );
+        // vec3 ViewDirection  = normalize( toLocalObject * v);
+        // normalMap = normalize(toLocalObject * normalMap);
+
+        // vec3 LightDirection = s;
+        // vec3 ViewDirection = v;
+
+        // Atras
+        vec3 LightDirection = normalize( s * toLocalObject );
+        vec3 ViewDirection  = normalize( vec3(-pos_camera_view) * toLocalObject);
+
+        vec3 reflection = normalize(reflect( -LightDirection, normalMap ));
+        float sDotN = max( dot(LightDirection, normalMap), 0.0 );   // Este es el nuevo
+
+        // float sDotN = max( dot(s, n), 0.0 );  // Este es el viejo
+
+        // float lightReflectionDir = max( dot(r,v), 0.0 );  // Este es el viejo
+        float lightReflectionDir = max( dot(reflection, ViewDirection), 0.0 );   // Este es el nuevo
+        return LightIntensity * ( Ka + Kd * sDotN + Ks * pow( lightReflectionDir, Shininess ) );
+    }
+
+    void main() {
+        /** DEBUG: COLOR SEGUN NORMAL **/
+        // vec3 color = vec3( (vNormal.x+1.0)/2.0, (vNormal.y+1.0)/2.0, (vNormal.z+1.0)/2.0 );
+        // gl_FragColor = vec4( color, 1.0);
+        // return;
+
+        /** COLOR POSTA **/
+        vec4 textureColor = texture2D(uSamplerTextureMap, vec2(vTextureCoord.s, vTextureCoord.t));
+
+        // Obtengo los valores rgb de la textura de normal map
+        vec3 nMap         = texture2D(uSamplerNormalMap, vec2(vTextureCoord.s, vTextureCoord.t)).rgb; 
+
+        // Pase de valores rgb a valor [-1.0 ; 1.0] 
+        vec3 normalMap    = (nMap * 2.0 - 1.0);
+
+        gl_FragColor = vec4(ads(normalMap), 1.0) * textureColor;
+    }
+  </script>
+
+    <script id="shaderreflection-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+    attribute vec2 aTextureCoord;
+
+    uniform mat4 uModelMatrix;
+    uniform mat4 uViewMatrix;
+    uniform mat4 uPerspectiveMatrix;
+    uniform mat3 uTextureMatrix;
+    
+    uniform mat3 uNormalMatrix;
+
+    varying vec3 vTextureCoord;
+    varying vec4 pos_camera_view;
+    varying vec3 vNormal;
+    varying vec3 reflectionDir;
+
+    void main(void) {
+
+      // Transformamos al vértice al espacio de la cámara
+      pos_camera_view = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
+
+      vec3 worldCameraPosition = vec3(pos_camera_view.x, pos_camera_view.y, pos_camera_view.z);
+      
+      // Transformamos al vértice al espacio de la proyección
+      gl_Position = uPerspectiveMatrix * pos_camera_view;
+      
+      // Coordenada de textura sin modifiaciones
+      vTextureCoord = uTextureMatrix * vec3(aTextureCoord, 1.0);
+
+      vec3 normal   = normalize(uNormalMatrix * aVertexNormal);
+
+      vNormal = normal;
+      // vNormal = normalize(aVertexNormal);  // DEBUG
+
+     vec3 worldPos  = normalize( vec3( uModelMatrix * vec4(aVertexPosition,1.0) ) );
+     vec3 worldNorm = normalize( vec3( uModelMatrix * vec4(aVertexNormal,  0.0) ) ); // o va normal?
+     vec3 worldView = normalize( worldCameraPosition - worldPos ); // - worldPos
+     reflectionDir  = normalize( reflect( -worldView, worldNorm ) );
+     if(reflectionDir.t >  0.45)  reflectionDir.t =  0.90 - reflectionDir.t ;
+     else if(reflectionDir.t < -0.53 ) reflectionDir.t = -1.06 - reflectionDir.t ;
+    }
+
+
+    // out vec3 ReflectDir; // The direction of the reflected ray
+    // uniform bool DrawSkyBox; // Are we drawing the sky box?
+    // uniform vec3 WorldCameraPosition;
+    // uniform mat4 ModelViewMatrix;
+    // uniform mat4 ModelMatrix;
+    // uniform mat3 NormalMatrix;
+    // uniform mat4 ProjectionMatrix;
+    // uniform mat4 MVP;
+
+    // void main() {
+    //    if( DrawSkyBox ) {
+    //        ReflectDir = VertexPosition;
+    //    } else {
+    //        // Compute the reflected direction in world coords.
+    //        vec3 worldPos = vec3( ModelMatrix * vec4(VertexPosition,1.0) );
+    //        vec3 worldNorm = vec3(ModelMatrix * vec4(VertexNormal, 0.0));
+    //        vec3 worldView = normalize( WorldCameraPosition – worldPos );
+    //        ReflectDir = reflect(-worldView, worldNorm );
+    //        }
+    //        gl_Position = MVP * vec4(VertexPosition,1.0);
+    // }
+
+
+
+
+  </script>
+
+  <script id="shaderreflection-fs" type="x-shader/x-fragment">
+    precision mediump float;
+
+    varying vec3 vTextureCoord;
+    varying vec4 pos_camera_view;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    varying vec3 reflectionDir;
+
+
+    uniform sampler2D uSamplerTextureMap;
+    uniform sampler2D uSamplerReflectionMap;
+
+    // Se hizo la luz!!!
+    uniform vec3 uAmbientColor;
+    uniform vec3 uLightPosition;
+    uniform vec3 uDirectionalColor;
+    uniform bool uUseLighting;
+
+    vec3 ads( ) {
+        float Ka = 0.5;
+        float Kd = 0.5;
+        float Ks = 0.5;
+        float Shininess = 1.0;
+        vec3 LightIntensity = vec3(1.0, 1.0, 1.0);
+
+        vec3 n = normalize( vNormal);
+        vec3 s = normalize( uLightPosition - vec3(pos_camera_view) );
+        vec3 v = normalize(vec3(-pos_camera_view));
+        vec3 r = reflect( -s, n );
+
+        float sDotN = max( dot(s, n), 0.0 );  // Este es el viejo
+
+        float lightReflectionDir = max( dot(r,v), 0.0 );  // Este es el viejo
+        return LightIntensity * ( Ka + Kd * sDotN + Ks * pow( lightReflectionDir, Shininess ) );
+    }
+
+    void main() {
+        /** DEBUG: COLOR SEGUN NORMAL **/
+        // vec3 color = vec3( (vNormal.x+1.0)/2.0, (vNormal.y+1.0)/2.0, (vNormal.z+1.0)/2.0 );
+        // gl_FragColor = vec4( color, 1.0);
+        // return;
+
+        /** COLOR POSTA **/
+        vec4 textureColor = texture2D(uSamplerTextureMap, vec2(vTextureCoord.s, vTextureCoord.t));
+
+        vec4 refelctionTexture = texture2D(uSamplerReflectionMap, vec2(reflectionDir.s, reflectionDir.t) );
+
+
+        gl_FragColor = mix(  textureColor , refelctionTexture, 0.3) * vec4(ads(), 1.0);
+    }
+
+//     vec4 cubeMapColor = texture(CubeMapTex,ReflectDir);
+//  if( DrawSkyBox )
+//  FragColor = cubeMapColor;
+//  else
+//  FragColor = mix(MaterialColor, CubeMapColor,
+//  ReflectFactor);
+// }
+  </script>
+
 
   <script type="text/javascript">
 

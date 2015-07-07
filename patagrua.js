@@ -14,25 +14,30 @@ function pataGrua(scaleX, scaleY, scaleZ){
 
 	this.initBuffers = function(gl, shaderProgram){
 
-	    this.pataUno = new cubo(4.0 * this.escalaX, gruaY * this.escalaY, 4.0 * this.escalaZ, false, true);
+	    this.pataUno = new cubo(4.0 * this.escalaX, gruaY * this.escalaY, 4.0 * this.escalaZ, false, true, true);
 	    this.pataUno.initBuffers(gl, shaderProgram, "yellow", coordenadasUVPatasVerticalesGrua);
 	    loadTexture(this.pataUno, this.pataUno.textureImage, "textfinales/texturaGrua.jpg");
+	    loadTexture(this.pataUno, this.pataUno.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);
 
-	    this.pataDos = new cubo(4.0 * this.escalaX, gruaY * this.escalaY, 4.0 * this.escalaZ, false, true);
+	    this.pataDos = new cubo(4.0 * this.escalaX, gruaY * this.escalaY, 4.0 * this.escalaZ, false, true, true);
 	    this.pataDos.initBuffers(gl, shaderProgram, "yellow", coordenadasUVPatasVerticalesGrua);
 	    loadTexture(this.pataDos, this.pataDos.textureImage, "textfinales/texturaGrua.jpg");
+	    loadTexture(this.pataDos, this.pataDos.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);
 
-	    this.barraCruzadaAbajoGrua = new cubo(40.0 * this.escalaX, 6.0 * this.escalaY, 4.0 * this.escalaZ, false, true);
+	    this.barraCruzadaAbajoGrua = new cubo(40.0 * this.escalaX, 6.0 * this.escalaY, 4.0 * this.escalaZ, false, true, true);
 	    this.barraCruzadaAbajoGrua.initBuffers(gl, shaderProgram, "yellow", coordenadasUVPatasHorizontalesGrua);
    	    loadTexture(this.barraCruzadaAbajoGrua, this.barraCruzadaAbajoGrua.textureImage, "textfinales/texturaGrua.jpg");
+   	    loadTexture(this.barraCruzadaAbajoGrua, this.barraCruzadaAbajoGrua.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);
 
-	    this.barraCruzadaArribaGrua = new cubo(40.0 * this.escalaX, 6.0 * this.escalaY, 4.0 * this.escalaZ, false, true);
+	    this.barraCruzadaArribaGrua = new cubo(40.0 * this.escalaX, 6.0 * this.escalaY, 4.0 * this.escalaZ, false, true, true);
 	    this.barraCruzadaArribaGrua.initBuffers(gl, shaderProgram, "yellow", coordenadasUVPatasHorizontalesGrua);
 	    loadTexture(this.barraCruzadaArribaGrua, this.barraCruzadaArribaGrua.textureImage, "textfinales/texturaGrua.jpg");
+	    loadTexture(this.barraCruzadaArribaGrua, this.barraCruzadaArribaGrua.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);
 
-	    this.barraDiagonalGrua = new cubo(50.0 * this.escalaX, 6.0 * this.escalaY, 3.9 * this.escalaZ, false, true);
+	    this.barraDiagonalGrua = new cubo(50.0 * this.escalaX, 6.0 * this.escalaY, 3.9 * this.escalaZ, false, true, true);
 	    this.barraDiagonalGrua.initBuffers(gl, shaderProgram, "yellow", coordenadasUVPatasDiagonalGrua);
 	    loadTexture(this.barraDiagonalGrua, this.barraDiagonalGrua.textureImage, "textfinales/texturaGrua.jpg");
+	    loadTexture(this.barraDiagonalGrua, this.barraDiagonalGrua.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);
 
 
 	    var forma = [];
@@ -79,51 +84,65 @@ function pataGrua(scaleX, scaleY, scaleZ){
 	}
 
 
-	this.draw = function(modelMatrix, gl, shaderProgram){
+	this.draw = function(modelMatrix, gl, shaderProgramRelieve, shaderProgramSimple){
 
 		var matrix_pataUno = mat4.create();
 	    mat4.identity(matrix_pataUno);
 	    mat4.multiply(matrix_pataUno, matrix_pataUno, modelMatrix);
 	    mat4.translate(matrix_pataUno, matrix_pataUno, [-22.0 * this.escalaX, (gruaY / 2) * this.escalaY, 0.0]);
-	    this.pataUno.draw(matrix_pataUno, gl, shaderProgram);
+	    this.pataUno.drawEspecial(matrix_pataUno, gl, shaderProgramRelieve);
 
 	    var matrix_pataDos = mat4.create();
 	    mat4.identity(matrix_pataDos);
 	    mat4.multiply(matrix_pataDos, matrix_pataDos, modelMatrix);
 	    mat4.translate(matrix_pataDos, matrix_pataDos, [22.0 * this.escalaX, (gruaY / 2) * this.escalaY, 0.0]);
-	    this.pataDos.draw(matrix_pataDos, gl, shaderProgram);
+	    this.pataDos.drawEspecial(matrix_pataDos, gl, shaderProgramRelieve);
 
 	    var matrix_barraCruzadaAbajoGrua = mat4.create();
 	    mat4.identity(matrix_barraCruzadaAbajoGrua);
 	    mat4.multiply(matrix_barraCruzadaAbajoGrua, matrix_barraCruzadaAbajoGrua, modelMatrix);
 	    mat4.translate(matrix_barraCruzadaAbajoGrua, matrix_barraCruzadaAbajoGrua, [0.0 , 21.0 * this.escalaY, 0.0]);
-	    this.barraCruzadaAbajoGrua.draw(matrix_barraCruzadaAbajoGrua, gl, shaderProgram);
+	    this.barraCruzadaAbajoGrua.drawEspecial(matrix_barraCruzadaAbajoGrua, gl, shaderProgramRelieve);
 
 	    var matrix_barraCruzadaArribaGrua = mat4.create();
 	    mat4.identity(matrix_barraCruzadaArribaGrua);
 	    mat4.multiply(matrix_barraCruzadaArribaGrua, matrix_barraCruzadaArribaGrua, modelMatrix);
 	    mat4.translate(matrix_barraCruzadaArribaGrua, matrix_barraCruzadaArribaGrua, [0.0, 57.0 * this.escalaY, 0.0]);
-	    this.barraCruzadaArribaGrua.draw(matrix_barraCruzadaArribaGrua, gl, shaderProgram);
+	    this.barraCruzadaArribaGrua.drawEspecial(matrix_barraCruzadaArribaGrua, gl, shaderProgramRelieve);
 
 	    var matrix_barraDiagonalGrua = mat4.create();
 	    mat4.identity(matrix_barraDiagonalGrua);
 	   	mat4.multiply(matrix_barraDiagonalGrua, matrix_barraDiagonalGrua, modelMatrix);
 	    mat4.translate(matrix_barraDiagonalGrua, matrix_barraDiagonalGrua, [0.0, 39.0 * this.escalaY, 0.0]);
 	    mat4.rotate(matrix_barraDiagonalGrua, matrix_barraDiagonalGrua, degToRad(-36.87 * (this.escalaY / this.escalaX)), [0.0, 0.0, 1.0]);
-	    this.barraDiagonalGrua.draw(matrix_barraDiagonalGrua, gl, shaderProgram);
+	    this.barraDiagonalGrua.drawEspecial(matrix_barraDiagonalGrua, gl, shaderProgramRelieve);
+
+	    /***** CONTEXTO SIMPLE *****/
+	    gl.useProgram(shaderProgramSimple);
+  		gl.uniformMatrix4fv(shaderProgramSimple.perspectiveMatrixUniform, false, perspectiveMatrix);
+  		gl.uniformMatrix4fv(shaderProgramSimple.viewMatrixUniform, false, cameraMatrix );
+
+  		// setLuces(cameraMatrix, gl, shaderProgramSimple);
 
 	    var matrix_ruedaUno = mat4.create();
 	    mat4.identity(matrix_ruedaUno);
 	    mat4.multiply(matrix_ruedaUno, matrix_ruedaUno, modelMatrix);
 	    mat4.translate(matrix_ruedaUno, matrix_ruedaUno, [25.5 * this.escalaX, -2.0, 0.0]);
 	    mat4.rotate(matrix_ruedaUno, matrix_ruedaUno, degToRad(-90.0), [0.0, 1.0, 0.0]);
-	    this.ruedaUno.drawConTextura(matrix_ruedaUno, gl, shaderProgram, 1.0, 1.0, 1.0, 1.0);
+	    this.ruedaUno.draw(matrix_ruedaUno, gl, shaderProgramSimple);
 
 	    var matrix_ruedaDos = mat4.create();
 	    mat4.identity(matrix_ruedaDos);
 	    mat4.multiply(matrix_ruedaDos, matrix_ruedaDos, modelMatrix);
 	    mat4.translate(matrix_ruedaDos, matrix_ruedaDos, [-18.5 * this.escalaX, -2.0, 0.0]);
 	    mat4.rotate(matrix_ruedaDos, matrix_ruedaDos, degToRad(-90.0), [0.0, 1.0, 0.0]);
-	    this.ruedaUno.drawConTextura(matrix_ruedaDos, gl, shaderProgram, 1.0, 1.0, 1.0, 1.0);
+	    this.ruedaUno.draw(matrix_ruedaDos, gl, shaderProgramSimple);
+
+	    /***** CONTEXTO RELIEVE *****/
+	    gl.useProgram(shaderProgramRelieve);
+  		gl.uniformMatrix4fv(shaderProgramRelieve.perspectiveMatrixUniform, false, perspectiveMatrix);
+  		gl.uniformMatrix4fv(shaderProgramRelieve.viewMatrixUniform, false, cameraMatrix );
+
+  		setLucesEspeciales(cameraMatrix, gl, shaderProgramRelieve);
 	}
 }
