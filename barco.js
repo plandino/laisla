@@ -107,6 +107,8 @@ function barco(scaleX, scaleY, scaleZ){
     this.extrusion = new extrusion(this.forma, this.camino, this.escala, this.tangentes, this.normales, this.u);
     // loadTexture(this.extrusion, this.extrusion.textureImage, "uvgrid.jpg");
     loadTexture(this.extrusion, this.extrusion.textureImage, "textfinales/cascoBarco.jpg");
+    loadTexture(this.extrusion, this.extrusion.reflectionTextureImage, "textfinales/reflexionMap.jpg", true);
+    
     this._calcularUV();
     this.extrusion.agregarTapa(4, true, true, "textfinales/concretoPlataforma.jpg", 100.0, 100.0);
     this.extrusion.agregarTapa(this.camino.length-1, false, true, null, 100.0, 100.0); //esto le pone fondo negro, je
@@ -116,8 +118,8 @@ function barco(scaleX, scaleY, scaleZ){
         this.extrusion.initBuffers(gl, shaderProgram, color);
     }
 
-    this.draw = function(modelMatrix, gl, shaderProgram){
+    this.draw = function(modelMatrix, gl, shaderProgram, shaderProgramSoloTexturas){
         // this.extrusion.draw(modelMatrix, gl, shaderProgram);
-    	this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram, KA, KD, 0.3, S);
+    	this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram, KA, KD, 0.3, S, shaderProgramSoloTexturas);
     }
 }

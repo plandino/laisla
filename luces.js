@@ -33,9 +33,6 @@ function setLucesEspeciales(mvMatrix, gl, shaderProgram){
     gl.uniform3f(shaderProgram.ambientColorUniform, 0.3, 0.3, 0.3 );
     gl.uniform3f(shaderProgram.directionalColorUniform, 0.2, 0.2, 0.2);
 
-    var lighting = true;
-    gl.uniform1i(shaderProgram.useLightingUniform, lighting);
-
     var normalMatrix = mat3.create();
     mat3.identity(normalMatrix);
     mat3.fromMat4(normalMatrix, mvMatrix);

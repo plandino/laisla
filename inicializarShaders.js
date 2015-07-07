@@ -207,8 +207,6 @@ function initShadersRelieve() {
     shaderProgramRelieve.samplerUniformNormalMap   = gl.getUniformLocation(shaderProgramRelieve, "uSamplerNormalMap");
 
     // Se hizo la luz!!!
-
-    shaderProgramRelieve.useLightingUniform = gl.getUniformLocation(shaderProgramRelieve, "uUseLighting");
     shaderProgramRelieve.ambientColorUniform = gl.getUniformLocation(shaderProgramRelieve, "uAmbientColor");
     shaderProgramRelieve.lightingDirectionUniform = gl.getUniformLocation(shaderProgramRelieve, "uLightPosition");
     shaderProgramRelieve.directionalColorUniform = gl.getUniformLocation(shaderProgramRelieve, "uDirectionalColor");
@@ -263,8 +261,6 @@ function initShadersRelefction() {
     shaderProgramReflection.samplerUniformReflectionMap   = gl.getUniformLocation(shaderProgramReflection, "uSamplerReflectionMap");
 
     // Se hizo la luz!!!
-
-    shaderProgramReflection.useLightingUniform = gl.getUniformLocation(shaderProgramReflection, "uUseLighting");
     shaderProgramReflection.ambientColorUniform = gl.getUniformLocation(shaderProgramReflection, "uAmbientColor");
     shaderProgramReflection.lightingDirectionUniform = gl.getUniformLocation(shaderProgramReflection, "uLightPosition");
     shaderProgramReflection.directionalColorUniform = gl.getUniformLocation(shaderProgramReflection, "uDirectionalColor");

@@ -362,7 +362,7 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
             gl.uniformMatrix4fv(shaderProgramSoloTextura.perspectiveMatrixUniform, false, perspectiveMatrix);
             gl.uniformMatrix4fv(shaderProgramSoloTextura.viewMatrixUniform, false, cameraMatrix );
 
-            setLuces(cameraMatrix, gl, shaderProgramSoloTextura);
+            setLucesNormal(cameraMatrix, gl, shaderProgramSoloTextura);
 
             if (this.tapa1){   
                 this.tapa1.drawConTextura(modelMatrix, gl, shaderProgramSoloTextura)
@@ -376,7 +376,7 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
             gl.uniformMatrix4fv(shaderProgram.perspectiveMatrixUniform, false, perspectiveMatrix);
             gl.uniformMatrix4fv(shaderProgram.viewMatrixUniform, false, cameraMatrix );
 
-            setLuces(cameraMatrix, gl, shaderProgram);
+            setLucesNormal(cameraMatrix, gl, shaderProgram);
         } else {
             if (this.tapa1){   
                 this.tapa1.drawConTextura(modelMatrix, gl, shaderProgram)
