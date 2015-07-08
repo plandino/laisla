@@ -5,10 +5,10 @@ function setLucesNormal(mvMatrix, gl, shaderProgram){
     gl.uniform3fv(shaderProgram.solIntensityUniform, vec3.fromValues(intensidadSol, intensidadSol, intensidadSol));
     gl.uniform1f(shaderProgram.solPersistanceUniform, 2000);
 
-    var intensidadFarolA = 0.6;
+    var intensidadFarolA = 0.7;
     gl.uniform3fv(shaderProgram.farolAPositionUniform, vec3.fromValues(lamparasX, lamparasY, lamparaZ1));
     gl.uniform3fv(shaderProgram.farolAIntensityUniform, vec3.fromValues(intensidadFarolA, intensidadFarolA, intensidadFarolA));
-    gl.uniform1f(shaderProgram.farolAPersistanceUniform, 70);
+    gl.uniform1f(shaderProgram.farolAPersistanceUniform, 90);
 
     var intensidadFarolB = intensidadFarolA;
 	gl.uniform3fv(shaderProgram.farolBPositionUniform, vec3.fromValues(lamparasX, lamparasY, lamparaZ2));

@@ -203,15 +203,44 @@ function initShadersRelieve() {
     shaderProgramRelieve.modelMatrixUniform        = gl.getUniformLocation(shaderProgramRelieve, "uModelMatrix");
     shaderProgramRelieve.texMatrixUniform          = gl.getUniformLocation(shaderProgramRelieve, "uTextureMatrix");
 
-    shaderProgramRelieve.samplerUniformTextureMap  = gl.getUniformLocation(shaderProgramRelieve, "uSamplerTextureMap");
+    // shaderProgramRelieve.samplerUniformTextureMap  = gl.getUniformLocation(shaderProgramRelieve, "uSamplerTextureMap");
     shaderProgramRelieve.samplerUniformNormalMap   = gl.getUniformLocation(shaderProgramRelieve, "uSamplerNormalMap");
 
     // Se hizo la luz!!!
-    shaderProgramRelieve.ambientColorUniform = gl.getUniformLocation(shaderProgramRelieve, "uAmbientColor");
-    shaderProgramRelieve.lightingDirectionUniform = gl.getUniformLocation(shaderProgramRelieve, "uLightPosition");
-    shaderProgramRelieve.directionalColorUniform = gl.getUniformLocation(shaderProgramRelieve, "uDirectionalColor");
+    // shaderProgramRelieve.ambientColorUniform = gl.getUniformLocation(shaderProgramRelieve, "uAmbientColor");
+    // shaderProgramRelieve.lightingDirectionUniform = gl.getUniformLocation(shaderProgramRelieve, "uLightPosition");
+    // shaderProgramRelieve.directionalColorUniform = gl.getUniformLocation(shaderProgramRelieve, "uDirectionalColor");
     
-    shaderProgramRelieve.normalMatrixUniform = gl.getUniformLocation(shaderProgramRelieve, "uNormalMatrix");
+    // shaderProgramRelieve.normalComunMatrixUniform = gl.getUniformLocation(shaderProgramRelieve, "uNormalMatrix");
+
+    shaderProgramRelieve.samplerUniform            = gl.getUniformLocation(shaderProgramRelieve, "uSampler");
+
+    shaderProgramRelieve.normalMatrixUniform = gl.getUniformLocation(shaderProgramRelieve, "umNormalMatrix");
+    shaderProgramRelieve.MVnormalMatrixUniform = gl.getUniformLocation(shaderProgramRelieve, "umvNormalMatrix");
+   
+    shaderProgramRelieve.solPositionUniform     = gl.getUniformLocation(shaderProgramRelieve, "uSol.position");
+    shaderProgramRelieve.solIntensityUniform    = gl.getUniformLocation(shaderProgramRelieve, "uSol.intensity");
+    shaderProgramRelieve.solPersistanceUniform    = gl.getUniformLocation(shaderProgramRelieve, "uSol.persistance");
+    
+    shaderProgramRelieve.farolAPositionUniform     = gl.getUniformLocation(shaderProgramRelieve, "uFarolA.position");
+    shaderProgramRelieve.farolAIntensityUniform    = gl.getUniformLocation(shaderProgramRelieve, "uFarolA.intensity");
+    shaderProgramRelieve.farolAPersistanceUniform    = gl.getUniformLocation(shaderProgramRelieve, "uFarolA.persistance");
+
+    shaderProgramRelieve.farolBPositionUniform     = gl.getUniformLocation(shaderProgramRelieve, "uFarolB.position");
+    shaderProgramRelieve.farolBIntensityUniform    = gl.getUniformLocation(shaderProgramRelieve, "uFarolB.intensity");
+    shaderProgramRelieve.farolBPersistanceUniform    = gl.getUniformLocation(shaderProgramRelieve, "uFarolB.persistance");
+
+    shaderProgramRelieve.farolGruaPositionUniform     = gl.getUniformLocation(shaderProgramRelieve, "uFarolGrua.position");
+    shaderProgramRelieve.farolGruaIntensityUniform    = gl.getUniformLocation(shaderProgramRelieve, "uFarolGrua.intensity");
+    shaderProgramRelieve.farolGruaPersistanceUniform    = gl.getUniformLocation(shaderProgramRelieve, "uFarolGrua.persistance");
+
+    shaderProgramRelieve.ka = gl.getUniformLocation(shaderProgramRelieve, "ka");
+    shaderProgramRelieve.kd = gl.getUniformLocation(shaderProgramRelieve, "kd");
+    shaderProgramRelieve.ks = gl.getUniformLocation(shaderProgramRelieve, "ks");
+    shaderProgramRelieve.shininess = gl.getUniformLocation(shaderProgramRelieve, "shininess");
+
+
+
 
     return shaderProgramRelieve;
 }

@@ -134,12 +134,12 @@ function drawScene() {
     gl.uniformMatrix4fv(gl.shaderProgramRelieve.perspectiveMatrixUniform, false, perspectiveMatrix);
     gl.uniformMatrix4fv(gl.shaderProgramRelieve.viewMatrixUniform, false, cameraMatrix );
 
-    setLucesEspeciales(cameraMatrix, gl, shaderProgramRelieve);
+    setLucesNormal(cameraMatrix, gl, shaderProgramRelieve);
 
     var matrix_muelle = mat4.create();
     mat4.identity(matrix_muelle);
     mat4.translate(matrix_muelle, matrix_muelle, [-90.0, -8.0, -20.0]);
-    muelle.drawEspecial(matrix_muelle, gl, shaderProgramRelieve);
+    muelle.drawSoloTextura(matrix_muelle, gl, shaderProgramRelieve);
 
       /***** CONTEXTO REFLECTION MAP *****/
 

@@ -334,6 +334,18 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
             gl.uniform1i(shaderProgram.samplerUniform, 0);
+
+            if(this.conRelieve){
+
+
+              gl.activeTexture(gl.TEXTURE1);
+              gl.bindTexture(gl.TEXTURE_2D, this.normalMapTexture);
+              gl.uniform1i(shaderProgram.samplerUniformNormalMap, 1); 
+
+              gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexTangentBuffer);
+              gl.vertexAttribPointer(shaderProgram.vertexTangentAttribute, this.cubeVertexTangentBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+            }
         } else {
             // Asigno los colores
             gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexColorBuffer);
