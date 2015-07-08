@@ -147,7 +147,7 @@ function drawScene() {
     gl.uniformMatrix4fv(gl.shaderProgramReflection.perspectiveMatrixUniform, false, perspectiveMatrix);
     gl.uniformMatrix4fv(gl.shaderProgramReflection.viewMatrixUniform, false, cameraMatrix );
 
-    setLucesEspeciales(cameraMatrix, gl, shaderProgramReflection);
+    setLucesNormal(cameraMatrix, gl, shaderProgramReflection);
 
     var matrix_barco = mat4.create();
     mat4.identity(matrix_barco);

@@ -286,15 +286,42 @@ function initShadersRelefction() {
     shaderProgramReflection.modelMatrixUniform        = gl.getUniformLocation(shaderProgramReflection, "uModelMatrix");
     shaderProgramReflection.texMatrixUniform          = gl.getUniformLocation(shaderProgramReflection, "uTextureMatrix");
 
-    shaderProgramReflection.samplerUniformTextureMap  = gl.getUniformLocation(shaderProgramReflection, "uSamplerTextureMap");
+    // shaderProgramReflection.samplerUniformTextureMap  = gl.getUniformLocation(shaderProgramReflection, "uSamplerTextureMap");
     shaderProgramReflection.samplerUniformReflectionMap   = gl.getUniformLocation(shaderProgramReflection, "uSamplerReflectionMap");
 
     // Se hizo la luz!!!
-    shaderProgramReflection.ambientColorUniform = gl.getUniformLocation(shaderProgramReflection, "uAmbientColor");
-    shaderProgramReflection.lightingDirectionUniform = gl.getUniformLocation(shaderProgramReflection, "uLightPosition");
-    shaderProgramReflection.directionalColorUniform = gl.getUniformLocation(shaderProgramReflection, "uDirectionalColor");
+    // shaderProgramReflection.ambientColorUniform = gl.getUniformLocation(shaderProgramReflection, "uAmbientColor");
+    // shaderProgramReflection.lightingDirectionUniform = gl.getUniformLocation(shaderProgramReflection, "uLightPosition");
+    // shaderProgramReflection.directionalColorUniform = gl.getUniformLocation(shaderProgramReflection, "uDirectionalColor");
     
-    shaderProgramReflection.normalMatrixUniform = gl.getUniformLocation(shaderProgramReflection, "uNormalMatrix");
+    // shaderProgramReflection.normalMatrixUniform = gl.getUniformLocation(shaderProgramReflection, "uNormalMatrix");
+
+
+    shaderProgramReflection.samplerUniformTextureMap            = gl.getUniformLocation(shaderProgramReflection, "uSampler");
+
+    shaderProgramReflection.normalMatrixUniform = gl.getUniformLocation(shaderProgramReflection, "umNormalMatrix");
+    shaderProgramReflection.MVnormalMatrixUniform = gl.getUniformLocation(shaderProgramReflection, "umvNormalMatrix");
+   
+    shaderProgramReflection.solPositionUniform     = gl.getUniformLocation(shaderProgramReflection, "uSol.position");
+    shaderProgramReflection.solIntensityUniform    = gl.getUniformLocation(shaderProgramReflection, "uSol.intensity");
+    shaderProgramReflection.solPersistanceUniform    = gl.getUniformLocation(shaderProgramReflection, "uSol.persistance");
+    
+    shaderProgramReflection.farolAPositionUniform     = gl.getUniformLocation(shaderProgramReflection, "uFarolA.position");
+    shaderProgramReflection.farolAIntensityUniform    = gl.getUniformLocation(shaderProgramReflection, "uFarolA.intensity");
+    shaderProgramReflection.farolAPersistanceUniform    = gl.getUniformLocation(shaderProgramReflection, "uFarolA.persistance");
+
+    shaderProgramReflection.farolBPositionUniform     = gl.getUniformLocation(shaderProgramReflection, "uFarolB.position");
+    shaderProgramReflection.farolBIntensityUniform    = gl.getUniformLocation(shaderProgramReflection, "uFarolB.intensity");
+    shaderProgramReflection.farolBPersistanceUniform    = gl.getUniformLocation(shaderProgramReflection, "uFarolB.persistance");
+
+    shaderProgramReflection.farolGruaPositionUniform     = gl.getUniformLocation(shaderProgramReflection, "uFarolGrua.position");
+    shaderProgramReflection.farolGruaIntensityUniform    = gl.getUniformLocation(shaderProgramReflection, "uFarolGrua.intensity");
+    shaderProgramReflection.farolGruaPersistanceUniform    = gl.getUniformLocation(shaderProgramReflection, "uFarolGrua.persistance");
+
+    shaderProgramReflection.ka = gl.getUniformLocation(shaderProgramReflection, "ka");
+    shaderProgramReflection.kd = gl.getUniformLocation(shaderProgramReflection, "kd");
+    shaderProgramReflection.ks = gl.getUniformLocation(shaderProgramReflection, "ks");
+    shaderProgramReflection.shininess = gl.getUniformLocation(shaderProgramReflection, "shininess");
 
     return shaderProgramReflection;
 }

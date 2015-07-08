@@ -323,6 +323,7 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
 
        if(this.esTexturada){
 
+
             // // TANGENTEEEEES
             // gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_tangent_buffer);
             // gl.vertexAttribPointer(shaderProgram.vertexTangentAttribute, this.webgl_tangent_buffer.itemSize, gl.FLOAT, false, 0, 0);
