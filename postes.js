@@ -49,7 +49,7 @@ function postes(){
 	    var matrix_posteUno = mat4.create();
 	    mat4.identity(matrix_posteUno);
 	    mat4.multiply(matrix_posteUno, matrix_posteUno, modelMatrix);
-	    mat4.translate(matrix_posteUno, matrix_posteUno, [20 , 18.3, 150.0]);
+	    mat4.translate(matrix_posteUno, matrix_posteUno, [lamparasX , 18.3, lamparaZ1]);
 	    mat4.scale(matrix_posteUno, matrix_posteUno, [0.3, 3.5, 0.3]);
 	    mat4.rotate(matrix_posteUno, matrix_posteUno, degToRad(90.0), [1.0, 0.0, 0.0]);
 	    this.posteUno.draw(matrix_posteUno, gl, shaderProgram);
@@ -57,7 +57,7 @@ function postes(){
 	   	var matrix_posteDos = mat4.create();
 	    mat4.identity(matrix_posteDos);
 	    mat4.multiply(matrix_posteDos, matrix_posteDos, modelMatrix);
-	    mat4.translate(matrix_posteDos, matrix_posteDos, [20 , 18.3, -70.0]);
+	    mat4.translate(matrix_posteDos, matrix_posteDos, [lamparasX , 18.3, lamparaZ2]);
 	    mat4.scale(matrix_posteDos, matrix_posteDos, [0.3, 3.5, 0.3]);
    	    mat4.rotate(matrix_posteDos, matrix_posteDos, degToRad(90.0), [1.0, 0.0, 0.0]);
 	    this.posteDos.draw(matrix_posteDos, gl, shaderProgram);

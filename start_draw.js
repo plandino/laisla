@@ -13,25 +13,25 @@ function drawScene() {
     mat4.rotateX(cameraMatrix, cameraMatrix, degToRad(rotarCamaraX));
     mat4.rotateY(cameraMatrix, cameraMatrix, degToRad(rotarCamaraY));
   }
-
-  if(camaraPersona){
+  else if(camaraPersona){
     mat4.lookAt(cameraMatrix, [ traslacionPersonaX, 10.0, 10.0 + traslacionPersonaZ], [traslacionPersonaX,10.0, traslacionPersonaZ - 1.0], [0,1,0]);
     mat4.rotateX(camaraAux, camaraAux, degToRad(rotarCamaraX));
     mat4.rotateY(camaraAux, camaraAux, degToRad(rotarCamaraY));
     mat4.multiply(cameraMatrix, camaraAux, cameraMatrix);
   } 
-
-  if(camaraCabina){
-
+  else if(camaraCabina){
     mat4.lookAt(cameraMatrix, [36.0 + traslacionXCabina, 49.4, trasGruaZ], [1000, 49.4, trasGruaZ], [0,1,0]);
     mat4.rotateX(camaraAux, camaraAux, degToRad(rotarCamaraX));
     mat4.rotateY(camaraAux, camaraAux, degToRad(rotarCamaraY));
     mat4.multiply(cameraMatrix, camaraAux, cameraMatrix);
   }
 
-
   // Preparamos una matriz de perspectiva.
-  mat4.perspective(perspectiveMatrix, degToRad(88), 640.0/480.0, 0.01, 2000.0);
+  // mat4.perspective(perspectiveMatrix, Math.atan(18.0/50.0), 640.0/480.0, 0.01, 20000.0);
+  if (camaraGlobal) mat4.perspective(perspectiveMatrix, degToRad(80), 640.0/480.0, 0.01, 2000.0);
+  else if (camaraPersona) mat4.perspective(perspectiveMatrix, Math.atan(18.0/50.0), 640.0/480.0, 0.01, 2000.0); 
+  else mat4.perspective(perspectiveMatrix, degToRad(80), 640.0/480.0, 0.01, 2000.0);
+
 
   /***** CONTEXTO SIMPLE *****/
   gl.useProgram(shaderProgramSimple);
@@ -58,7 +58,7 @@ function drawScene() {
 
   var matrix_mar = mat4.create();
   mat4.identity(matrix_mar);
-  mat4.translate(matrix_mar, matrix_mar, [0.0, -10.0, 0.0]);
+  mat4.translate(matrix_mar, matrix_mar, [0.0, -marY, 0.0]);
   mar.drawSoloTextura(matrix_mar, gl, shaderProgramTexturas);
 
   // var matrix_muelle = mat4.create();

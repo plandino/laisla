@@ -25,7 +25,7 @@
 
   // Tamaño del mar
   var marX = 1500.0;
-  var marY = 2.0;
+  var marY = 20.0;
   var marZ = 1500.0;
 
   // Tamaño del cielo
@@ -75,10 +75,10 @@
 
   // Posicion Lamparas
     //faroles
-    var lamparasX = 20.0;
+    var lamparasX = 28.0;
     var lamparasY = 20.0;
-    var lamparaZ1 = -70.0;
-    var lamparaZ2 = 150.0;
+    var lamparaZ1 = -90.0;
+    var lamparaZ2 = 130.0;
 
     //grua
     var lamparaGruaX = 93.0;
@@ -93,6 +93,6 @@
 
 
   // ILUMINACION
-    var KA = 0.1;
+    var KA = 0.15;
     var KD = 0.4;
     var S = 1.0;

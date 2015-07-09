@@ -24,14 +24,15 @@ function setLucesNormal(mvMatrix, gl, shaderProgram){
 
 function setLucesEspeciales(mvMatrix, gl, shaderProgram){
 
-    var lightPosition = vec3.create();
-    vec3.set(lightPosition,0.0,0.0, -1.0);
-    // mat4.multiply(lightPosition, mvMatrix, lightPosition);
-    gl.uniform3fv(shaderProgram.lightingDirectionUniform, lightPosition);
+    // var lightPosition = vec3.create();
+    // vec3.set(lightPosition,0.0,0.0, -1.0);
+    // // mat4.multiply(lightPosition, mvMatrix, lightPosition);
+    // gl.uniform3fv(shaderProgram.lightingDirectionUniform, lightPosition);
 
-      // Se inicializan las variables asociadas con la Iluminación
-    gl.uniform3f(shaderProgram.ambientColorUniform, 0.3, 0.3, 0.3 );
-    gl.uniform3f(shaderProgram.directionalColorUniform, 0.2, 0.2, 0.2);
+    //   // Se inicializan las variables asociadas con la Iluminación
+    // gl.uniform3f(shaderProgram.ambientColorUniform, 0.3, 0.3, 0.3 );
+    // gl.uniform3f(shaderProgram.directionalColorUniform, 0.2, 0.2, 0.2);
+    setLucesNormal(mvMatrix, gl, shaderProgram);
 
     var normalMatrix = mat3.create();
     mat3.identity(normalMatrix);
