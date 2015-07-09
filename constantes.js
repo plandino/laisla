@@ -30,8 +30,8 @@
 
   // Tamaño del cielo
   var escCielo = Math.min(marX, marZ);  // Debería ser igual al mínimos de marX y marZ
-  var cantidadDeMeridianos = 100;
-  var cantidadDeParalelos = 100;
+  var cantidadDeMeridianos = 40;
+  var cantidadDeParalelos = 40;
 
   // Tamaño del puente del barco
   var estructuraPuenteX = 50.0;
