@@ -28,12 +28,15 @@
     } 
      
     onwheel = function(evento){
-        if( aumento > -144){
-            aumento = aumento + (evento.deltaY * 2 );       
-        } else if(evento.deltaY > 0) {
-                aumento = aumento + (evento.deltaY * 2 );        
-        }
-        
+        var topeInf = -144;
+        var topeSup = 580;
+
+        var estaEnRango = topeInf < aumento && aumento < topeSup;
+        var estaVolviendo = (evento.deltaY > 0 && aumento <= topeInf) || (evento.deltaY < 0 && aumento >= topeSup);
+
+        if (estaEnRango || estaVolviendo)
+            aumento += 2*evento.deltaY;
+
         // Esto es para evitar que scrollee la pagia cuando gira la rueda
         if (evento.preventDefault)
                 evento.preventDefault();
