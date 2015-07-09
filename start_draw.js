@@ -10,20 +10,25 @@ function drawScene() {
 
   if(camaraGlobal){
     mat4.lookAt(cameraMatrix, [0.0, 20.0, 150.0 + aumento], [0,0,0], [0,1,0]); // This is the key line
+    mat4.rotateX(cameraMatrix, cameraMatrix, degToRad(rotarCamaraX));
+    mat4.rotateY(cameraMatrix, cameraMatrix, degToRad(rotarCamaraY));
   }
   else if(camaraPersona){
     mat4.lookAt(cameraMatrix, [ traslacionPersonaX, 10.0, 10.0 + traslacionPersonaZ], [traslacionPersonaX,10.0, traslacionPersonaZ - 1.0], [0,1,0]);
+    mat4.rotateX(camaraAux, camaraAux, degToRad(rotarCamaraX));
+    mat4.rotateY(camaraAux, camaraAux, degToRad(rotarCamaraY));
+    mat4.multiply(cameraMatrix, camaraAux, cameraMatrix);
   } 
   else if(camaraCabina){
     mat4.lookAt(cameraMatrix, [36.0 + traslacionXCabina, 49.4, trasGruaZ], [1000, 49.4, trasGruaZ], [0,1,0]);
+    mat4.rotateX(camaraAux, camaraAux, degToRad(rotarCamaraX));
+    mat4.rotateY(camaraAux, camaraAux, degToRad(rotarCamaraY));
+    mat4.multiply(cameraMatrix, camaraAux, cameraMatrix);
   }
-
-  mat4.rotateX(cameraMatrix, cameraMatrix, degToRad(rotarCamaraX));
-  mat4.rotateY(cameraMatrix, cameraMatrix, degToRad(rotarCamaraY));
 
   var aux = mat4.create();
   mat4.invert(aux, cameraMatrix);
-  var worldCameraPosition = [ aux[12], aux[13], aux[14] ];  //REVISAR!
+  var worldCameraPosition = [ aux[12], aux[13], aux[14] ];  // La posicion de la cámara en coordenadas del mundo
 
   // Preparamos una matriz de perspectiva.
   // mat4.perspective(perspectiveMatrix, Math.atan(18.0/50.0), 640.0/480.0, 0.01, 20000.0);
@@ -146,7 +151,7 @@ function drawScene() {
     gl.uniformMatrix4fv(gl.shaderProgramReflection.perspectiveMatrixUniform, false, perspectiveMatrix);
     gl.uniformMatrix4fv(gl.shaderProgramReflection.viewMatrixUniform, false, cameraMatrix );
 
-    // gl.uniform3fv(gl.shaderProgramReflection.worldCameraPosition, worldCameraPosition);
+    gl.uniform3fv(gl.shaderProgramReflection.worldCameraPosition, worldCameraPosition);
 
     setLucesNormal(cameraMatrix, gl, shaderProgramReflection);
 
