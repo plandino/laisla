@@ -7,18 +7,14 @@ function drawScene() {
   // Preparamos una matriz de camara(vista).
   mat4.identity(cameraMatrix);
   mat4.identity(camaraAux);
-  var worldCameraPosition = null;
 
   if(camaraGlobal){
-    // worldCameraPosition = vec4.fromValues(0.0, 20.0, 150.0 + aumento, 1.0);
     mat4.lookAt(cameraMatrix, [0.0, 20.0, 150.0 + aumento], [0,0,0], [0,1,0]); // This is the key line
   }
   else if(camaraPersona){
-     // worldCameraPosition = vec4.fromValues(traslacionPersonaX, 10.0, 10.0 + traslacionPersonaZ);
     mat4.lookAt(cameraMatrix, [ traslacionPersonaX, 10.0, 10.0 + traslacionPersonaZ], [traslacionPersonaX,10.0, traslacionPersonaZ - 1.0], [0,1,0]);
   } 
   else if(camaraCabina){
-     // worldCameraPosition = vec4.fromValues(36.0 + traslacionXCabina, 49.4, trasGruaZ);
     mat4.lookAt(cameraMatrix, [36.0 + traslacionXCabina, 49.4, trasGruaZ], [1000, 49.4, trasGruaZ], [0,1,0]);
   }
 
@@ -27,7 +23,7 @@ function drawScene() {
 
   var aux = mat4.create();
   mat4.invert(aux, cameraMatrix);
-  worldCameraPosition = [ aux[12], aux[13], aux[14] ];
+  var worldCameraPosition = [ aux[12], aux[13], aux[14] ];  //REVISAR!
 
   // Preparamos una matriz de perspectiva.
   // mat4.perspective(perspectiveMatrix, Math.atan(18.0/50.0), 640.0/480.0, 0.01, 20000.0);
