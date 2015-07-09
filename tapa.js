@@ -95,7 +95,7 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
             this.webgl_uv_buffer.numItems = this.uv_buffer.length / 2;
         }
 
-        // if (this.esTexturada){
+        // if (this.esTexturada){   // DEBUG
         //     console.log();
         //     console.log("LONGITUDES TAPA")
         //     console.log("position_buffer: " + this.position_buffer.length);
