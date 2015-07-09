@@ -37,8 +37,8 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
     this.tapa2 = null;
 
     this._posicion = function(i,j){
-        // if (i < 0 || this.rows <= i)
-        //     return vec3.fromValues(0,0,0);
+        if (i < 0 || this.rows <= i)
+            return vec3.fromValues(0,0,0);
         if (i < 0)
             return this._posicion(0,j);
         if (i >= this.rows)
@@ -51,58 +51,56 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
         return posicion;
     }
 
-    // this._calcularNormales = function(){
-    //     this.normal_buffer = [];
-    //     for (var i = 0; i < this.rows; i++){
-    //         for (var j = 0; j < this.forma.length-2; j+=3){
-    //             var normalCurva = this.normalesCurva[j/3];
-    //             var posicion = this._posicion(i,j);
-    //             var anterior = this._posicion(i-1, j);
-    //             var siguiente = this._posicion(i+1, j);
+    this._calcularNormales1 = function(){
+        this.normal_buffer = [];
+        for (var i = 0; i < this.rows; i++){
+            for (var j = 0; j < this.forma.length-2; j+=3){
+                var normalCurva = this.normalesCurva[j/3];
+                var posicion = this._posicion(i,j);
+                var anterior = this._posicion(i-1, j);
+                var siguiente = this._posicion(i+1, j);
 
-    //             var v = vec3.create();
-    //             var w = vec3.create();
-    //             vec3.subtract(v, siguiente, posicion);
-    //             vec3.subtract(w, anterior, posicion);
-    //             vec3.normalize(v, v);
-    //             vec3.normalize(w, w);
+                var v = vec3.create();
+                var w = vec3.create();
+                vec3.subtract(v, siguiente, posicion);
+                vec3.subtract(w, anterior, posicion);
+                vec3.normalize(v, v);
+                vec3.normalize(w, w);
 
-    //             var n = vec3.create();
-    //             vec3.lerp(n, v, w, 0.5);
-    //             if (vec3.length(n) < 0.00000001) console.log("Sucede");
-    //             else console.log("No");
-    //             // vec3.normalize(n, n);
+                var n = vec3.create();
+                vec3.lerp(n, v, w, 0.5);
+                // vec3.normalize(n, n);
 
-    //             var arriba;
-    //             if (this.arriba == "x")
-    //                 arriba = vec3.fromValues(1,0,0);
-    //             else if (this.arriba == "y")
-    //                 arriba = vec3.fromValues(0,1,0);
-    //             else
-    //                 arriba = vec3.fromValues(0,0,1);
+                var arriba;
+                if (this.arriba == "x")
+                    arriba = vec3.fromValues(1,0,0);
+                else if (this.arriba == "y")
+                    arriba = vec3.fromValues(0,1,0);
+                else
+                    arriba = vec3.fromValues(0,0,1);
 
-    //             var theta = Math.PI/2 - Math.acos(vec3.dot(n,arriba));
+                var theta = Math.PI/2 - Math.acos(vec3.dot(n,arriba));
 
-    //             var ejeRotacion = vec3.create();
-    //             vec3.cross(ejeRotacion, n, arriba);
+                var ejeRotacion = vec3.create();
+                vec3.cross(ejeRotacion, n, arriba);
 
-    //             var rotacion = mat4.create();
-    //             mat4.rotate(rotacion, rotacion, theta, ejeRotacion);
+                var rotacion = mat4.create();
+                mat4.rotate(rotacion, rotacion, theta, ejeRotacion);
 
-    //             var normalSuperficie = vec3.create();
-    //             if (typeof normalCurva === "undefined"){    // DEBUG
-    //                 console.log("normalCurva[" + j + "]: INDEFINIDA");
-    //                 console.log("Longitud normales: " + this.normalesCurva.length);
-    //             } 
-    //             vec3.transformMat4(normalSuperficie, normalCurva, rotacion);
-    //             vec3.normalize(normalSuperficie, normalSuperficie);
+                var normalSuperficie = vec3.create();
+                if (typeof normalCurva === "undefined"){    // DEBUG
+                    console.log("normalCurva[" + j + "]: INDEFINIDA");
+                    console.log("Longitud normales: " + this.normalesCurva.length);
+                } 
+                vec3.transformMat4(normalSuperficie, normalCurva, rotacion);
+                vec3.normalize(normalSuperficie, normalSuperficie);
 
-    //             this.normal_buffer.push(normalSuperficie[0], normalSuperficie[1], normalSuperficie[2]);
-    //         }
-    //     }
-    // }
+                this.normal_buffer.push(normalSuperficie[0], normalSuperficie[1], normalSuperficie[2]);
+            }
+        }
+    }
 
-    this._calcularNormales = function(){
+    this._calcularNormales2 = function(){
         this.normal_buffer = [];
         for (var i = 0; i < this.rows; i++){
             for (var j = 0; j < this.forma.length-2; j+=3){
@@ -162,7 +160,7 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
             }
         }
 
-        this._calcularNormales();
+        this._calcularNormales1();
     }
     
 

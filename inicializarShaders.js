@@ -323,5 +323,7 @@ function initShadersRelefction() {
     shaderProgramReflection.ks = gl.getUniformLocation(shaderProgramReflection, "ks");
     shaderProgramReflection.shininess = gl.getUniformLocation(shaderProgramReflection, "shininess");
 
+    shaderProgramReflection.worldCameraPosition = gl.getUniformLocation(shaderProgramReflection, "worldCameraPosition");
+
     return shaderProgramReflection;
 }
