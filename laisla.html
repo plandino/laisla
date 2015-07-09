@@ -277,8 +277,8 @@
         // vec3 ViewDirection = v;
 
         // Atras
-        vec3 LightDirection = normalize( ss * toLocalObject );
-        vec3 ViewDirection  = normalize( v * toLocalObject);
+        vec3 LightDirection = normalize( -s * toLocalObject );
+        vec3 ViewDirection  = normalize( vPos * toLocalObject);
 
         vec3 reflection = normalize(reflect( -LightDirection, normalMap ));
         float sDotN = max( dot(LightDirection, normalMap), 0.0 );   // Este es el nuevo
