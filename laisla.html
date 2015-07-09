@@ -291,7 +291,7 @@
 
     
     // if (dot(-ss, vmNormal) > 0.0)
-    if (vNormal.x < 0.0)
+    if (vNormal.y < 0.0)
       return luz.intensity * ( ka + kd * decaimiento * sDotN + ks * decaimiento * pow(lightReflectionDir, shininess ) );
     else 
       return luz.intensity * ( ka + kd * decaimiento * sDotN );

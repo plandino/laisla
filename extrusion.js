@@ -261,9 +261,9 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
             }
 
         if (this.tapa1) 
-            this.tapa1.initBuffers(gl, "purple");
+            this.tapa1.initBuffers(gl, "black");
         if (this.tapa2)
-            this.tapa2.initBuffers(gl, "purple");
+            this.tapa2.initBuffers(gl, "black");
     }
 
 

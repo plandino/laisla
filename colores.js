@@ -20,6 +20,16 @@
         	return colors;
 		}
 
+    if(color == "black"){
+      var colors = [
+              [0.0, 0.0, 0.0, 1.0],
+              [0.0, 0.0, 0.0, 1.0],
+              [0.0, 0.0, 0.0, 1.0],
+              [0.0, 0.0, 0.0, 1.0],
+      ];
+      return colors;
+    }
+
 		if(color == "blue"){
 			var colors = [
           		[0.0,  0.0,  1.0,  1.0],    
