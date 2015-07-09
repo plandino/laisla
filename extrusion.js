@@ -1,4 +1,4 @@
-function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
+function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arriba) {
     this.cols = 0;
     this.rows = 0;
     
@@ -9,7 +9,7 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
     this.uv_buffer = null;
     this.arriba = arriba;
 
-    this.esTexturada = (!!u);   //casteo a booleano
+    this.esTexturada = (!!esTexturada);   //casteo a booleano, por si se pasa la textura
 
     this.webgl_position_buffer = null;
     this.webgl_color_buffer = null;
@@ -27,7 +27,6 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
     this.forma = forma;
     this.camino = camino;
     this.escala = escala;
-    // this.u = u;
 
     this.tangentesCurva = tangentes;
     if (typeof normales === "undefined") console.log("normales INDEFINIDA");    //DEBUG
@@ -296,7 +295,6 @@ function extrusion(forma, camino, escala, tangentes, normales, u, arriba) {
         mat3.fromMat4(normalMatrix, modelMatrix);
         mat3.invert(normalMatrix, normalMatrix);
         mat3.transpose(normalMatrix, normalMatrix);
-        // mat3.scale(normalMatrix, normalMatrix, [0.0,0.0,0.0]);
         gl.uniformMatrix3fv(shaderProgram.normalMatrixUniform, false, normalMatrix);
 
         gl.uniform1f(shaderProgram.ka, ka);
