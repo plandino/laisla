@@ -33,7 +33,7 @@ function curvaBSpline(P0, P1, P2, P3, cantPasos) {
         var dy = B0der(u)*P0[1] + B1der(u)*P1[1] + B2der(u)*P2[1] + B3der(u)*P3[1];
         var dz = B0der(u)*P0[2] + B1der(u)*P1[2] + B2der(u)*P2[2] + B3der(u)*P3[2];
         
-        var tangente = vec3.fromValues(dx, dy, dz);
+        var tangente = vec3.fromValues(-dx, -dy, -dz);
         vec3.normalize(tangente, tangente);
         this.tangent_buffer.push(tangente);
         
