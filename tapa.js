@@ -96,21 +96,9 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
             this.webgl_uv_buffer.numItems = this.uv_buffer.length / 2;
         }
 
-        // if (this.esTexturada){   // DEBUG
-        //     console.log();
-        //     console.log("LONGITUDES TAPA")
-        //     console.log("position_buffer: " + this.position_buffer.length);
-        //     console.log("index_buffer: " + this.index_buffer.length);
-        //     console.log("normal_buffer: " + this.normal_buffer.length);
-        //     console.log("tangent_buffer: " + this.tangent_buffer.length);
-        //     if(this.esTexturada) console.log("uv_buffer: " + this.uv_buffer.length);
-        //     console.log("maximo indice: " + Math.max.apply(Math, this.index_buffer));
-        //     // console.log("");
-        // }
     }
 
 
-     // this.handleLoadedTexture = function(objectImage) {
     this.handleLoadedTexture = function(objectImage, texturaRelieve) {
 
         if( texturaRelieve){
@@ -139,11 +127,8 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
         gl.bindTexture(gl.TEXTURE_2D, null);
     }
 
-    // }
-
 
     this.draw = function(modelMatrix, gl, shaderProgram){
-
         gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_position_buffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.webgl_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
@@ -165,12 +150,7 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
 
         var normalMatrix = mat3.create();
         mat3.identity(normalMatrix);
-        // mat3.fromMat4(normalMatrix, modelMatrix);
-        // mat3.invert(normalMatrix, normalMatrix);
-        // mat3.transpose(normalMatrix, normalMatrix);
-        // mat3.scale(normalMatrix, normalMatrix, [0.0,0.0,0.0]);
         gl.uniformMatrix3fv(shaderProgram.normalMatrixUniform, false, normalMatrix);
-
 
         var MVnormalMatrix = mat3.create();
         mat3.identity(MVnormalMatrix);
@@ -179,13 +159,11 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
         mat3.transpose(MVnormalMatrix, MVnormalMatrix);
         gl.uniformMatrix3fv(shaderProgram.MVnormalMatrixUniform, false, MVnormalMatrix);
 
-
        if(this.esTexturada){
             gl.uniform1f(shaderProgram.ka, KA);
             gl.uniform1f(shaderProgram.kd, KD);
             gl.uniform1f(shaderProgram.ks, 0.0);
             gl.uniform1f(shaderProgram.shininess, S);
-
 
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
             gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.webgl_normal_buffer.itemSize, gl.FLOAT, false, 0, 0);
@@ -193,11 +171,6 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
             var texMatrix = mat3.create();
             mat3.identity(texMatrix);
 
-            // // Matriz de transformación de las coordenadas de Textura
-            // var auxMatrix = mat4.create();
-            // mat4.identity(auxMatrix);
-            // mat4.scale(texMatrix, texMatrix, [1.0, 1.0, 1.0]);
-            // mat3.fromMat4(texMatrix, texMatrix);
             gl.uniformMatrix3fv(shaderProgram.texMatrixUniform, false, texMatrix);
 
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_uv_buffer);
@@ -209,17 +182,13 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
 
 
             if(this.conRelieve){
-              // console.log("voy a dibujar con relieve");
               gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_tangent_buffer);
               gl.vertexAttribPointer(shaderProgram.vertexTangentAttribute, this.webgl_tangent_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
               gl.activeTexture(gl.TEXTURE1);
               gl.bindTexture(gl.TEXTURE_2D, this.normalMapTexture);
               gl.uniform1i(shaderProgram.samplerUniformNormalMap, 1); 
-              // console.log("ya mande todo con relieve");
             }
-
-
 
         } else {
             console.log("Entra a dibujar colores en tapa texturada");
