@@ -110,8 +110,13 @@ function barco(scaleX, scaleY, scaleZ){
     // loadTexture(this.extrusion, this.extrusion.reflectionTextureImage, "textfinales/reflexionMap.jpg", true);
     
     this._calcularUV();
+
     this.extrusion.agregarTapa(4, true, true, "textfinales/concretoPlataforma.jpg", 100.0, 100.0);
+    loadTexture(this.extrusion.tapa1, this.extrusion.tapa1.normalMapTextureImage, "textfinales/concretoPlataformaNomalMap.jpg", true);
+    
     this.extrusion.agregarTapa(this.camino.length-1, false, true, null, 100.0, 100.0); //esto le pone fondo negro, je
+    loadTexture(this.extrusion.tapa2, this.extrusion.tapa2.normalMapTextureImage, "null", true);
+    
     this.extrusion.loadCubeMap();
 
 
@@ -119,8 +124,8 @@ function barco(scaleX, scaleY, scaleZ){
         this.extrusion.initBuffers(gl, shaderProgram, color);
     }
 
-    this.draw = function(modelMatrix, gl, shaderProgram, shaderProgramSoloTexturas){
+    this.draw = function(modelMatrix, gl, shaderProgram, shaderProgramSoloTexturas, shaderRelieve){
         // this.extrusion.draw(modelMatrix, gl, shaderProgram);
-    	this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram, KA, KD, 0.3, S, shaderProgramSoloTexturas);
+    	this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram, KA, KD, 0.3, S, shaderProgramSoloTexturas, shaderRelieve);
     }
 }

@@ -33,6 +33,7 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
 
     this.texture = null;
     this.textureImage = null;
+    this.normalMapTextureImage = null;
 
 
     this._calcularUV = function(){
@@ -82,8 +83,8 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
         this.webgl_normal_buffer.numItems = this.normal_buffer.length / 3;
 
         this.webgl_tangent_buffer = gl.createBuffer();
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_tangent_buffer);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Float32Array(this.tangent_buffer), gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_tangent_buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.tangent_buffer), gl.STATIC_DRAW);
         this.webgl_tangent_buffer.itemSize = 3;
         this.webgl_tangent_buffer.numItems = this.tangent_buffer.length / 3;
 
@@ -109,19 +110,36 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
     }
 
 
-     this.handleLoadedTexture = function(objectImage) {
-        this.texture = gl.createTexture();
+     // this.handleLoadedTexture = function(objectImage) {
+    this.handleLoadedTexture = function(objectImage, texturaRelieve) {
 
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        if( texturaRelieve){
 
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+          gl.activeTexture(gl.TEXTURE1);
+          this.normalMapTexture = gl.createTexture();
+
+          gl.bindTexture(gl.TEXTURE_2D, this.normalMapTexture);
+          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+          this.conRelieve = true;
+        } else {
+
+          gl.activeTexture(gl.TEXTURE0);
+          this.texture = gl.createTexture();
+
+          gl.bindTexture(gl.TEXTURE_2D, this.texture);
+          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        }
+
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, objectImage);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
         gl.generateMipmap(gl.TEXTURE_2D);
 
+        // Desvinculamos la textura de la etapa.
         gl.bindTexture(gl.TEXTURE_2D, null);
     }
+
+    // }
 
 
     this.draw = function(modelMatrix, gl, shaderProgram){
@@ -188,6 +206,21 @@ function tapa(centro, perimetro, esSuperior, esTexturada, escalaX, escalaY) {
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
             gl.uniform1i(shaderProgram.samplerUniform, 0);
+
+
+            if(this.conRelieve){
+              // console.log("voy a dibujar con relieve");
+              gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_tangent_buffer);
+              gl.vertexAttribPointer(shaderProgram.vertexTangentAttribute, this.webgl_tangent_buffer.itemSize, gl.FLOAT, false, 0, 0);
+
+              gl.activeTexture(gl.TEXTURE1);
+              gl.bindTexture(gl.TEXTURE_2D, this.normalMapTexture);
+              gl.uniform1i(shaderProgram.samplerUniformNormalMap, 1); 
+              // console.log("ya mande todo con relieve");
+            }
+
+
+
         } else {
             console.log("Entra a dibujar colores en tapa texturada");
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_color_buffer);

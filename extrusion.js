@@ -235,7 +235,7 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
         }
         
 
-        // gl.bindTexture(gl.TEXTURE_2D, null);
+        gl.bindTexture(gl.TEXTURE_2D, null);
     }
 
     this.loadCubeMap = function() {
@@ -347,7 +347,9 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
         }
     }
 
-    this.drawConTextura = function(modelMatrix, gl, shaderProgram, ka, kd, ks, shininess, shaderProgramSoloTextura){
+
+
+    this.drawConTextura = function(modelMatrix, gl, shaderProgram, ka, kd, ks, shininess, shaderProgramSoloTextura, shaderRelieve) {
         // var mvMatrix = mat4.create();
         // mat4.multiply(mvMatrix, cameraMatrix, modelMatrix);
         var normalMatrix = mat3.create();
@@ -423,11 +425,11 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
 
             setLucesNormal(cameraMatrix, gl, shaderProgramSoloTextura);
 
-            if (this.tapa1){   
-                this.tapa1.drawConTextura(modelMatrix, gl, shaderProgramSoloTextura)
+            if (this.tapa1 && !shaderRelieve){   
+                this.tapa1.drawConTextura(modelMatrix, gl, shaderProgramSoloTextura);
             }
-            if (this.tapa2){
-                this.tapa2.drawConTextura(modelMatrix, gl, shaderProgramSoloTextura)
+            if (this.tapa2 && !shaderRelieve){
+                this.tapa2.drawConTextura(modelMatrix, gl, shaderProgramSoloTextura);
             }
 
             /***** CONTEXTO ANTERIOR *****/
@@ -437,14 +439,28 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
 
             setLucesNormal(cameraMatrix, gl, shaderProgram);
         } else {
-            if (this.tapa1){   
-                this.tapa1.drawConTextura(modelMatrix, gl, shaderProgram)
+            if (this.tapa1 && !shaderRelieve){   
+                this.tapa1.drawConTextura(modelMatrix, gl, shaderProgram);
             }
-            if (this.tapa2){
-                this.tapa2.drawConTextura(modelMatrix, gl, shaderProgram)
+            if (this.tapa2 && !shaderRelieve){
+                this.tapa2.drawConTextura(modelMatrix, gl, shaderProgram);
             }    
         }
+        if (this.tapa1 && shaderRelieve){
+            gl.useProgram(shaderRelieve);
+            gl.uniformMatrix4fv(shaderRelieve.perspectiveMatrixUniform, false, perspectiveMatrix);
+            gl.uniformMatrix4fv(shaderRelieve.viewMatrixUniform, false, cameraMatrix );
+            setLucesNormal(cameraMatrix, gl, shaderRelieve);
 
+            this.tapa1.drawConTextura(modelMatrix, gl, shaderRelieve);
+            if (this.tapa2) this.tapa2.drawConTextura(modelMatrix, gl, shaderRelieve);
+
+             /***** CONTEXTO ANTERIOR *****/
+            gl.useProgram(shaderProgram);
+            gl.uniformMatrix4fv(shaderProgram.perspectiveMatrixUniform, false, perspectiveMatrix);
+            gl.uniformMatrix4fv(shaderProgram.viewMatrixUniform, false, cameraMatrix );
+            setLucesNormal(cameraMatrix, gl, shaderProgram);
+        }
         
     }
 
