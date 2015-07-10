@@ -28,7 +28,7 @@ function drawScene() {
 
   var aux = mat4.create();
   mat4.invert(aux, cameraMatrix);
-  var worldCameraPosition = [ aux[12], aux[13], aux[14] ];  // La posicion de la cámara en coordenadas del mundo
+  worldCameraPosition = [ aux[12], aux[13], aux[14] ];  // La posicion de la cámara en coordenadas del mundo
 
   // Preparamos una matriz de perspectiva.
   // mat4.perspective(perspectiveMatrix, Math.atan(18.0/50.0), 640.0/480.0, 0.01, 20000.0);
@@ -49,7 +49,7 @@ function drawScene() {
 
   var matrix_postes = mat4.create();
   mat4.identity(matrix_postes);
-  posta.draw(matrix_postes, gl, shaderProgramSimple);
+  posta.draw(matrix_postes, gl, shaderProgramSimple, shaderProgramReflection, shaderProgramTexturas);
 
 
   /***** CONTEXTO TEXTURAS *****/
@@ -149,7 +149,7 @@ function drawScene() {
     mat4.identity(matrix_islote);
     mat4.translate(matrix_islote, matrix_islote, [20.0, -8.0, -420.0]);
     mat4.rotateX(matrix_islote, matrix_islote, degToRad(90));
-    mat4.scale(matrix_islote, matrix_islote, [4.0, 4.5, 4.0]);
+    mat4.scale(matrix_islote, matrix_islote, [4.0, 4.5, 3.5]);
     islote.draw(matrix_islote, gl, shaderProgramRelieve, shaderProgramTexturas);
 
       /***** CONTEXTO REFLECTION MAP *****/
