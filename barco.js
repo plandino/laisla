@@ -105,9 +105,7 @@ function barco(scaleX, scaleY, scaleZ){
     }
 
     this.extrusion = new extrusion(this.forma, this.camino, this.escala, this.tangentes, this.normales, this.u);
-    // loadTexture(this.extrusion, this.extrusion.textureImage, "uvgrid.jpg");
     loadTexture(this.extrusion, this.extrusion.textureImage, "textfinales/cascoBarco.jpg");
-    // loadTexture(this.extrusion, this.extrusion.reflectionTextureImage, "textfinales/reflexionMap.jpg", true);
     
     this._calcularUV();
 
@@ -125,7 +123,6 @@ function barco(scaleX, scaleY, scaleZ){
     }
 
     this.draw = function(modelMatrix, gl, shaderProgram, shaderProgramSoloTexturas, shaderRelieve){
-        // this.extrusion.draw(modelMatrix, gl, shaderProgram);
     	this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram, KA, KD, 0.3, S, shaderProgramSoloTexturas, shaderRelieve);
     }
 }

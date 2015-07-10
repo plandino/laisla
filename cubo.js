@@ -25,10 +25,8 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
     this.normalMapTexture      = null;
     this.normalMapTextureImage = null;
 
-    // Inicio los valores, para los vertices(posicion, color) e indices
-    // Luego los bindeo con los buffers
-    this.initBuffers = function(gl, shaderProgram, color, coordUV){
 
+    this.initBuffers = function(gl, shaderProgram, color, coordUV){
         // Esto auxiliares los uso para construir los vertices del cubo
         var width   = ancho/2.0;
         var height  = alto/2.0;
@@ -169,11 +167,8 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
         this.cubeVertexTangentBuffer.numItems = this.tangentes.length / 3;
 
 
-        // Creamos un buffer de vertices para WebGL.
         this.cubeVertexBuffer = gl.createBuffer();
-        // Le decimos a WebGL que las siguientes funciones se relacionan con ese buffer.
         gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexBuffer);
-        // Cargamos datos de posiciones en el buffer.
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices), gl.STATIC_DRAW);
         this.cubeVertexBuffer.itemSize = 3;
         this.cubeVertexBuffer.numItems = this.vertices.length / 3;
@@ -212,9 +207,7 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
 
         ];
 
-        // Definimos y cargamos los datos en el buffer WebGL correspondiente.
-        // Notar que esta vez se usa ELEMENT_ARRAY_BUFFER en lugar de ARRAY_BUFFER.
-        // Notar también que se usa un array de enteros en lugar de floats.
+
         this.cubeVertexIndexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), gl.STATIC_DRAW);
@@ -223,7 +216,6 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
 
         var colors = getColor(color);
       
-        // Replicamos los colores de cada cara dos veces.
         this.generatedColors = [];
         for (var j=0; j<colors.length; j++) {
           var c = colors[j];
@@ -239,7 +231,6 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
           this.cubeuvTextureBuffer.itemSize = 2;
           this.cubeuvTextureBuffer.numItems = this.coordenadasUV.length / 2;
         } else {
-          // Cargamos los datos de los colores en un nuevo buffer igual que con las posiciones
           this.cubeVertexColorBuffer = gl.createBuffer();
           gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexColorBuffer);
           gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.generatedColors), gl.STATIC_DRAW);
@@ -248,10 +239,7 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
         }
     }
 
-    // Método del objeto texturado, que es llamado de manera asincrónica
-    // cuando es cargado un archivo de imagen en un objeto Image de JavaScript
-    // Dentro de este método se crea el objeto texture a nivel del driver de WebGL
-    // y se iniciliza y carga con la información del archivo de imagen.
+
     this.handleLoadedTexture =function(objectImage, texturaRelieve) {
 
         if( texturaRelieve){
@@ -280,7 +268,6 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
     }
 
     this.drawSoloTextura = function(modelMatrix, gl, shaderProgram){
-        // Se configuran los buffers que alimentarán el pipeline
         gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.cubeVertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
         
@@ -294,14 +281,11 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
                   gl.uniform1f(shaderProgram.ks, 0.0);
                   gl.uniform1f(shaderProgram.shininess, S);
 
-                  // var mvMatrix = mat4.create();
-                  // mat4.multiply(mvMatrix, cameraMatrix, modelMatrix);
                   var normalMatrix = mat3.create();
                   mat3.identity(normalMatrix);
                   mat3.fromMat4(normalMatrix, modelMatrix);
                   mat3.invert(normalMatrix, normalMatrix);
                   mat3.transpose(normalMatrix, normalMatrix);
-                  // mat3.scale(normalMatrix, normalMatrix, [0.0,0.0,0.0]);
                   gl.uniformMatrix3fv(shaderProgram.normalMatrixUniform, false, normalMatrix);
 
 
@@ -320,12 +304,6 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
             var texMatrix = mat3.create();
             mat3.identity(texMatrix);
 
-            // DEJAR POR LAS DUDAS
-            // // Matriz de transformación de las coordenadas de Textura  ESTO AL FINAL NO ES NECESARIO, LO HAGO CON LAS COORD UV
-            // var auxMatrix = mat4.create();
-            // mat4.identity(auxMatrix);
-            // mat4.scale(texMatrix, texMatrix, [1.0, 1.0, 1.0]);
-            // mat3.fromMat4(texMatrix, texMatrix);
             gl.uniformMatrix3fv(shaderProgram.texMatrixUniform, false, texMatrix);
 
             gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeuvTextureBuffer);
@@ -353,13 +331,10 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
         }
         
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
-        // gl.drawElements(gl.LINE_LOOP, this.cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         gl.drawElements(gl.TRIANGLES, this.cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
-        /////////////////////////////////
     }
 
     this.drawEspecial = function(modelMatrix, gl, shaderProgram){
-        // Se configuran los buffers que alimentarán el pipeline
         gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.cubeVertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
         
@@ -373,14 +348,11 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
                   gl.uniform1f(shaderProgram.ks, 0.0);
                   gl.uniform1f(shaderProgram.shininess, S);
 
-                  // var mvMatrix = mat4.create();
-                  // mat4.multiply(mvMatrix, cameraMatrix, modelMatrix);
                   var normalMatrix = mat3.create();
                   mat3.identity(normalMatrix);
                   mat3.fromMat4(normalMatrix, modelMatrix);
                   mat3.invert(normalMatrix, normalMatrix);
                   mat3.transpose(normalMatrix, normalMatrix);
-                  // mat3.scale(normalMatrix, normalMatrix, [0.0,0.0,0.0]);
                   gl.uniformMatrix3fv(shaderProgram.normalMatrixUniform, false, normalMatrix);
 
 
@@ -399,12 +371,6 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
             var texMatrix = mat3.create();
             mat3.identity(texMatrix);
 
-            // DEJAR POR LAS DUDAS
-            // // Matriz de transformación de las coordenadas de Textura  ESTO AL FINAL NO ES NECESARIO, LO HAGO CON LAS COORD UV
-            // var auxMatrix = mat4.create();
-            // mat4.identity(auxMatrix);
-            // mat4.scale(texMatrix, texMatrix, [1.0, 1.0, 1.0]);
-            // mat3.fromMat4(texMatrix, texMatrix);
             gl.uniformMatrix3fv(shaderProgram.texMatrixUniform, false, texMatrix);
 
             gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeuvTextureBuffer);
@@ -412,7 +378,6 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
 
 
             if(this.conRelieve){
-              // console.log("voy a dibujar con relieve");
               gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexTangentBuffer);
               gl.vertexAttribPointer(shaderProgram.vertexTangentAttribute, this.cubeVertexTangentBuffer.itemSize, gl.FLOAT, false, 0, 0);
             }
@@ -423,12 +388,9 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
             gl.uniform1i(shaderProgram.samplerUniformTextureMap, 0);
 
             if(this.conRelieve){
-              // console.log("voy a dibujar con relieve");
-
               gl.activeTexture(gl.TEXTURE1);
               gl.bindTexture(gl.TEXTURE_2D, this.normalMapTexture);
               gl.uniform1i(shaderProgram.samplerUniformNormalMap, 1); 
-              // console.log("ya mande todo con relieve");
             }
 
 
@@ -439,13 +401,10 @@ function cubo(ancho, alto, profundo, escalarTextura, conTextura, conRelieve){
         }
         
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
-        // gl.drawElements(gl.LINE_LOOP, this.cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         gl.drawElements(gl.TRIANGLES, this.cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
-        /////////////////////////////////
     }
 
     this.getPosition = function(){
-        // return this.modelMatrix;
         return [this.modelMatrix[12], this.modelMatrix[13], this.modelMatrix[14] ];
     }
   }
