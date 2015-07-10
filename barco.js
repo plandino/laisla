@@ -87,10 +87,10 @@ function barco(scaleX, scaleY, scaleZ){
     this.escala = [];
     var pasos = 12;
     var profundidad = 30.0;
-    var c = 20.0;
+    var c = 10.0;
     for (var i = 0; i <= 1.000000001; i += 1.0/pasos){
     	this.camino.push([0, 0, profundidad*i]);
-    	this.escala.push([1-i*i/c, 1-i*i/c, 1.0])
+    	this.escala.push([1-i/c, 1-i/c, 1.0])
     }
 
     this._calcularUV = function(){

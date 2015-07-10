@@ -363,6 +363,7 @@
      vec3 worldNorm = vec3( uModelMatrix * vec4(aVertexNormal,  0.0) ); // o va normal?
      vec3 worldView = normalize( worldCameraPosition - worldPos ); // - worldPos
      reflectionDir  = reflect( -worldView, worldNorm );
+     reflectionDir.y -= 0.15;
      // reflectionDir.t -= 0.2;
      // if (reflectionDir.t < -0.99) reflectionDir.t = -0.99;
      // if (reflectionDir.t > -0.01) reflectionDir.t = -0.01;
