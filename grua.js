@@ -7,7 +7,6 @@ function grua(scaleX, scaleY, scaleZ){
 	this.barraSupIzq 		= null;
 	this.barraSupDerecha 	= null;
 
-
 	this.escalaX = scaleX;
 	this.escalaY = scaleY;
 	this.escalaZ = scaleZ;
@@ -102,37 +101,6 @@ function grua(scaleX, scaleY, scaleZ){
 		gl.useProgram(this.shaderSimple);
 		gl.uniformMatrix4fv(this.shaderSimple.perspectiveMatrixUniform, false, perspectiveMatrix);
 		gl.uniformMatrix4fv(this.shaderSimple.viewMatrixUniform, false, cameraMatrix );
-
-	    // var matrix_pataUno = mat4.create();
-	    // mat4.identity(matrix_pataUno);
-	    // mat4.multiply(matrix_pataUno, matrix_pataUno, modelMatrix);
-	    // mat4.translate(matrix_pataUno, matrix_pataUno, [0.0, 0.0, 25.0 * this.escalaZ]);
-	    // this.pataUno.draw(matrix_pataUno, gl, shaderProgram);
-
-	    // var matrix_pataDos = mat4.create();
-	    // mat4.identity(matrix_pataDos);
-	    // mat4.multiply(matrix_pataDos, matrix_pataDos, modelMatrix);
-	    // mat4.translate(matrix_pataDos, matrix_pataDos, [0.0, 0.0, -25.0 * this.escalaZ]);
-	    // this.pataDos.draw(matrix_pataDos, gl, shaderProgram);
-
-	    // var matrix_barraSupDer = mat4.create();
-	    // mat4.identity(matrix_barraSupDer);
-	    // mat4.multiply(matrix_barraSupDer, matrix_barraSupDer, modelMatrix);
-	    // mat4.translate(matrix_barraSupDer, matrix_barraSupDer, [-10.0 * this.escalaX, 57.0 * this.escalaY, 0.0 ]);
-	    // this.barraSupDerecha.draw(matrix_barraSupDer, gl, shaderProgram);
-
-	    // var matrix_barraSupIzq = mat4.create();
-	    // mat4.identity(matrix_barraSupIzq);
-	    // mat4.multiply(matrix_barraSupIzq, matrix_barraSupIzq, modelMatrix);
-	    // mat4.translate(matrix_barraSupIzq, matrix_barraSupIzq, [10.0 * this.escalaX, 57.0 * this.escalaY, 0.0 ]);
-	    // this.barraSupIzq.draw(matrix_barraSupIzq, gl, shaderProgram);
-
-	    // var matrix_cabina = mat4.create();
-	    // mat4.identity(matrix_cabina);
-	    // mat4.multiply(matrix_cabina, matrix_cabina, modelMatrix);
-	    // mat4.scale(matrix_cabina, matrix_cabina, [this.escalaX, this.escalaY, this.escalaZ]);
-	    // mat4.translate(matrix_cabina, matrix_cabina, [35.0 + traslacionXCabina , 48.9, 0.0 ]);
-	    // this.cabina.drawConTextura(matrix_cabina, gl, this.shaderSimple, this.shaderRelieve);
 
 	    var matrix_lamparaCabeza = mat4.create();
 		mat4.identity(matrix_lamparaCabeza);

@@ -51,7 +51,7 @@ function islote() {
         P.push([50.0,   17.0,   0.0]);  // P27
         P.push([20.0,   25.0,   0.0]);  // P218
 
-    	for (var i in P){		// centrar el barco
+    	for (var i in P){		// centrar el islote
     		P[i][0] -= 110.0;
     		P[i][1] -= 30;
     	}
@@ -146,12 +146,10 @@ function islote() {
     }
 
     this.extrusion = new extrusion(this.forma, this.camino, this.escala, this.tangentes, this.normales, this.u);
-    // loadTexture(this.extrusion, this.extrusion.textureImage, "uvgrid.jpg");
     loadTexture(this.extrusion, this.extrusion.textureImage, "textfinales/isla.jpg");
     loadTexture(this.extrusion, this.extrusion.relieveTextureImage, "textfinales/islaNormalMap.jpg", false, true);
 
     this._calcularUV();
-    // this.extrusion.agregarTapa(this.camino.length-1, true, "uvgrid.jpg");
     this.extrusion.agregarTapa(this.camino.length-1, true, true, "textfinales/pastoIsla.jpg", 15.0, 15.0);
 
 
