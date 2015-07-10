@@ -1,17 +1,14 @@
 function pluma(scaleX, scaleY, scaleZ){
-
 	this.contrapeso 	= null;
 	this.barraDerecha	= null;
 	this.barraIzquierda = null;
 	this.barraAdelante 	= null;
-
 
 	this.escalaX = scaleX;
 	this.escalaY = scaleY;
 	this.escalaZ = scaleZ;
 
 	this.initBuffers = function(gl, shaderProgram){
-
 	    this.contrapeso = new cubo(contrapesoX * this.escalaX, contrapesoY * this.escalaY, contrapesoZ * this.escalaZ, false, true, true);
 	    this.contrapeso.initBuffers(gl, shaderProgram, "yellow", coordenadasUVContapeso);
         loadTexture(this.contrapeso, this.contrapeso.textureImage, "textfinales/texturaGrua.jpg");
@@ -31,12 +28,10 @@ function pluma(scaleX, scaleY, scaleZ){
 	    this.barraAdelante.initBuffers(gl, shaderProgram, "yellow", coordenadasUVBarraCruzadaPluma);
 	    loadTexture(this.barraAdelante, this.barraAdelante.textureImage, "textfinales/texturaGrua.jpg");
 	    loadTexture(this.barraAdelante, this.barraAdelante.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);
-
 	}
 
 
 	this.draw = function(modelMatrix, gl, shaderProgram){
-
 		var matrix_contrapeso = mat4.create();
 	    mat4.identity(matrix_contrapeso);
 	    mat4.multiply(matrix_contrapeso, matrix_contrapeso, modelMatrix);
@@ -60,6 +55,6 @@ function pluma(scaleX, scaleY, scaleZ){
 	    mat4.multiply(matrix_barraAdelante, matrix_barraAdelante, modelMatrix);
 	    mat4.translate(matrix_barraAdelante, matrix_barraAdelante, [93.0 * this.escalaX, 0.0, 0.0]);
 	    this.barraAdelante.drawEspecial(matrix_barraAdelante, gl, shaderProgram);
-
 	}
+
 }

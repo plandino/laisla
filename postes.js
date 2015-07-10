@@ -75,7 +75,6 @@ function postes(){
 	    mat4.scale(matrix_posteUno, matrix_posteUno, [0.3, 3.5, 0.3]);
 	    mat4.rotate(matrix_posteUno, matrix_posteUno, degToRad(90.0), [1.0, 0.0, 0.0]);
 	    this.posteUno.drawConTextura(matrix_posteUno, gl, shaderProgramReflection, KA, KD, ks, S, shaderProgramSoloTexturas, null);
-	    // drawConTextura(modelMatrix, gl, shaderProgram, KA, KD, 0.3, S, shaderProgramSoloTexturas, shaderRelieve)
 
 	   	var matrix_posteDos = mat4.create();
 	    mat4.identity(matrix_posteDos);

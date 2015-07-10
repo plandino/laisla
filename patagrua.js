@@ -61,11 +61,6 @@ function pataGrua(scaleX, scaleY, scaleZ){
 	    var longitud = 8;
 	    for (var i = 0; i < longitud; i++){
 	        camino.push([0, radio, i]);
-	        // if ( longitud/4 <= i < 3*longitud/4){
-	        // 	escala.push([0.5, 0.5, 0.5]);
-	        // } else {
-	        // 	escala.push([1.0, 1.0, 1.0]);
-	        // }
         	escala.push([1.0, 1.0, 1.0]);
 	        uv = uv.concat(u);
 	    }
@@ -121,8 +116,6 @@ function pataGrua(scaleX, scaleY, scaleZ){
 	    gl.useProgram(shaderProgramSimple);
   		gl.uniformMatrix4fv(shaderProgramSimple.perspectiveMatrixUniform, false, perspectiveMatrix);
   		gl.uniformMatrix4fv(shaderProgramSimple.viewMatrixUniform, false, cameraMatrix );
-
-  		// setLuces(cameraMatrix, gl, shaderProgramSimple);
 
 	    var matrix_ruedaUno = mat4.create();
 	    mat4.identity(matrix_ruedaUno);
