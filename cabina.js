@@ -19,10 +19,22 @@ function cabina(scaleX, scaleY, scaleZ, conRelieve){
     this.escalaY = scaleY;
     this.escalaZ = scaleZ;
 
+    this.tieneRelieve = false;
+    this.conTextura = false;
+
+    this.texture = null;
+    this.textureImage = null;
+    this.relieveTexture = null;
+    this.relieveTextureImage = null;
+
     // Estos son los buffers que voy a bindear para mandar a los shaders
     this.cubeVertexBuffer       = null;
     this.cubeVertexIndexBuffer  = null;
     this.cubeVertexColorBuffer  = null;
+    this.cubeVertexNormalBuffer     = null;
+    this.cubeVertexTangentBuffer    = null;
+    this.cubeuvTextureBuffer      = null;
+
 
     // Inicio los valores, para los vertices(posicion, color) e indices
     // Luego los bindeo con los buffers
@@ -157,41 +169,117 @@ function cabina(scaleX, scaleY, scaleZ, conRelieve){
           -1.0,0.0,0.0,
 
           // Normales adelante
-           0.8288486741,0.0,-1.0,
-           0.0,0.0,-1.0,
-           0.0,0.0,-1.0,
-           0.0,0.0,-1.0,
+           0.8288486741, 0.559472855, 0.0,
+           0.8288486741, 0.559472855, 0.0,
+           0.8288486741, 0.559472855, 0.0,
+           0.8288486741, 0.559472855, 0.0,
 
-           0.0,0.0,-1.0,
-           0.0,0.0,-1.0,
-           0.0,0.0,-1.0,
-           0.0,0.0,-1.0,
+           0.8288486741, 0.559472855, 0.0,
+           0.8288486741, 0.559472855, 0.0,
+           0.8288486741, 0.559472855, 0.0,
+           0.8288486741, 0.559472855, 0.0,
 
-           // Normales izquierda
-          -1.0,0.0,0.0,
-          -1.0,0.0,0.0,
-          -1.0,0.0,0.0,
-          -1.0,0.0,0.0,
-
-          // Normales derecha
-           1.0,0.0,0.0,
-           1.0,0.0,0.0,
-           1.0,0.0,0.0,
-           1.0,0.0,0.0,
-
-           // Normales arriba
+           // Normales techo
            0.0,1.0,0.0,
            0.0,1.0,0.0,
            0.0,1.0,0.0,
            0.0,1.0,0.0,
 
-           // Normales abajo
+          // Normales abajo
+           0.0,-1.0,0.0,
+           0.0,-1.0,0.0,
+           0.0,-1.0,0.0,
+           0.0,-1.0,0.0,
+
            0.0,-1.0,0.0,
            0.0,-1.0,0.0,
            0.0,-1.0,0.0,
            0.0,-1.0,0.0,
 
         ];
+
+        // Asigno el buffer de las normales
+        this.cubeVertexNormalBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexNormalBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.normales), gl.STATIC_DRAW);
+        this.cubeVertexNormalBuffer.itemSize = 3;
+        this.cubeVertexNormalBuffer.numItems = this.normales.length / 3;
+
+        this.tangentes = [
+           
+           // tangentes costado adelante
+           0.0,1.0,0.0,
+           0.0,1.0,0.0,
+           0.0,1.0,0.0,
+           0.0,1.0,0.0,
+
+           0.0,1.0,0.0,
+           0.0,1.0,0.0,
+           0.0,1.0,0.0,
+           0.0,1.0,0.0,
+
+           // tangentes costado atras
+           0.0,-1.0,0.0,
+           0.0,-1.0,0.0,
+           0.0,-1.0,0.0,
+           0.0,-1.0,0.0,
+
+           0.0,-1.0,0.0,
+           0.0,-1.0,0.0,
+           0.0,-1.0,0.0,
+           0.0,-1.0,0.0,
+
+           // tangentes atras
+          0.0,0.0,1.0,
+          0.0,0.0,1.0,
+          0.0,0.0,1.0,
+          0.0,0.0,1.0,
+
+          // tangentes adelante
+          0.0,0.0,-1.0,
+          0.0,0.0,-1.0,
+          0.0,0.0,-1.0,
+          0.0,0.0,-1.0,
+
+          0.0,0.0,-1.0,
+          0.0,0.0,-1.0,
+          0.0,0.0,-1.0,
+          0.0,0.0,-1.0,
+
+           // tangentes techo
+          0.0,0.0,-1.0,
+          0.0,0.0,-1.0,
+          0.0,0.0,-1.0,
+          0.0,0.0,-1.0,
+
+          // tangentes abajo
+          0.0,0.0,-1.0,
+          0.0,0.0,-1.0,
+          0.0,0.0,-1.0,
+          0.0,0.0,-1.0,
+
+          0.0,0.0,-1.0,
+          0.0,0.0,-1.0,
+          0.0,0.0,-1.0,
+          0.0,0.0,-1.0,
+
+        ];
+
+        // Asigno el buffer de las tangentes
+        this.cubeVertexTangentBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexTangentBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.tangentes), gl.STATIC_DRAW);
+        this.cubeVertexTangentBuffer.itemSize = 3;
+        this.cubeVertexTangentBuffer.numItems = this.tangentes.length / 3;
+
+        this.coordenadasUV = coordenadasUVCabinaGrua;
+
+        // if(this.conTextura){
+          this.cubeuvTextureBuffer = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeuvTextureBuffer);
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.coordenadasUV), gl.STATIC_DRAW);
+          this.cubeuvTextureBuffer.itemSize = 2;
+          this.cubeuvTextureBuffer.numItems = this.coordenadasUV.length / 2;
 
         this.indices = [
             // Un costado
@@ -313,6 +401,35 @@ function cabina(scaleX, scaleY, scaleZ, conRelieve){
         this.cubeVertexColorBuffer.numItems = this.generatedColors.length;
     }
 
+    this.handleLoadedTexture =function(objectImage, texturaRelieve) {
+      this.conTextura = true;
+
+        if( texturaRelieve){
+          this.tieneRelieve = true;
+
+          gl.activeTexture(gl.TEXTURE1);
+          this.relieveTexture = gl.createTexture();
+
+          gl.bindTexture(gl.TEXTURE_2D, this.relieveTexture);
+          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        } else {
+
+          gl.activeTexture(gl.TEXTURE0);
+          this.texture = gl.createTexture();
+
+          gl.bindTexture(gl.TEXTURE_2D, this.texture);
+          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        }
+
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, objectImage);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+        gl.generateMipmap(gl.TEXTURE_2D);
+
+        // Desvinculamos la textura de la etapa.
+        gl.bindTexture(gl.TEXTURE_2D, null);
+    }
+
     this.draw = function(modelMatrix, gl, shaderProgram){
 
         var matrix_barraUnoY = mat4.create();
@@ -355,4 +472,125 @@ function cabina(scaleX, scaleY, scaleZ, conRelieve){
         gl.drawElements(gl.TRIANGLES, this.cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         /////////////////////////////////
     }
+
+   this.drawConTextura = function(modelMatrix, gl, shaderSimple, shaderRelieve){
+
+        /***** CONTEXTO RELIEVE *****/
+        gl.useProgram(shaderRelieve);
+        gl.uniformMatrix4fv(shaderRelieve.perspectiveMatrixUniform, false, perspectiveMatrix);
+        gl.uniformMatrix4fv(shaderRelieve.viewMatrixUniform, false, cameraMatrix );
+
+        setLucesNormal(cameraMatrix, gl, shaderRelieve);
+
+
+        // Se configuran los buffers que alimentarán el pipeline
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexBuffer);
+        gl.vertexAttribPointer(shaderRelieve.vertexPositionAttribute, this.cubeVertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        
+        gl.uniformMatrix4fv(shaderRelieve.modelMatrixUniform, false, modelMatrix);
+
+        this.modelMatrix = modelMatrix;
+
+       if(this.conTextura){
+                  gl.uniform1f(shaderRelieve.ka, KA);
+                  gl.uniform1f(shaderRelieve.kd, KD);
+                  gl.uniform1f(shaderRelieve.ks, 0.0);
+                  gl.uniform1f(shaderRelieve.shininess, S);
+
+                  // var mvMatrix = mat4.create();
+                  // mat4.multiply(mvMatrix, cameraMatrix, modelMatrix);
+                  var normalMatrix = mat3.create();
+                  mat3.identity(normalMatrix);
+                  mat3.fromMat4(normalMatrix, modelMatrix);
+                  mat3.invert(normalMatrix, normalMatrix);
+                  mat3.transpose(normalMatrix, normalMatrix);
+                  // mat3.scale(normalMatrix, normalMatrix, [0.0,0.0,0.0]);
+                  gl.uniformMatrix3fv(shaderRelieve.normalMatrixUniform, false, normalMatrix);
+
+
+                  var mvMatrix = mat4.create();
+                  mat4.multiply(mvMatrix, cameraMatrix, modelMatrix);
+                  var MVnormalMatrix = mat3.create();
+                  mat3.identity(MVnormalMatrix);
+                  mat3.fromMat4(MVnormalMatrix, mvMatrix);
+                  mat3.invert(MVnormalMatrix, MVnormalMatrix);
+                  mat3.transpose(MVnormalMatrix, MVnormalMatrix);
+                  gl.uniformMatrix3fv(shaderRelieve.MVnormalMatrixUniform, false, MVnormalMatrix);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexNormalBuffer);
+            gl.vertexAttribPointer(shaderRelieve.vertexNormalAttribute, this.cubeVertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+            var texMatrix = mat3.create();
+            mat3.identity(texMatrix);
+
+            // DEJAR POR LAS DUDAS
+            // // Matriz de transformación de las coordenadas de Textura  ESTO AL FINAL NO ES NECESARIO, LO HAGO CON LAS COORD UV
+            // var auxMatrix = mat4.create();
+            // mat4.identity(auxMatrix);
+            // mat4.scale(texMatrix, texMatrix, [1.0, 1.0, 1.0]);
+            // mat3.fromMat4(texMatrix, texMatrix);
+            gl.uniformMatrix3fv(shaderRelieve.texMatrixUniform, false, texMatrix);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeuvTextureBuffer);
+            gl.vertexAttribPointer(shaderRelieve.textureCoordAttribute, this.cubeuvTextureBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+            gl.activeTexture(gl.TEXTURE0);
+            gl.bindTexture(gl.TEXTURE_2D, this.texture);
+            gl.uniform1i(shaderRelieve.samplerUniform, 0);
+
+            if(this.conRelieve){
+
+
+              gl.activeTexture(gl.TEXTURE1);
+              gl.bindTexture(gl.TEXTURE_2D, this.relieveTexture);
+              gl.uniform1i(shaderRelieve.samplerUniformNormalMap, 1); 
+
+              gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexTangentBuffer);
+              gl.vertexAttribPointer(shaderRelieve.vertexTangentAttribute, this.cubeVertexTangentBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+            }
+        } else {
+            // Asigno los colores
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexColorBuffer);
+            gl.vertexAttribPointer(shaderRelieve.vertexColorAttribute, this.cubeVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);  
+        }
+        
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
+        // gl.drawElements(gl.LINE_LOOP, this.cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+        gl.drawElements(gl.TRIANGLES, this.cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+        /////////////////////////////////
+
+        /***** CONTEXTO SIMPLE *****/
+        gl.useProgram(shaderSimple);
+        gl.uniformMatrix4fv(shaderSimple.perspectiveMatrixUniform, false, perspectiveMatrix);
+        gl.uniformMatrix4fv(shaderSimple.viewMatrixUniform, false, cameraMatrix );
+
+        var matrix_barraUnoY = mat4.create();
+        mat4.identity(matrix_barraUnoY);
+        mat4.multiply(matrix_barraUnoY, matrix_barraUnoY ,modelMatrix);
+        mat4.translate(matrix_barraUnoY, matrix_barraUnoY, [0.0, -14.51 + ((1 - escaladoPlumaY) * (25.0 / 2) ), 5.0 ]);
+        mat4.scale(matrix_barraUnoY, matrix_barraUnoY, [1.0, escaladoPlumaY, 1.0]);
+        this.barraUnoY.drawEspecial(matrix_barraUnoY, gl, shaderSimple);
+
+        var matrix_barraDosY = mat4.create();
+        mat4.identity(matrix_barraDosY);
+        mat4.multiply(matrix_barraDosY, matrix_barraDosY ,modelMatrix);
+        mat4.translate(matrix_barraDosY, matrix_barraDosY, [0.0, -14.51 + ((1 - escaladoPlumaY) * (25.0 / 2) ), -5.0 ]);
+        mat4.scale(matrix_barraDosY, matrix_barraDosY, [1.0, escaladoPlumaY, 1.0]);
+        this.barraDosY.drawEspecial(matrix_barraDosY, gl, shaderSimple);
+
+        var matrix_barraUnoX = mat4.create();
+        mat4.identity(matrix_barraUnoX);
+        mat4.multiply(matrix_barraUnoX, matrix_barraUnoX ,modelMatrix);
+        mat4.translate(matrix_barraUnoX, matrix_barraUnoX, [0.0, -26.5 + ((1 - escaladoPlumaY) * (25.0 / 1) ), 5.0 ]);
+        this.barraUnoX.drawEspecial(matrix_barraUnoX, gl, shaderSimple);
+
+        var matrix_barraDosX = mat4.create();
+        mat4.identity(matrix_barraDosX);
+        mat4.multiply(matrix_barraDosX, matrix_barraDosX ,modelMatrix);
+        mat4.translate(matrix_barraDosX, matrix_barraDosX, [0.0, -26.5 + ((1 - escaladoPlumaY) * (25.0 / 1) ), -5.0 ]);
+        this.barraDosX.drawEspecial(matrix_barraDosX, gl, shaderSimple);
+    }
+
+
   }
