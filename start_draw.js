@@ -33,7 +33,7 @@ function drawScene() {
   // Preparamos una matriz de perspectiva.
   // mat4.perspective(perspectiveMatrix, Math.atan(18.0/50.0), 640.0/480.0, 0.01, 20000.0);
   if (camaraGlobal) mat4.perspective(perspectiveMatrix, degToRad(80), 640.0/480.0, 0.01, 2000.0);
-  else if (camaraPersona) mat4.perspective(perspectiveMatrix, Math.atan(18.0/50.0), 640.0/480.0, 0.01, 2000.0); 
+  else if (camaraPersona) mat4.perspective(perspectiveMatrix, degToRad(60), 640.0/480.0, 0.01, 2000.0); 
   else mat4.perspective(perspectiveMatrix, degToRad(80), 640.0/480.0, 0.01, 2000.0);
 
 
