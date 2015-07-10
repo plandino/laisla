@@ -42,9 +42,9 @@ function grua(scaleX, scaleY, scaleZ){
 	   	loadTexture(this.barraSupIzq, this.barraSupIzq.textureImage, "textfinales/texturaGrua.jpg");
 	    loadTexture(this.barraSupIzq, this.barraSupIzq.normalMapTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);	   
 
-	    this.cabina = new cabina(this.escalaX, this.escalaY, this.escalaZ);
+	    this.cabina = new cabina(this.escalaX, this.escalaY, this.escalaZ, true);
 	    this.cabina.initBuffers(gl, shaderProgram, "rojoOpaco");
-	   	loadTexture(this.cabina, this.cabina.textureImage, "textfinales/cabinadiffuse.jpg");
+	   	loadTexture(this.cabina, this.cabina.textureImage, "textfinales/cabinadiffuse.png");
 	    loadTexture(this.cabina, this.cabina.relieveTextureImage, "textfinales/texturaGruaNormalMap.jpg", true);	   
 
 	    lamparaCabezaGrua = new lampara(10,10);
