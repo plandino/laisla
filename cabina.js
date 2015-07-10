@@ -379,45 +379,6 @@ function cabina(scaleX, scaleY, scaleZ, conRelieve){
         gl.bindTexture(gl.TEXTURE_2D, null);
     }
 
-    this.draw = function(modelMatrix, gl, shaderProgram){
-
-        var matrix_barraUnoY = mat4.create();
-        mat4.identity(matrix_barraUnoY);
-        mat4.multiply(matrix_barraUnoY, matrix_barraUnoY ,modelMatrix);
-        mat4.translate(matrix_barraUnoY, matrix_barraUnoY, [0.0, -14.51 + ((1 - escaladoPlumaY) * (25.0 / 2) ), 5.0 ]);
-        mat4.scale(matrix_barraUnoY, matrix_barraUnoY, [1.0, escaladoPlumaY, 1.0]);
-        this.barraUnoY.drawEspecial(matrix_barraUnoY, gl, shaderProgram);
-
-        var matrix_barraDosY = mat4.create();
-        mat4.identity(matrix_barraDosY);
-        mat4.multiply(matrix_barraDosY, matrix_barraDosY ,modelMatrix);
-        mat4.translate(matrix_barraDosY, matrix_barraDosY, [0.0, -14.51 + ((1 - escaladoPlumaY) * (25.0 / 2) ), -5.0 ]);
-        mat4.scale(matrix_barraDosY, matrix_barraDosY, [1.0, escaladoPlumaY, 1.0]);
-        this.barraDosY.drawEspecial(matrix_barraDosY, gl, shaderProgram);
-
-        var matrix_barraUnoX = mat4.create();
-        mat4.identity(matrix_barraUnoX);
-        mat4.multiply(matrix_barraUnoX, matrix_barraUnoX ,modelMatrix);
-        mat4.translate(matrix_barraUnoX, matrix_barraUnoX, [0.0, -26.5 + ((1 - escaladoPlumaY) * (25.0 / 1) ), 5.0 ]);
-        this.barraUnoX.drawEspecial(matrix_barraUnoX, gl, shaderProgram);
-
-        var matrix_barraDosX = mat4.create();
-        mat4.identity(matrix_barraDosX);
-        mat4.multiply(matrix_barraDosX, matrix_barraDosX ,modelMatrix);
-        mat4.translate(matrix_barraDosX, matrix_barraDosX, [0.0, -26.5 + ((1 - escaladoPlumaY) * (25.0 / 1) ), -5.0 ]);
-        this.barraDosX.drawEspecial(matrix_barraDosX, gl, shaderProgram);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexBuffer);
-        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.cubeVertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexColorBuffer);
-        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, this.cubeVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-        gl.uniformMatrix4fv(shaderProgram.modelMatrixUniform, false, modelMatrix);
-        
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
-        gl.drawElements(gl.TRIANGLES, this.cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
-    }
 
    this.drawConTextura = function(modelMatrix, gl, shaderSimple, shaderRelieve){
 

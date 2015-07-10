@@ -99,7 +99,6 @@ function islote() {
     this.escala = [];
     var pasos = 9;
     var profundidad = 20.0;
-    // var c = 100.0;
     for (var i = 0; i <= 1.00000001; i += 1.0/pasos){
         this.camino.push([0, 0, -profundidad*i]);
     }
