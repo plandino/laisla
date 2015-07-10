@@ -398,27 +398,26 @@ function cabina(scaleX, scaleY, scaleZ, conRelieve){
         this.modelMatrix = modelMatrix;
 
        if(this.conTextura){
-                  gl.uniform1f(shaderRelieve.ka, KA);
-                  gl.uniform1f(shaderRelieve.kd, KD);
-                  gl.uniform1f(shaderRelieve.ks, 0.0);
-                  gl.uniform1f(shaderRelieve.shininess, S);
+            gl.uniform1f(shaderRelieve.ka, KA);
+            gl.uniform1f(shaderRelieve.kd, KD);
+            gl.uniform1f(shaderRelieve.ks, 0.0);
+            gl.uniform1f(shaderRelieve.shininess, S);
 
-                  var normalMatrix = mat3.create();
-                  mat3.identity(normalMatrix);
-                  mat3.fromMat4(normalMatrix, modelMatrix);
-                  mat3.invert(normalMatrix, normalMatrix);
-                  mat3.transpose(normalMatrix, normalMatrix);
-                  gl.uniformMatrix3fv(shaderRelieve.normalMatrixUniform, false, normalMatrix);
+            var normalMatrix = mat3.create();
+            mat3.identity(normalMatrix);
+            mat3.fromMat4(normalMatrix, modelMatrix);
+            mat3.invert(normalMatrix, normalMatrix);
+            mat3.transpose(normalMatrix, normalMatrix);
+            gl.uniformMatrix3fv(shaderRelieve.normalMatrixUniform, false, normalMatrix);
 
-
-                  var mvMatrix = mat4.create();
-                  mat4.multiply(mvMatrix, cameraMatrix, modelMatrix);
-                  var MVnormalMatrix = mat3.create();
-                  mat3.identity(MVnormalMatrix);
-                  mat3.fromMat4(MVnormalMatrix, mvMatrix);
-                  mat3.invert(MVnormalMatrix, MVnormalMatrix);
-                  mat3.transpose(MVnormalMatrix, MVnormalMatrix);
-                  gl.uniformMatrix3fv(shaderRelieve.MVnormalMatrixUniform, false, MVnormalMatrix);
+            var mvMatrix = mat4.create();
+            mat4.multiply(mvMatrix, cameraMatrix, modelMatrix);
+            var MVnormalMatrix = mat3.create();
+            mat3.identity(MVnormalMatrix);
+            mat3.fromMat4(MVnormalMatrix, mvMatrix);
+            mat3.invert(MVnormalMatrix, MVnormalMatrix);
+            mat3.transpose(MVnormalMatrix, MVnormalMatrix);
+            gl.uniformMatrix3fv(shaderRelieve.MVnormalMatrixUniform, false, MVnormalMatrix);
 
             gl.bindBuffer(gl.ARRAY_BUFFER, this.cubeVertexNormalBuffer);
             gl.vertexAttribPointer(shaderRelieve.vertexNormalAttribute, this.cubeVertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);

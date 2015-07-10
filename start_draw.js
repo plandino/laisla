@@ -204,7 +204,7 @@ function drawScene() {
 
     mar = new cubo(marX, marY, marZ, false, true);
     mar.initBuffers(gl, shaderProgramSimple, "blue", coordenadasUVMar);
-    loadTexture(mar, mar.textureImage, "texturas/sea-map.jpg");
+    loadTexture(mar, mar.textureImage, "textfinales/sea-map.jpg");
 
     for(var i = 0; i < cantidadContainers; i++){
       var container = new cubo(containersX, containersY, containersZ, false, true);
