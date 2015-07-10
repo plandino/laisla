@@ -24,6 +24,10 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
     this.reflectionTextureImage = null;
     this.tieneReflejo = false;
 
+    this.relieveTexture = null;
+    this.relieveTextureImage = null;
+    this.tieneRelieve = false;
+
     this.forma = forma;
     this.camino = camino;
     this.escala = escala;
@@ -208,8 +212,10 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
     }
 
 
-    this.handleLoadedTexture = function(objectImage, conReflection) {
-        gl.activeTexture(gl.TEXTURE0);
+    this.handleLoadedTexture = function(objectImage, conReflection, conRelieve) {
+        // gl.activeTexture(gl.TEXTURE0);
+
+
 
         if(conReflection){
             this.tieneReflejo = true;
@@ -222,6 +228,18 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.CLAMP_TO_EDGE);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.CLAMP_TO_EDGE);
             gl.generateMipmap(gl.TEXTURE_2D);
+        } else if(conRelieve){
+            this.tieneRelieve = true;
+            this.relieveTexture = gl.createTexture();
+
+
+            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
+            gl.bindTexture(gl.TEXTURE_2D, this.relieveTexture);    
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, objectImage);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+            gl.generateMipmap(gl.TEXTURE_2D);
         } else {
             this.texture = gl.createTexture();
 
@@ -233,6 +251,7 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
             gl.generateMipmap(gl.TEXTURE_2D);
         }
+
         
 
         gl.bindTexture(gl.TEXTURE_2D, null);
@@ -407,6 +426,16 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
                 gl.activeTexture(gl.TEXTURE1);
                 // gl.bindTexture(gl.TEXTURE_2D, this.reflectionTexture);
                 gl.uniform1i(shaderProgram.samplerUniformReflectionMap, 1);
+            }
+
+            if(this.tieneRelieve){
+                gl.activeTexture(gl.TEXTURE1);
+                gl.bindTexture(gl.TEXTURE_2D, this.relieveTexture);
+                gl.uniform1i(shaderProgram.samplerUniformReflectionMap, 1);
+
+                 // TANGENTEEEEES
+                gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_tangent_buffer);
+                gl.vertexAttribPointer(shaderProgram.vertexTangentAttribute, this.webgl_tangent_buffer.itemSize, gl.FLOAT, false, 0, 0);
             }
         } else {    // DEBUG
             console.log("Entra a dibujar colores en extrusion texturada");

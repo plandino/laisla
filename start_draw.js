@@ -86,12 +86,12 @@ function drawScene() {
   // mat4.scale(matrix_barco, matrix_barco, [escBarcoX, escBarcoY, escBarcoZ]);
   // barco.draw(matrix_barco, gl, shaderProgramTexturas);
 
-  var matrix_islote = mat4.create();
-  mat4.identity(matrix_islote);
-  mat4.translate(matrix_islote, matrix_islote, [20.0, -8.0, -400.0]);
-  mat4.rotateX(matrix_islote, matrix_islote, degToRad(90));
-  mat4.scale(matrix_islote, matrix_islote, [4.0, 3.0, 3.0]);
-  islote.draw(matrix_islote, gl, shaderProgramTexturas);
+  // var matrix_islote = mat4.create();
+  // mat4.identity(matrix_islote);
+  // mat4.translate(matrix_islote, matrix_islote, [20.0, -8.0, -400.0]);
+  // mat4.rotateX(matrix_islote, matrix_islote, degToRad(90));
+  // mat4.scale(matrix_islote, matrix_islote, [4.0, 3.0, 3.0]);
+  // islote.draw(matrix_islote, gl, shaderProgramTexturas);
 
   cielo.draw(mat4.create(), gl, shaderProgramTexturas);
 
@@ -144,6 +144,13 @@ function drawScene() {
     mat4.identity(matrix_muelle);
     mat4.translate(matrix_muelle, matrix_muelle, [-90.0, -8.0, -20.0]);
     muelle.drawSoloTextura(matrix_muelle, gl, shaderProgramRelieve);
+
+    var matrix_islote = mat4.create();
+    mat4.identity(matrix_islote);
+    mat4.translate(matrix_islote, matrix_islote, [20.0, -8.0, -400.0]);
+    mat4.rotateX(matrix_islote, matrix_islote, degToRad(90));
+    mat4.scale(matrix_islote, matrix_islote, [4.0, 3.0, 3.0]);
+    islote.draw(matrix_islote, gl, shaderProgramRelieve);
 
       /***** CONTEXTO REFLECTION MAP *****/
 

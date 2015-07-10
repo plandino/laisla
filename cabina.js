@@ -4,6 +4,9 @@ function cabina(scaleX, scaleY, scaleZ, conRelieve){
     this.indices            = null;
     this.generatedColors    = null;
 
+    this.normales = null;
+    this.tangentes = null;
+
     this.barraUnoY = null;
     this.barraDosY = null;
 
@@ -75,10 +78,10 @@ function cabina(scaleX, scaleY, scaleZ, conRelieve){
           5.0, -1.7, -4.7,
           5.0, -1.7,  4.7,
 
-          2.0,  1.7,  4.7,
-          2.0,  1.7, -4.7,
-          2.0,  2.0, -4.7,
-          2.0,  2.0,  4.7,
+          2.3,  1.7,  4.7,
+          2.3,  1.7, -4.7,
+          2.3,  2.0, -5.0,
+          2.3,  2.0,  5.0,
 
           // Techo 
           -5.0, 2.0,  5.0,
@@ -122,6 +125,62 @@ function cabina(scaleX, scaleY, scaleZ, conRelieve){
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices), gl.STATIC_DRAW);
         this.cubeVertexBuffer.itemSize = 3;
         this.cubeVertexBuffer.numItems = this.vertices.length;
+
+      this.normales = [
+           
+           // Normales costado adelante
+           0.0,0.0,1.0,
+           0.0,0.0,1.0,
+           0.0,0.0,1.0,
+           0.0,0.0,1.0,
+
+           0.0,0.0,1.0,
+           0.0,0.0,1.0,
+           0.0,0.0,1.0,
+           0.0,0.0,1.0,
+
+           // Normales costado atras
+           0.0,0.0,-1.0,
+           0.0,0.0,-1.0,
+           0.0,0.0,-1.0,
+           0.0,0.0,-1.0,
+
+           0.0,0.0,-1.0,
+           0.0,0.0,-1.0,
+           0.0,0.0,-1.0,
+           0.0,0.0,-1.0,
+
+           // Normales atras
+          -1.0,0.0,0.0,
+          -1.0,0.0,0.0,
+          -1.0,0.0,0.0,
+          -1.0,0.0,0.0,
+
+           // Normales izquierda
+          -1.0,0.0,0.0,
+          -1.0,0.0,0.0,
+          -1.0,0.0,0.0,
+          -1.0,0.0,0.0,
+
+          // Normales derecha
+           1.0,0.0,0.0,
+           1.0,0.0,0.0,
+           1.0,0.0,0.0,
+           1.0,0.0,0.0,
+
+           // Normales arriba
+           0.0,1.0,0.0,
+           0.0,1.0,0.0,
+           0.0,1.0,0.0,
+           0.0,1.0,0.0,
+
+           // Normales abajo
+           0.0,-1.0,0.0,
+           0.0,-1.0,0.0,
+           0.0,-1.0,0.0,
+           0.0,-1.0,0.0,
+
+        ];
 
         this.indices = [
             // Un costado

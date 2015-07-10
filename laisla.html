@@ -308,7 +308,7 @@
             // Pase de valores rgb a valor [-1.0 ; 1.0] 
             vec3 normalMap    = (nMap * 2.0 - 1.0);
 
-        vec3 phong = ads(uSol,normalMap,false) + ads(uFarolA,normalMap,false) + ads(uFarolB,normalMap,false) + ads(uFarolGrua,normalMap,true);
+        vec3 phong = ads(uSol,normalMap,false) + ads(uFarolA,normalMap,false) + ads(uFarolB,normalMap,false) + ads(uFarolGrua,normalMap,false);
         gl_FragColor = vec4(phong, 1.0) * textureColor;
     }
   </script>
