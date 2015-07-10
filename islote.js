@@ -99,13 +99,13 @@ function islote() {
     this.escala = [];
     var pasos = 9;
     var profundidad = 20.0;
-    var c = 100.0;
+    // var c = 100.0;
     for (var i = 0; i <= 1.00000001; i += 1.0/pasos){
         this.camino.push([0, 0, -profundidad*i]);
     }
 
-    var esc = [ 1.00,
-                0.95,
+    var esc = [ 0.90,
+                0.85,
                 0.70,
                 0.66,
                 0.64,
@@ -116,16 +116,29 @@ function islote() {
                 0.55
                 ];
 
+    var v = [   0.000,
+                0.191,
+                0.380,
+                0.572,
+                0.633,
+                0.694,
+                0.755,
+                0.817,
+                0.878,
+                0.939,
+                1.00
+            ];
+
     for (var i in esc) {
         this.escala.push([esc[i], esc[i], 1.0]);
     }
 
     this._calcularUV = function(){
         uv_buffer = [];
-        for (var i = 0.0; i <= pasos + 0.00000001; i++){
+        for (var i in v){
             for (var j in this.u){
                 uv_buffer.push(this.u[j]);
-                uv_buffer.push(i/pasos);
+                uv_buffer.push(v[i]);
             }
         }
 
