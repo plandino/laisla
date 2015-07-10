@@ -342,7 +342,7 @@
 
       vec4 pos_camera_view = uViewMatrix * vPosition;
 
-            vec3 worldCameraPosition = vec3(pos_camera_view.x, pos_camera_view.y, pos_camera_view.z);
+            // vec3 worldCameraPosition = vec3(pos_camera_view.x, pos_camera_view.y, pos_camera_view.z);
 
       // vPosition = pos_camera_view;
       
@@ -359,12 +359,13 @@
       
       vViewMatrix = uViewMatrix;
 
-     vec3 worldPos  = normalize( vec3( uModelMatrix * vec4(aVertexPosition,1.0) ) );
-     vec3 worldNorm = normalize( vec3( uModelMatrix * vec4(aVertexNormal,  0.0) ) ); // o va normal?
+     vec3 worldPos  = vec3( uModelMatrix * vec4(aVertexPosition,1.0) );
+     vec3 worldNorm = vec3( uModelMatrix * vec4(aVertexNormal,  0.0) ); // o va normal?
      vec3 worldView = normalize( worldCameraPosition - worldPos ); // - worldPos
-     reflectionDir  = normalize( reflect( -worldView, worldNorm ) );
-     if(reflectionDir.t >  0.45)  reflectionDir.t =  0.90 - reflectionDir.t ;
-     else if(reflectionDir.t < -0.53 ) reflectionDir.t = -1.06 - reflectionDir.t ;
+     reflectionDir  = reflect( -worldView, worldNorm );
+     // reflectionDir.t -= 0.2;
+     // if (reflectionDir.t < -0.99) reflectionDir.t = -0.99;
+     // if (reflectionDir.t > -0.01) reflectionDir.t = -0.01;
     }
   </script>
 
@@ -384,7 +385,7 @@
         varying vec3 reflectionDir;
 
     uniform sampler2D uSampler;
-        uniform sampler2D uSamplerReflectionMap;
+    uniform samplerCube uSamplerReflectionMap;
 
     struct Light{
     	vec3 position;
@@ -431,12 +432,9 @@
     /** COLOR POSTA **/
     	vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
     	vec3 phong = ads(uSol) + ads(uFarolA) + ads(uFarolB) + ads(uFarolGrua);
-		        vec4 refelctionTexture = texture2D(uSamplerReflectionMap, vec2(reflectionDir.s, reflectionDir.t) );
-		gl_FragColor = mix(  textureColor , refelctionTexture, 0.3) *vec4(phong, 1.0); // * textureColor;
+		        vec4 reflectionTexture = textureCube(uSamplerReflectionMap, reflectionDir);
+		gl_FragColor = mix( textureColor, reflectionTexture, 0.3 ) * vec4(phong, 1.0); // * textureColor;
 
-
-
-        // gl_FragColor = mix(  textureColor , refelctionTexture, 0.3) * vec4(ads(), 1.0);
 	}
   </script>
 
