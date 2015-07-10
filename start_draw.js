@@ -150,7 +150,7 @@ function drawScene() {
     mat4.translate(matrix_islote, matrix_islote, [20.0, -8.0, -400.0]);
     mat4.rotateX(matrix_islote, matrix_islote, degToRad(90));
     mat4.scale(matrix_islote, matrix_islote, [4.0, 3.0, 3.0]);
-    islote.draw(matrix_islote, gl, shaderProgramRelieve);
+    islote.draw(matrix_islote, gl, shaderProgramRelieve, shaderProgramTexturas);
 
       /***** CONTEXTO REFLECTION MAP *****/
 

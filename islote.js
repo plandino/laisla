@@ -146,8 +146,8 @@ function islote() {
         this.extrusion.initBuffers(gl, shaderProgram, color);
     }
 
-    this.draw = function(modelMatrix, gl, shaderProgram) {
-        this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram, KA, KD, 0.0, S);
+    this.draw = function(modelMatrix, gl, shaderProgram, shaderProgramSoloTexturas) {
+        this.extrusion.drawConTextura(modelMatrix, gl, shaderProgram, KA, KD, 0.0, S, shaderProgramSoloTexturas);
     }
 
 
