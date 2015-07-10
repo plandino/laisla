@@ -452,6 +452,11 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
             gl.uniformMatrix4fv(shaderRelieve.viewMatrixUniform, false, cameraMatrix );
             setLucesNormal(cameraMatrix, gl, shaderRelieve);
 
+            gl.uniform1f(shaderRelieve.ka, KA);
+            gl.uniform1f(shaderRelieve.kd, KD);
+            gl.uniform1f(shaderRelieve.ks, 0.0);
+            gl.uniform1f(shaderRelieve.shininess, S);
+
             this.tapa1.drawConTextura(modelMatrix, gl, shaderRelieve);
             if (this.tapa2) this.tapa2.drawConTextura(modelMatrix, gl, shaderRelieve);
 
