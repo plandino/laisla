@@ -32,17 +32,13 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
     this.camino = camino;
     this.escala = escala;
 
-    if (typeof tangentes === "undefined") console.log("tangentes INDEFINIDA");    //DEBUG
     this.tangentesCurva = tangentes;
-    if (typeof normales === "undefined") console.log("normales INDEFINIDA");    //DEBUG
     this.normalesCurva = normales;
 
     this.tapa1 = null;
     this.tapa2 = null;
 
     this._posicion = function(i,j){
-        // if (i < 0 || this.rows <= i)
-        //     return vec3.fromValues(0,0,0);
         if (i < 0)
             return this._posicion(0,j);
         if (i >= this.rows)
@@ -73,7 +69,6 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
 
                 var n = vec3.create();
                 vec3.lerp(n, v, w, 0.5);
-                // vec3.normalize(n, n);
 
                 var arriba;
                 if (this.arriba == "x")
@@ -92,10 +87,6 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
                 mat4.rotate(rotacion, rotacion, theta, ejeRotacion);
 
                 var normalSuperficie = vec3.create();
-                if (typeof normalCurva === "undefined"){    // DEBUG
-                    console.log("normalCurva[" + j + "]: INDEFINIDA");
-                    console.log("Longitud normales: " + this.normalesCurva.length);
-                } 
                 vec3.transformMat4(normalSuperficie, normalCurva, rotacion);
                 vec3.normalize(normalSuperficie, normalSuperficie);
 
@@ -213,11 +204,7 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
 
 
     this.handleLoadedTexture = function(objectImage, conReflection, conRelieve) {
-        // gl.activeTexture(gl.TEXTURE0);
-
-
-
-        if(conReflection){
+        if (conReflection) {
             this.tieneReflejo = true;
             this.reflectionTexture = gl.createTexture();
 
@@ -228,10 +215,10 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.CLAMP_TO_EDGE);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.CLAMP_TO_EDGE);
             gl.generateMipmap(gl.TEXTURE_2D);
-        } else if(conRelieve){
+        } 
+        else if (conRelieve) {
             this.tieneRelieve = true;
             this.relieveTexture = gl.createTexture();
-
 
             gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
@@ -240,7 +227,8 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
             gl.generateMipmap(gl.TEXTURE_2D);
-        } else {
+        } 
+        else {
             this.texture = gl.createTexture();
 
             gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
@@ -251,8 +239,6 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
             gl.generateMipmap(gl.TEXTURE_2D);
         }
-
-        
 
         gl.bindTexture(gl.TEXTURE_2D, null);
     }
@@ -303,40 +289,40 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
         this.webgl_index_buffer.numItems = this.index_buffer.length;
 
 
-            this.generatedColors = [];
-            var colors = getColor(color);
-            for (var j=0; j<colors.length; j++) {
-                var c = colors[j];
-                for (var i=0; i<this.position_buffer.length/12; i++) {
-                    this.generatedColors = this.generatedColors.concat(c);
-                }
+        this.generatedColors = [];
+        var colors = getColor(color);
+        for (var j=0; j<colors.length; j++) {
+            var c = colors[j];
+            for (var i=0; i<this.position_buffer.length/12; i++) {
+                this.generatedColors = this.generatedColors.concat(c);
             }
+        }
 
-            this.webgl_color_buffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_color_buffer);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.generatedColors), gl.STATIC_DRAW);   
-            this.webgl_color_buffer.itemSize = 4;
-            this.webgl_color_buffer.numItems = this.generatedColors.length / 4;
+        this.webgl_color_buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_color_buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.generatedColors), gl.STATIC_DRAW);   
+        this.webgl_color_buffer.itemSize = 4;
+        this.webgl_color_buffer.numItems = this.generatedColors.length / 4;
 
-            this.webgl_normal_buffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.normal_buffer), gl.STATIC_DRAW);
-            this.webgl_normal_buffer.itemSize = 3;
-            this.webgl_normal_buffer.numItems = this.normal_buffer.length / 3;
+        this.webgl_normal_buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.normal_buffer), gl.STATIC_DRAW);
+        this.webgl_normal_buffer.itemSize = 3;
+        this.webgl_normal_buffer.numItems = this.normal_buffer.length / 3;
 
-            this.webgl_tangent_buffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_tangent_buffer);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.tangent_buffer), gl.STATIC_DRAW);
-            this.webgl_tangent_buffer.itemSize = 3;
-            this.webgl_tangent_buffer.numItems = this.tangent_buffer.length / 3;
+        this.webgl_tangent_buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_tangent_buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.tangent_buffer), gl.STATIC_DRAW);
+        this.webgl_tangent_buffer.itemSize = 3;
+        this.webgl_tangent_buffer.numItems = this.tangent_buffer.length / 3;
 
-            if (this.esTexturada){
-                this.webgl_uv_buffer = gl.createBuffer();
-                gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_uv_buffer);
-                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.uv_buffer), gl.STATIC_DRAW);
-                this.webgl_uv_buffer.itemSize = 2;
-                this.webgl_uv_buffer.numItems = this.uv_buffer.length / 2;
-            }
+        if (this.esTexturada){
+            this.webgl_uv_buffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_uv_buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.uv_buffer), gl.STATIC_DRAW);
+            this.webgl_uv_buffer.itemSize = 2;
+            this.webgl_uv_buffer.numItems = this.uv_buffer.length / 2;
+        }
 
         if (this.tapa1) 
             this.tapa1.initBuffers(gl, "black");
@@ -369,8 +355,6 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
 
 
     this.drawConTextura = function(modelMatrix, gl, shaderProgram, ka, kd, ks, shininess, shaderProgramSoloTextura, shaderRelieve) {
-        // var mvMatrix = mat4.create();
-        // mat4.multiply(mvMatrix, cameraMatrix, modelMatrix);
         var normalMatrix = mat3.create();
         mat3.identity(normalMatrix);
         mat3.fromMat4(normalMatrix, modelMatrix);
@@ -402,11 +386,6 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
 
        if(this.esTexturada){
 
-
-            // // TANGENTEEEEES
-            // gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_tangent_buffer);
-            // gl.vertexAttribPointer(shaderProgram.vertexTangentAttribute, this.webgl_tangent_buffer.itemSize, gl.FLOAT, false, 0, 0);
-
             gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_normal_buffer);
             gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.webgl_normal_buffer.itemSize, gl.FLOAT, false, 0, 0);
 
@@ -424,7 +403,6 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
 
             if(this.tieneReflejo){
                 gl.activeTexture(gl.TEXTURE1);
-                // gl.bindTexture(gl.TEXTURE_2D, this.reflectionTexture);
                 gl.uniform1i(shaderProgram.samplerUniformReflectionMap, 1);
             }
 
@@ -433,7 +411,6 @@ function extrusion(forma, camino, escala, tangentes, normales, esTexturada, arri
                 gl.bindTexture(gl.TEXTURE_2D, this.relieveTexture);
                 gl.uniform1i(shaderProgram.samplerUniformReflectionMap, 1);
 
-                 // TANGENTEEEEES
                 gl.bindBuffer(gl.ARRAY_BUFFER, this.webgl_tangent_buffer);
                 gl.vertexAttribPointer(shaderProgram.vertexTangentAttribute, this.webgl_tangent_buffer.itemSize, gl.FLOAT, false, 0, 0);
             }
